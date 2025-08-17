@@ -1,50 +1,99 @@
-<!-- keep your existing head/header; only showing the gallery script part -->
-<script>
-(async function(){
-  const container = document.querySelector('#gallery-grid') || document.body;
-  const fallback = '/bg-car2.jpg';
-
-  function card({title, image, alt, cta_label, wa}){
-    const div = document.createElement('div');
-    div.className = 'card';
-    div.innerHTML = `
-      <div class="card-img">
-        <img src="${image || fallback}" alt="${alt || title || ''}">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Before & After Gallery • Sorcery Detailing</title>
+  <link rel="icon" href="logo.png">
+  <style>
+    :root{--bg:#0e0f11;--panel:#151618;--text:#f1f1f1;--muted:#a9a9a9;--gold:#d0ad42;--line:#212226}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial}
+    a{color:#e1c56a;text-decoration:none}
+    .container{width:min(1200px,92%);margin-inline:auto}
+    header{position:sticky;top:0;z-index:10;background:rgba(14,15,17,.85);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+    .bar{display:flex;align-items:center;gap:12px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand img{width:28px;height:28px;border-radius:50%}
+    .actions{margin-left:auto;display:flex;gap:10px}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 12px;border-radius:10px;background:#1b1c1e;border:1px solid #27282a;color:var(--text)}
+    .btn.gold{background:var(--gold);color:#171717;border-color:#b8952c;font-weight:800}
+    main{padding:28px 0 60px}
+    h1{font-size:28px;margin:0 0 6px}
+    .lead{color:var(--muted);margin:0 0 18px}
+    .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+    .cover{aspect-ratio:16/10;width:100%;object-fit:cover;background:#0c0c0d}
+    .card-body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:10px}
+    .title{font-size:16px;font-weight:800}
+    .service{color:var(--muted);font-size:14px}
+    .cta-row{margin-top:auto;display:flex;gap:10px}
+    .cta{flex:1;text-align:center;padding:10px 12px;border-radius:10px;background:#202124;border:1px solid #2a2b2d;color:var(--text);text-decoration:none;font-weight:700}
+    .cta.book{background:var(--gold);color:#171717;border-color:#b8952c}
+    .error{display:none;background:#2a1b1b;border:1px solid #3e2727;color:#ffc9c9;padding:12px 14px;border-radius:10px;margin-bottom:16px}
+    .empty{color:var(--muted);padding:18px 0 40px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container bar">
+      <a class="brand" href="index.html"><img src="logo.png" alt="">Sorcery Detailing</a>
+      <div class="actions">
+        <a class="btn" href="index.html">← Back</a>
+        <a class="btn" href="/admin/" target="_blank">Admin</a>
+        <a class="btn gold" href="https://wa.me/16472440621?text=Hi!%20I%27d%20like%20to%20book%20after%20seeing%20the%20gallery." target="_blank">Book</a>
       </div>
-      <div class="card-body">
-        <h3>${title || 'Detail'}</h3>
-        <a class="btn" href="${wa || 'https://wa.me/16472440621'}" target="_blank" rel="noopener">${cta_label || 'Book'}</a>
-      </div>`;
-    const img = div.querySelector('img');
-    img.onerror = () => { img.src = fallback; };
-    return div;
-  }
+    </div>
+  </header>
 
-  try {
-    const res = await fetch('/gallery.json?nocache=' + Date.now());
-    const data = await res.json();
-    const items = data.items || data;
-    container.innerHTML = '';
-    if (!items || !items.length){
-      container.innerHTML = '<p>No gallery items yet. Log in at <a href="/admin/" target="_blank">/admin</a> to add some.</p>';
-      return;
-    }
-    items.forEach(i => container.appendChild(card(i)));
-  } catch(e){
-    container.innerHTML = '<p>Could not load the gallery (network or JSON error).</p>';
-    console.error(e);
-  }
-})();
-</script>
+  <main class="container">
+    <h1>Before & After Gallery</h1>
+    <p class="lead">Managed in <a href="/admin/" target="_blank">/admin</a>. Add or delete photos — they’ll appear here automatically.</p>
 
-<style>
-/* a bit of card styling if you need it */
-.card{background:#141518;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px #202226;max-width:520px;margin:12px}
-.card-img img{display:block;width:100%;height:320px;object-fit:cover}
-.card-body{padding:16px}
-.card-body h3{margin:0 0 10px}
-.btn{display:inline-block;background:#d4ad44;color:#111;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:600}
-.btn:hover{filter:brightness(1.08)}
-/* make cards wrap if you use a grid container: */
-#gallery-grid{display:flex;flex-wrap:wrap;gap:16px}
-</style>
+    <div id="err" class="error"></div>
+    <div id="gallery-grid" class="grid" aria-live="polite"></div>
+    <p id="empty" class="empty" hidden>No items yet. Add some in <b>Admin → Gallery Items</b>.</p>
+  </main>
+
+  <script>
+    (async function(){
+      const grid = document.getElementById('gallery-grid');
+      const empty = document.getElementById('empty');
+      const errBox = document.getElementById('err');
+      const FALLBACK='https://images.unsplash.com/photo-1521334726092-b509a19597c6?q=80&w=1200&auto=format&fit=crop';
+
+      const imgEl = (src,alt='')=>{
+        const i=new Image(); i.decoding='async'; i.loading='lazy'; i.className='cover';
+        i.src=src||FALLBACK; i.alt=alt||'Detailing result'; i.onerror=()=>{i.src=FALLBACK}; return i;
+      };
+      const card = (item)=>{
+        const wrap=document.createElement('article'); wrap.className='card';
+        const cover=imgEl(item.image, item.title);
+        const body=document.createElement('div'); body.className='card-body';
+        const t=document.createElement('div'); t.className='title'; t.textContent=item.title||'Detail result';
+        const s=document.createElement('div'); s.className='service'; s.textContent=item.service||'Service';
+        const row=document.createElement('div'); row.className='cta-row';
+        const v=document.createElement('a'); v.className='cta'; v.href=item.image||'#'; v.textContent='View'; v.target='_blank';
+        const w=document.createElement('a'); w.className='cta book'; w.textContent='Book';
+        w.href=`https://wa.me/16472440621?text=${encodeURIComponent('Interested in: '+(item.service||'Detailing')+' – '+(item.title||''))}`;
+        w.target='_blank';
+        row.append(v,w); body.append(t,s,row); wrap.append(cover,body); return wrap;
+      };
+
+      try{
+        const res = await fetch('gallery.json',{cache:'no-store'});
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : (Array.isArray(data.items)? data.items : []);
+        if(!items.length){ empty.hidden=false; return; }
+        const frag=document.createDocumentFragment();
+        items.forEach(it=>frag.appendChild(card(it)));
+        grid.appendChild(frag);
+      }catch(e){
+        errBox.style.display='block';
+        errBox.textContent='Could not load gallery.json ('+e.message+').';
+        console.error(e);
+      }
+    })();
+  </script>
+</body>
+</html>
