@@ -2,27 +2,11 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/uploads"
-public_folder: "/static/uploads"
+publish_mode: simple
 
-publish_mode: editorial_workflow
+media_folder: "static/uploads"     # committed path
+public_folder: "/static/uploads"   # public URL path
 
-collections:
-  - name: "gallery"
-    label: "Gallery Items"
-    label_singular: "Item"
-    # Store items INSIDE gallery.json under "items" list
-    files:
-      - file: "gallery.json"
-        label: "Gallery Data"
-        name: "gallerydata"
-        format: "json"
-        fields:
-          - label: "Items"
-            name: "items"
-            widget: "list"
-            summary: "{{fields.title}}"
-            fields:
-              - {label: "Title", name: "title", widget: "string"}
-              - {label: "Service", name: "service", widget: "string"}
-              - {label: "Image", name: "image", widget: "image"}
+logo_url: "/logo.png"
+site_url: "/"
+display_url: "/"
