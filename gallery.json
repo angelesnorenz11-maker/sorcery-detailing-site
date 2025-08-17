@@ -1,18 +1,4 @@
-{
-  "items": [
-    {
-      "title": "Jet Black Paint Revival",
-      "image": "/bg-car2.jpg",
-      "alt": "Polished black hood",
-      "cta_label": "Book",
-      "wa": "https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%27d%20like%20to%20book%20the%20Paint%20Revival."
-    },
-    {
-      "title": "Interior Deep Clean",
-      "image": "/bg-car.jpg",
-      "alt": "Deep cleaned interior",
-      "cta_label": "Book",
-      "wa": "https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%27d%20like%20to%20book%20an%20Interior%20Deep%20Clean."
-    }
-  ]
-}
+[
+  { "title": "Jet Black Paint Revival", "service": "Paint Correction", "image": "/static/uploads/jet-black.jpg" },
+  { "title": "Interior Deep Clean", "service": "Interior Detail", "image": "/static/uploads/interior-deep.jpg" }
+]
