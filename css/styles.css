@@ -174,4 +174,93 @@ textarea{resize:vertical}
   color: var(--accent, #e3c15a);   /* uses your accent var if present */
   letter-spacing: .2px;
   opacity: .95;
+
+}
+
+/* ---------------------------
+   Mobile-friendly overrides
+   --------------------------- */
+
+/* a) Top contact "chips" row */
+.top-badges,
+.header-badges,
+.navbar {              /* use the same flex rules across header rows */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  row-gap: 8px;
+}
+
+/* pill buttons (chips) */
+.chip,
+.navbar a {
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* b) Site brand (logo + text) row */
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-row .brand-logo {
+  width: clamp(44px, 9vw, 64px);     /* scales between 44–64px */
+  height: auto;
+}
+
+/* c) HERO section sizes */
+.hero {
+  padding-top: clamp(56px, 12vw, 140px);  /* larger on big screens, smaller on phones */
+  padding-bottom: clamp(28px, 6vw, 64px);
+}
+
+/* hero logo above the title */
+.hero .hero-logo {
+  width: clamp(72px, 22vw, 140px);    /* scales 72–140px */
+  height: auto;
+  margin-bottom: clamp(8px, 2vw, 14px);
+}
+
+/* Main title & subtitle scale with the screen */
+.hero .hero-title {
+  font-size: clamp(2rem, 9vw, 4.8rem);      /* phone → desktop */
+  line-height: 1.05;
+  margin: 0.2em 0 0.25em;
+  text-align: center;
+}
+
+.hero .hero-subtitle {
+  font-size: clamp(1rem, 3.5vw, 1.35rem);
+  opacity: .9;
+  text-align: center;
+}
+
+/* d) Nav pills – less padding & smaller type on phones */
+.navbar a {
+  font-size: clamp(.9rem, 2.8vw, 1rem);
+  padding: .4rem .8rem;
+}
+
+/* e) Keep content away from the very edges on phones */
+.container,
+.section,
+.inner {
+  padding-left: clamp(14px, 4vw, 28px);
+  padding-right: clamp(14px, 4vw, 28px);
+}
+
+/* f) Tighten vertical rhythm on small screens */
+@media (max-width: 640px) {
+  .top-badges { gap: 8px; row-gap: 6px; }
+  .chip { font-size: .9rem; padding: .38rem .7rem; }
+}
+
+/* g) Optional overlay if you use ::before on the hero for a dark tint */
+.hero::before {
+  opacity: clamp(.28, 5vw, .42);  /* ~0.28 on phones, ~0.42 desktop */
 }
