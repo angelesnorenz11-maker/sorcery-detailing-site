@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sorcery Detailing</title>
+<meta name="description" content="Sorcery Detailing — From Spells to Shine - We Do it All. Mobile car detailing in Ajax & GTA." />
+<link rel="preconnect" href="https://identity.netlify.com">
+<!-- Preload your default background image -->
+<link rel="preload" as="image" href="bg-car2.jpg">
+<style>
+  /* ---------- THEME ---------- */
+  :root{
+    --bg:#0b0b0c;
+    --panel:#121214;
+    --panel-2:#16171a;
+    --border:#26272b;
+    --text:#f2f2f2;
+    --muted:#aeb2b8;
+    --gold:#d4af37;
+    --gold-2:#f0d77a;
+
+    /* Separate images: header/hero vs. full-page background */
+    --hero-image:url('bg-car2.jpg');   /* header image */
+    --page-image:url('bg-car.jpg');   /* page background behind sections (change this to swap page bg) */
+
+    --hero-overlay:linear-gradient(135deg, rgba(0,0,0,.66) 0%, rgba(10,10,12,.6) 38%, rgba(5,5,7,.78) 100%);
+    --header-h: 220px; /* updated by JS */
+  }
+  @media (prefers-color-scheme: dark){ :root{ color-scheme: dark; } }
+
+  *{box-sizing:border-box}
+
+  html,body{
+    margin:0;
+    color:var(--text);
+    font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
+  }
+
+  /* Page-wide background under the cards (uses --page-image) */
+  body{
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,.72), rgba(0,0,0,.92)),
+      var(--page-image);
+    background-repeat: no-repeat, no-repeat;
+    background-size: auto, cover;
+    background-position: center 0, center;
+    background-attachment: scroll, fixed; /* fixed photo on desktop */
+  }
+  @media (max-width: 900px){
+    body{ background-attachment: scroll, scroll; } /* smoother on mobile */
+  }
+
+  html{ scroll-behavior:smooth; }
+
+  /* ---------- FIXED HERO HEADER ---------- */
+  header{
+    position:fixed; left:0; right:0; top:0; z-index:10;
+    padding:1.75rem 1rem; text-align:center;
+    border-bottom:1px solid var(--border);
+    background:transparent; overflow:hidden;
+    transition:background .22s ease, padding .22s ease;
+    backface-visibility:hidden;
+  }
+  header::before{ content:""; position:absolute; inset:0; z-index:-2; background:var(--hero-overlay); }
+  header::after{
+    content:""; position:absolute; inset:0; z-index:-3;
+    background:var(--hero-image) center/cover no-repeat; /* header uses --hero-image */
+  }
+  body.has-fixed-hero main{ padding-top: var(--header-h); }
+
+  /* fixed mini brand top-left */
+  .brand{display:inline-block;text-decoration:none}
+  .brand--topleft{
+    position:fixed; left:12px; top:10px; z-index:1000;
+    display:flex; align-items:center; gap:.55rem;
+  }
+  .brand--topleft img{width:32px;height:32px;border-radius:50%}
+  .brand-name{font-weight:800;color:#fff;letter-spacing:.2px;text-shadow:0 1px 2px rgba(0,0,0,.5);font-size:clamp(.95rem,1.8vw,1.05rem)}
+
+  /* centered brand (mid-size logo + name) */
+  .hero-brand{display:inline-flex;align-items:center;justify-content:center;gap:.65rem}
+  .hero-logo{ width:64px;height:64px;border-radius:50%;display:block; box-shadow:0 4px 14px rgba(0,0,0,.35); }
+  @media (max-width:560px){ .hero-logo{width:44px;height:44px} }
+
+  header h1{margin:.35rem 0 .15rem;color:var(--gold)}
+  header p{margin:0;color:#e9e9e9;font-style:italic;opacity:.95}
+
+  /* subtle fade-in */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  header .hero-brand, header p, header nav{opacity:0}
+  header.appear .hero-brand{animation:fadeUp .45s ease .06s both}
+  header.appear p{animation:fadeUp .45s ease .12s both}
+  header.appear nav{animation:fadeUp .45s ease .18s both}
+
+  /* ---------- NAV ---------- */
+  nav{margin-top:.8rem}
+  nav a{color:var(--gold);margin:0 .75rem;font-weight:700;padding-bottom:2px;border-bottom:2px solid transparent;position:relative}
+  nav a:hover{border-color:var(--gold)}
+  nav a::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .18s ease}
+  nav a:hover::after{width:100%}
+  .nav-toggle{display:none;background:var(--gold);color:#111;font-weight:800;border:0;padding:.55rem .85rem;border-radius:8px;margin-top:.75rem;cursor:pointer}
+  .nav-links{transition:max-height .24s ease, opacity .18s ease}
+  @media (max-width:900px){
+    .nav-toggle{display:inline-block}
+    .nav-links{
+      display:block; overflow:hidden; max-height:0; opacity:0;
+      margin-top:.6rem; background:#18191b; border:1px solid var(--border); border-radius:10px; padding:0 .5rem;
+    }
+    .nav-links.open{opacity:1;padding:.5rem .5rem}
+    .nav-links a{display:block;margin:.35rem 0;padding:.45rem .6rem;border-radius:8px;border-bottom:0}
+    .nav-links a:hover{background:#202126}
+  }
+
+  /* ---------- LAYOUT & COMPONENTS ---------- */
+  .container{max-width:1080px;margin:auto;padding:2rem 1rem}
+  h2{color:var(--gold);margin:0 0 1rem}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+
+  .card{
+    background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--border);
+    border-radius:14px; padding:1.15rem;
+    box-shadow:0 8px 28px rgba(0,0,0,.22);
+  }
+  .price{color:var(--gold);font-weight:800}
+  ul{padding-left:1.2rem}
+  .muted{color:var(--muted)}
+  .subnote{font-size:.95rem;color:#cfcfcf;margin:.25rem 0 .3rem}
+
+  .btn{
+    display:inline-block;background:var(--gold);color:#111;font-weight:800;
+    padding:.68rem 1rem;border-radius:12px;text-decoration:none;margin:.5rem .4rem .2rem 0;
+    transition:transform .08s ease, box-shadow .18s ease;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(212,175,55,.25)}
+  .btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+  .btn-dark{background:#222;color:#f2f2f2;border:1px solid var(--border)}
+
+  form input, form select, form textarea{
+    width:100%; background:#191a1d; color:var(--text); border:1px solid var(--border);
+    border-radius:10px; padding:.7rem .85rem;
+  }
+  form textarea{min-height:120px;resize:vertical}
+  form .row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+  form .actions{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+  @media (max-width:900px){ form .row, form .actions{grid-template-columns:1fr} }
+
+  footer{text-align:center;padding:2rem 1rem;color:var(--muted);border-top:1px solid var(--border);margin-top:2rem}
+
+  /* ---------- FLOATING WHATSAPP BUTTON ---------- */
+  .fab-wa{
+    position:fixed;right:16px;bottom:16px;z-index:50;
+    background:#25D366;color:#111;text-decoration:none;font-weight:800;border-radius:999px;
+    padding:.9rem 1.05rem; box-shadow:0 8px 24px rgba(0,0,0,.35);
+    opacity:0; transform:translateY(18px) scale(.98);
+    transition:opacity .22s ease, transform .22s ease;
+  }
+  .fab-wa.show{opacity:1;transform:none}
+  @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(37,211,102,.45)}70%{box-shadow:0 0 0 14px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+  .fab-wa.show{animation:pulseRing 1.6s ease-out 1}
+</style>
+</head>
+<body>
+
+<!-- fixed corner logo -->
+<a class="brand brand--topleft" href="index.html" aria-label="Go to home">
+  <img src="logo.png" alt="Sorcery Detailing Logo" />
+  <span class="brand-name">Sorcery Detailing</span>
+</a>
+
+<header>
+  <div class="hero-brand" aria-label="Sorcery Detailing">
+    <img class="hero-logo" src="logo.png" alt="Sorcery Detailing logo">
+    <h1>Sorcery Detailing</h1>
+  </div>
+  <p>"From Spells to Shine - We Do it All"</p>
+
+  <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">☰ Menu</button>
+  <nav id="primary-nav" class="nav-links" aria-label="Primary">
+    <a href="#packages">Packages</a>
+    <a href="#addons">Add-ons</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="#subscriptions">Subscriptions</a>
+    <a href="#contact">Contact</a>
+    <a href="/admin/">Admin</a>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>Our Mission</h2>
+    <p>With over 10 years of detailing experience—including 7 years at one of Canada’s busiest dealerships—we bring dealership-level quality straight to your driveway. At Sorcery Detailing, our mission is simple: deliver top-tier, hassle-free car care with pride, precision, and a personal touch. Every detail matters, and every car gets the VIP treatment.</p>
+  </section>
+
+  <section id="packages">
+    <h2>Packages</h2>
+    <div class="grid">
+      <!-- SILVER -->
+      <div class="card">
+        <h3>🥈 Silver – Refresh & Shine</h3>
+        <p class="price">$120–$150</p>
+        <ul>
+          <li>Exterior hand wash (foam cannon & two-bucket method)</li>
+          <li>Wheel & tire clean + tire shine</li>
+          <li>Door jambs wiped</li>
+          <li>Interior vacuum (seats, floors, mats, trunk)</li>
+          <li>Wipe down of all interior surfaces</li>
+          <li>Interior window cleaning</li>
+          <li>Air freshener</li>
+        </ul>
+        <p class="subnote"><strong>👤 Best for:</strong><br>
+          • Busy commuters needing a quick refresh<br>
+          • Parents or rideshare drivers looking for light upkeep<br>
+          • Car owners prepping for a weekend or short trip
+        </p>
+        <a class="btn" href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%20want%20to%20book%20the%20Silver%20Package.">Book on WhatsApp</a>
+        <a class="btn btn-outline" href="#contact">Get Estimate</a>
+      </div>
+
+      <!-- GOLD -->
+      <div class="card">
+        <h3>🥇 Gold – Deep Clean & Rejuvenate</h3>
+        <p class="price">$220–$270</p>
+        <ul>
+          <li>Everything in Silver</li>
+          <li>Full interior shampoo (seats, carpets, floor mats)</li>
+          <li>Salt & stain removal (as much as possible)</li>
+          <li>Steam cleaning for vents, crevices, & cupholders</li>
+          <li>Leather conditioning (if applicable)</li>
+          <li>Bug & tar removal from front end</li>
+          <li>Spray wax or sealant (3-month protection)</li>
+        </ul>
+        <p class="subnote"><strong>👤 Best for:</strong><br>
+          • Used car owners trying to restore that “like new” feel<br>
+          • Families with kids (food spills, salt, pet hair, etc.)<br>
+          • Seasonal cleanings (pre/post-winter deep cleans)
+        </p>
+        <a class="btn" href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%20want%20to%20book%20the%20Gold%20Package.">Book on WhatsApp</a>
+        <a class="btn btn-outline" href="#contact">Get Estimate</a>
+      </div>
+
+      <!-- PLATINUM -->
+      <div class="card">
+        <h3>💎 Platinum – Paint Revival & Full Detail</h3>
+        <p class="price">$450–$600</p>
+        <ul>
+          <li>Everything in Gold</li>
+          <li>2-stage paint correction (cut & polish)</li>
+          <li>Removes moderate swirls, light scratches, oxidation</li>
+          <li>Clay bar decontamination & iron remover treatment</li>
+          <li>Wax & water wax</li>
+          <li>Engine bay cleaning & dressing (optional)</li>
+          <li>Trim restoration (faded black plastics)</li>
+        </ul>
+        <p class="subnote"><strong>👤 Best for:</strong><br>
+          • Enthusiasts or collectors wanting showroom shine<br>
+          • People prepping their car for sale or lease return<br>
+          • Owners of dark-colored vehicles prone to visible swirls
+        </p>
+        <a class="btn" href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%20want%20to%20book%20the%20Platinum%20Package.">Book on WhatsApp</a>
+        <a class="btn btn-outline" href="#contact">Get Estimate</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="addons" class="card">
+    <h2>Add-ons (Optional)</h2>
+    <div class="grid">
+      <div class="card"><strong>Pet Hair Removal</strong><br><span class="muted">$60–$100</span></div>
+      <div class="card"><strong>Headlight Restoration</strong><br><span class="muted">$40–$70</span></div>
+      <div class="card"><strong>Engine Bay Detail (standalone)</strong><br><span class="muted">$50</span></div>
+      <div class="card"><strong>Ozone Odor Treatment</strong><br><span class="muted">$60–$90</span></div>
+      <div class="card"><strong>Leather Conditioning</strong><br><span class="muted">From $30–$60</span></div>
+      <div class="card"><strong>2-Stage Cut, Polish & Wax</strong><br><span class="muted">$250</span></div>
+      <div class="card"><strong>Wash & Wax</strong><br><span class="muted">$50</span></div>
+      <div class="card"><strong>Oil Change</strong><br><span class="muted">$40</span></div>
+      <div class="card"><strong>Tire Swap (Winter/Summer) on Rim</strong><br><span class="muted">$50</span></div>
+      <div class="card"><strong>Window Refresh</strong><br><span class="muted">$30</span></div>
+    </div>
+    <p style="text-align:center;margin-top:.6rem">
+      <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20to%20add%20some%20services.">Ask About Add-ons on WhatsApp</a>
+    </p>
+  </section>
+
+  <!-- SUBSCRIPTIONS -->
+  <section id="subscriptions" class="card">
+    <h2>Subscription Plans</h2>
+
+    <div class="card" style="margin-bottom:1rem">
+      <p><strong>Absolutely. Here’s a subscription-based pricing model built around your existing detailing packages:</strong></p>
+      <ul>
+        <li>✅ 1x Gold Package (Deep Clean & Rejuvenate)</li>
+        <li>✅ 3x Silver Packages (Refresh & Shine)</li>
+        <li>🔁 Renewed every 4 months (suggested seasonal maintenance)</li>
+        <li>🔐 Priority booking, reminders & flexible scheduling</li>
+      </ul>
+    </div>
+
+    <!-- 4-MONTH / 4-DETAIL PLANS -->
+    <h3 style="color:var(--gold);margin-top:.5rem">Seasonal Subscription — Every 4 months (1× Gold + 3× Silver)</h3>
+    <div class="grid">
+      <div class="card">
+        <h4>🧼 Small Vehicles (Coupes, Hatchbacks, Compacts)</h4>
+        <p class="price">$460</p>
+        <p>Includes: 1× Gold ($220) + 3× Silver ($120 each = $360)</p>
+        <p><strong>Total Value:</strong> ~$580 • <strong>You Save:</strong> ~$120</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'm%20interested%20in%20the%204-month%20Subscription%20Plan%20–%20Small%20Vehicles%20($460)%20including%201x%20Gold%20and%203x%20Silver.">Subscribe via WhatsApp</a>
+      </div>
+      <div class="card">
+        <h4>🚗 Sedans</h4>
+        <p class="price">$500</p>
+        <p>Includes: 1× Gold ($230) + 3× Silver ($125 each = $375)</p>
+        <p><strong>Total Value:</strong> ~$605 • <strong>You Save:</strong> ~$105</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'm%20interested%20in%20the%204-month%20Subscription%20Plan%20–%20Sedans%20($500)%20including%201x%20Gold%20and%203x%20Silver.">Subscribe via WhatsApp</a>
+      </div>
+      <div class="card">
+        <h4>🚙 SUVs</h4>
+        <p class="price">$540</p>
+        <p>Includes: 1× Gold ($250) + 3× Silver ($130 each = $390)</p>
+        <p><strong>Total Value:</strong> ~$640 • <strong>You Save:</strong> ~$100</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'm%20interested%20in%20the%204-month%20Subscription%20Plan%20–%20SUVs%20($540)%20including%201x%20Gold%20and%203x%20Silver.">Subscribe via WhatsApp</a>
+      </div>
+      <div class="card">
+        <h4>🛻 Trucks</h4>
+        <p class="price">$570</p>
+        <p>Includes: 1× Gold ($260) + 3× Silver ($135 each = $405)</p>
+        <p><strong>Total Value:</strong> ~$665 • <strong>You Save:</strong> ~$95</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'm%20interested%20in%20the%204-month%20Subscription%20Plan%20–%20Trucks%20($570)%20including%201x%20Gold%20and%203x%20Silver.">Subscribe via WhatsApp</a>
+      </div>
+      <div class="card">
+        <h4>🚐 Vans</h4>
+        <p class="price">$600</p>
+        <p>Includes: 1× Gold ($270) + 3× Silver ($140 each = $420)</p>
+        <p><strong>Total Value:</strong> ~$690 • <strong>You Save:</strong> ~$90</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'm%20interested%20in%20the%204-month%20Subscription%20Plan%20–%20Vans%20($600)%20including%201x%20Gold%20and%203x%20Silver.">Subscribe via WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin:1rem 0">
+      <p><strong>🧙 Bonus Perks for Subscribers:</strong></p>
+      <ul>
+        <li>Early access to new services & promotions</li>
+        <li>10% off any add-on services (e.g., pet hair removal, engine bay, ceramic spray upgrades)</li>
+        <li>Giftable to friends or family (1 use per cycle)</li>
+      </ul>
+    </div>
+
+    <!-- 8-DETAIL PLANS -->
+    <h3 style="color:var(--gold)">8-Detail Subscription Plans (2× Gold, 6× Silver)</h3>
+    <p class="muted" style="margin-top:-.4rem">Ideal for bi-monthly maintenance or seasonal upkeep + refreshes.</p>
+    <div class="grid">
+      <div class="card"><h4>🧼 Small Vehicles – $860</h4><p><strong>Value:</strong> ~$1,160 → Save $300</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%208-Detail%20Subscription%20for%20Small%20Vehicles%20($860)%20—%202x%20Gold%20+%206x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🚗 Sedans – $940</h4><p><strong>Value:</strong> ~$1,220 → Save $280</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%208-Detail%20Subscription%20for%20Sedans%20($940)%20—%202x%20Gold%20+%206x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🚙 SUVs – $1,020</h4><p><strong>Value:</strong> ~$1,280 → Save $260</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%208-Detail%20Subscription%20for%20SUVs%20($1,020)%20—%202x%20Gold%20+%206x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🛻 Trucks – $1,100</h4><p><strong>Value:</strong> ~$1,340 → Save $240</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%208-Detail%20Subscription%20for%20Trucks%20($1,100)%20—%202x%20Gold%20+%206x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🚐 Vans – $1,180</h4><p><strong>Value:</strong> ~$1,400 → Save $220</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%208-Detail%20Subscription%20for%20Vans%20($1,180)%20—%202x%20Gold%20+%206x%20Silver.">Choose via WhatsApp</a></div>
+    </div>
+
+    <!-- 10-DETAIL PLANS -->
+    <h3 style="color:var(--gold);margin-top:1rem">10-Detail Subscription Plans (2× Gold, 8× Silver)</h3>
+    <p class="muted" style="margin-top:-.4rem">Perfect for monthly detailing or high-use vehicles needing frequent upkeep.</p>
+    <div class="grid">
+      <div class="card"><h4>🧼 Small Vehicles – $1,030</h4><p><strong>Value:</strong> ~$1,420 → Save $390</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%2010-Detail%20Subscription%20for%20Small%20Vehicles%20($1,030)%20—%202x%20Gold%20+%208x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🚗 Sedans – $1,120</h4><p><strong>Value:</strong> ~$1,500 → Save $380</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%2010-Detail%20Subscription%20for%20Sedans%20($1,120)%20—%202x%20Gold%20+%208x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🚙 SUVs – $1,200</h4><p><strong>Value:</strong> ~$1,580 → Save $380</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%2010-Detail%20Subscription%20for%20SUVs%20($1,200)%20—%202x%20Gold%20+%208x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🛻 Trucks – $1,290</h4><p><strong>Value:</strong> ~$1,660 → Save $370</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%2010-Detail%20Subscription%20for%20Trucks%20($1,290)%20—%202x%20Gold%20+%208x%20Silver.">Choose via WhatsApp</a></div>
+      <div class="card"><h4>🚐 Vans – $1,380</h4><p><strong>Value:</strong> ~$1,740 → Save $360</p>
+        <a class="btn" href="https://wa.me/16472440621?text=I'd%20like%20the%2010-Detail%20Subscription%20for%20Vans%20($1,380)%20—%202x%20Gold%20+%208x%20Silver.">Choose via WhatsApp</a></div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <p><strong>🪄 Subscriber Benefits:</strong></p>
+      <ul>
+        <li>Priority scheduling (ideal for busy customers or fleets)</li>
+        <li>10% off any à la carte services or upgrades</li>
+        <li>Complimentary scent restock each visit</li>
+        <li>Subscription can be shared within a household or small business (limit 2 vehicles)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="card">
+    <h2>Contact & Quote</h2>
+    <p>Ajax-based, founded by <strong>Julian Salvador</strong>. We treat every car like our own, using premium products.</p>
+    <p>📞 <strong>647-244-0621</strong> &nbsp; • &nbsp; 📧 <strong>SorceryDetailing@gmail.com</strong></p>
+
+    <form name="contact" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact" />
+      <p style="display:none"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+      <div class="row">
+        <p><label>Name<br><input type="text" name="name" required></label></p>
+        <p><label>Email<br><input type="email" name="email" required></label></p>
+      </div>
+      <div class="row">
+        <p><label>Vehicle (Make/Model/Year)<br><input type="text" name="vehicle"></label></p>
+        <p><label>Package<br>
+          <select name="package">
+            <option>Silver</option><option>Gold</option><option>Platinum</option><option>Custom/Not sure</option>
+          </select></label>
+        </p>
+      </div>
+      <p><label>Message<br><textarea name="message" placeholder="Tell us what you need or share photos via WhatsApp." required></textarea></label></p>
+      <div class="actions">
+        <button class="btn" type="submit">Send Message</button>
+        <a class="btn btn-dark" href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I'd%20like%20a%20quote.">Message on WhatsApp</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>© 2025 Sorcery Detailing — All rights reserved.</p>
+  <p class="muted">Admin? <a href="/admin/">Log in</a></p>
+</footer>
+
+<!-- Floating WhatsApp CTA -->
+<a id="wa-fab" class="fab-wa" href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%20want%20to%20book%20a%20detail." aria-label="Book on WhatsApp">📲 Book on WhatsApp</a>
+
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+(function(){
+  const header=document.querySelector('header');
+  const toggle=document.querySelector('.nav-toggle');
+  const nav=document.getElementById('primary-nav');
+  const fab=document.getElementById('wa-fab');
+  const packages=document.getElementById('packages');
+
+  /* lock hero: give body padding equal to header height */
+  function setHeaderOffset(){
+    const h = header.offsetHeight;
+    document.documentElement.style.setProperty('--header-h', h+'px');
+    document.body.classList.add('has-fixed-hero');
+  }
+  window.addEventListener('load', setHeaderOffset);
+  window.addEventListener('resize', setHeaderOffset);
+
+  /* fade in */
+  window.addEventListener('DOMContentLoaded',()=>{ header.classList.add('appear'); });
+
+  /* show FAB after packages */
+  function onScrollCore(){
+    if(packages){
+      const trigger=packages.offsetTop - (header.offsetHeight + 40);
+      if(window.scrollY>=trigger) fab?.classList.add('show'); else fab?.classList.remove('show');
+    }
+  }
+  onScrollCore();
+  window.addEventListener('scroll', onScrollCore, {passive:true});
+
+  /* mobile nav */
+  function setMaxHeight(open){
+    if(!nav) return;
+    if(open){
+      nav.style.maxHeight='none';
+      const h=nav.scrollHeight;
+      nav.style.maxHeight='0px';
+      requestAnimationFrame(()=> nav.style.maxHeight=h+'px');
+    }else{
+      nav.style.maxHeight='0px';
+    }
+  }
+  function openNav(){ nav.classList.add('open'); toggle.setAttribute('aria-expanded','true'); setMaxHeight(true); }
+  function closeNav(){ nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); setMaxHeight(false); }
+
+  if(toggle && nav){
+    toggle.addEventListener('click',()=> nav.classList.contains('open') ? closeNav() : openNav());
+    window.addEventListener('resize',()=>{ if(window.innerWidth>900){ nav.style.maxHeight=''; nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); } });
+  }
+
+  /* smooth anchor scrolling with fixed header offset */
+  function smoothScrollTo(hash){
+    const el=document.querySelector(hash);
+    if(!el) return;
+    const headerHeight = header.offsetHeight;
+    const y = Math.max(el.getBoundingClientRect().top + window.pageYOffset - (headerHeight + 10), 0);
+    window.scrollTo({ top:y, behavior:'smooth' });
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const hash=a.getAttribute('href');
+      closeNav();
+      smoothScrollTo(hash);
+      history.replaceState(null,'',hash);
+    });
+  });
+})();
+</script>
+</body>
+</html>
