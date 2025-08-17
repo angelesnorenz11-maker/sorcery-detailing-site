@@ -1,9 +1,18 @@
 [build]
   publish = "."
+  command = ""
 
+# Enable forms on static sites
+[[plugins]]
+  package = "@netlify/plugin-sitemap"
+
+[dev]
+  port = 8888
+
+# Pretty headers (optional)
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "no-referrer-when-downgrade"
+    Referrer-Policy = "strict-origin-when-cross-origin"
