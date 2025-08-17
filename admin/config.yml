@@ -2,29 +2,27 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/uploads"   # where files are stored in the repo
-public_folder: "/static/uploads" # how the site sees them
+media_folder: "static/uploads"
+public_folder: "/static/uploads"
 
-logo_url: "/logo.png"
-site_url: "https://sorcerydetailing.netlify.app"
-
-# Optional: keep it simple (no editorial workflow)
-publish_mode: simple
+publish_mode: editorial_workflow
 
 collections:
-  - name: "content"
-    label: "Site Content"
+  - name: "gallery"
+    label: "Gallery Items"
+    label_singular: "Item"
+    # Store items INSIDE gallery.json under "items" list
     files:
-      - name: "gallery"
-        label: "Gallery Items"
-        file: "gallery.json"
+      - file: "gallery.json"
+        label: "Gallery Data"
+        name: "gallerydata"
+        format: "json"
         fields:
           - label: "Items"
             name: "items"
             widget: "list"
+            summary: "{{fields.title}}"
             fields:
               - {label: "Title", name: "title", widget: "string"}
+              - {label: "Service", name: "service", widget: "string"}
               - {label: "Image", name: "image", widget: "image"}
-              - {label: "Alt text", name: "alt", widget: "string", required: false}
-              - {label: "CTA Label", name: "cta_label", widget: "string", default: "Book"}
-              - {label: "WhatsApp Link", name: "wa", widget: "string", default: "https://wa.me/16472440621"}
