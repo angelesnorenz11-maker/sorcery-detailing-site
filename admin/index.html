@@ -1,45 +1,19 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin — Sorcery Detailing</title>
-  <link rel="icon" href="/logo.png" />
-  <style>
-    html,body{height:100%;margin:0;background:#0e0f11;color:#fafafa;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial}
-    .booting{display:flex;align-items:center;justify-content:center;height:100%;opacity:.7}
-  </style>
-</head>
-<body>
-  <div class="booting">Loading Admin…</div>
-
-  <!-- Netlify Identity (login) -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-  <!-- Decap CMS -->
-  <script>window.CMS_MANUAL_INIT = true;</script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-  <script>
-    // Initialize CMS once identity is ready (or immediately if not present)
-    function startCMS(){
-      if (window.CMS && !window.__cmsStarted){
-        window.__cmsStarted = true;
-        CMS.init(); // will read /admin/config.yml
-      }
-    }
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', user => {
-        if (!user) {
-          window.netlifyIdentity.on('login', () => window.location.reload());
-        }
-        startCMS();
-      });
-      // If widget hasn't initialized yet, still start CMS after a short delay
-      setTimeout(startCMS, 800);
-    } else {
-      startCMS();
-    }
-  </script>
-</body>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin</title>
+    <link rel="icon" href="../logo.png">
+    <style>
+      body{margin:0;background:#0e0f11;color:#eaeaea;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+      header{padding:10px 14px;border-bottom:1px solid #26272a;background:#121316}
+      a{color:#e1c56a;text-decoration:none}
+    </style>
+  </head>
+  <body>
+    <header><a href="/">← Back to site</a></header>
+    <!-- Decap CMS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  </body>
 </html>
