@@ -1,8 +1,0 @@
-{
-  "name": "sorcery-detailing-site",
-  "private": true,
-  "engines": { "node": ">=18" },
-  "scripts": {
-    "build": "node scripts/build-gallery.js"
-  }
-}
