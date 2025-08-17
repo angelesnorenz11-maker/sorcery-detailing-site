@@ -1,0 +1,9 @@
+{
+  "name": "sorcery-detailing-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:gallery": "node scripts/build-gallery.mjs",
+    "serve": "npx http-server -c-1 -p 8080"
+  }
+}

@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build:gallery"
+  publish = "."
+
+[[headers]]
+  for = "/gallery.json"
+  [headers.values]
+  cache-control = "no-store"
