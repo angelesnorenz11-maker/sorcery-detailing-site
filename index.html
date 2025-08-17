@@ -1,31 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sorcery Detailing</title>
-
+  <title>Sorcery Detailing – From Spells to Shine</title>
+  <meta name="description" content="Mobile detailing in Ajax, Ontario. From spells to shine — we do it all." />
+  <link rel="preload" as="image" href="static/bg-hero.jpg" />
   <link rel="icon" href="static/logo.png" />
-  <link rel="stylesheet" href="css/styles.css?v=20250820" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body id="top">
 
-  <!-- Top contact chips -->
-  <div class="topbar">
-    <span class="chip">Julian Salvador</span>
-    <span class="chip">Professional Detailer</span>
-    <a class="chip" href="tel:+16472440621">647-244-0621</a>
-    <a class="chip" href="mailto:SorceryDetailing@gmail.com">SorceryDetailing@gmail.com</a>
+<body id="top">
+  <!-- Top badges (owner, role, phone, email) -->
+  <div class="top-badges">
+    <span class="pill">Julian Salvador</span>
+    <span class="pill alt">Professional Detailer</span>
+    <a class="pill" href="tel:+16472440621">647-244-0621</a>
+    <a class="pill" href="mailto:SorceryDetailing@gmail.com">SorceryDetailing@gmail.com</a>
   </div>
 
-  <!-- Sticky header / nav -->
+  <!-- Header / Brand + Responsive Menu -->
   <header class="site-header">
     <a href="#top" class="brand" aria-label="Sorcery Detailing — Home">
       <img src="static/logo.png" alt="Sorcery Detailing logo" />
       <strong>Sorcery Detailing</strong>
     </a>
 
-    <nav class="main-nav">
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav-menu">
+      <span class="sr-only">Menu</span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <nav id="nav-menu" class="main-nav">
       <a href="#about">About</a>
       <a href="#packages">Packages</a>
       <a href="#addons">Add-ons</a>
@@ -35,26 +43,23 @@
     </nav>
   </header>
 
-  <!-- HERO -->
+  <!-- Hero -->
   <section class="hero">
-    <div class="hero-inner">
-      <img class="hero-logo" src="static/logo.png" alt="">
-      <h1>Sorcery Detailing</h1>
-      <p class="tagline">“From Spells to Shine — We Do it All”</p>
-      <p class="subline">Professional auto detailing in Ajax and surrounding areas</p>
-    </div>
+    <img class="hero-mark" src="static/logo.png" alt="Sorcery Detailing logo" />
+    <h1 class="hero-title">Sorcery Detailing</h1>
+    <p class="hero-kicker">“From Spells to Shine — We Do it All”</p>
   </section>
 
-  <main class="container">
-
+  <!-- Page content wrapper -->
+  <main class="page-wrap">
     <!-- Mission -->
-    <section id="about" class="section card">
+    <section id="about" class="section">
       <h2>Our Mission</h2>
       <p>
         With over 10 years of detailing experience—including 7 years at one of Canada’s busiest dealerships—we bring
         dealership-level quality straight to your driveway. At Sorcery Detailing, our mission is simple: deliver
-        top-tier, hassle-free car care with pride, precision, and a personal touch. Every detail matters, and every car
-        gets the VIP treatment.
+        top-tier, hassle-free car care with pride, precision, and a personal touch. Every detail matters, and every
+        car gets the VIP treatment.
       </p>
     </section>
 
@@ -62,11 +67,9 @@
     <section id="packages" class="section">
       <h2>Packages</h2>
 
-      <!-- Silver -->
       <article class="card">
-        <h3>🥈 Silver – “Refresh &amp; Shine”</h3>
-        <p class="price">$120–$150 <span class="muted">(compact to SUV)</span></p>
-
+        <h3>🥈 Silver — Refresh &amp; Shine</h3>
+        <p class="price">$120–$150 (compact to SUV)</p>
         <h4>Includes</h4>
         <ul>
           <li>Exterior hand wash (foam cannon &amp; two-bucket method)</li>
@@ -77,25 +80,17 @@
           <li>Interior window cleaning</li>
           <li>Air freshener</li>
         </ul>
-
         <h4>Best for</h4>
         <ul>
           <li>Busy commuters needing a quick refresh</li>
           <li>Parents or rideshare drivers looking for light upkeep</li>
-          <li>Car owners prepping for a weekend or short trip</li>
+          <li>Prepping for a weekend or short trip</li>
         </ul>
-
-        <a class="wa-btn" target="_blank" rel="noopener"
-           href="https://wa.me/16472440621?text=Hi%20Julian!%20I%27m%20interested%20in%20the%20Silver%20package.%20Vehicle:%20[year/make/model].">
-          Book on WhatsApp
-        </a>
       </article>
 
-      <!-- Gold -->
       <article class="card">
-        <h3>🥇 Gold – “Deep Clean &amp; Rejuvenate”</h3>
-        <p class="price">$220–$270 <span class="muted">(compact to SUV)</span></p>
-
+        <h3>🥇 Gold — Deep Clean &amp; Rejuvenate</h3>
+        <p class="price">$220–$270 (compact to SUV)</p>
         <h4>Includes everything in Silver, plus</h4>
         <ul>
           <li>Full interior shampoo (seats, carpets, floor mats)</li>
@@ -105,25 +100,17 @@
           <li>Bug &amp; tar removal from front end</li>
           <li>Spray wax or sealant (3-month protection)</li>
         </ul>
-
         <h4>Best for</h4>
         <ul>
-          <li>Used car owners trying to restore that “like new” feel</li>
+          <li>Used car owners restoring that “like-new” feel</li>
           <li>Families with kids (food spills, salt, pet hair, etc.)</li>
-          <li>Seasonal cleanings (pre/post-winter deep cleans)</li>
+          <li>Pre/post-winter deep cleans</li>
         </ul>
-
-        <a class="wa-btn" target="_blank" rel="noopener"
-           href="https://wa.me/16472440621?text=Hi%20Julian!%20I%27m%20interested%20in%20the%20Gold%20package.%20Vehicle:%20[year/make/model].">
-          Book on WhatsApp
-        </a>
       </article>
 
-      <!-- Platinum -->
       <article class="card">
-        <h3>💎 Platinum – “Paint Revival &amp; Full Detail”</h3>
-        <p class="price">$450–$600 <span class="muted">(compact to SUV)</span></p>
-
+        <h3>💎 Platinum — Paint Revival &amp; Full Detail</h3>
+        <p class="price">$450–$600 (compact to SUV)</p>
         <h4>Includes everything in Gold, plus</h4>
         <ul>
           <li>2-stage paint correction (cut &amp; polish)</li>
@@ -133,169 +120,172 @@
           <li>Engine bay cleaning &amp; dressing (optional)</li>
           <li>Trim restoration (faded black plastics)</li>
         </ul>
-
         <h4>Best for</h4>
         <ul>
-          <li>Enthusiasts or collectors wanting showroom shine</li>
-          <li>People prepping their car for sale or lease return</li>
-          <li>Owners of dark-colored vehicles prone to visible swirls</li>
+          <li>Enthusiasts wanting showroom shine</li>
+          <li>People prepping the car for sale or lease return</li>
+          <li>Dark-colored vehicles prone to visible swirls</li>
         </ul>
-
-        <a class="wa-btn" target="_blank" rel="noopener"
-           href="https://wa.me/16472440621?text=Hi%20Julian!%20I%27m%20interested%20in%20the%20Platinum%20package.%20Vehicle:%20[year/make/model].">
-          Book on WhatsApp
-        </a>
       </article>
     </section>
 
     <!-- Add-ons -->
-    <section id="addons" class="section card">
+    <section id="addons" class="section">
       <h2>Add-ons (Optional for Any Package)</h2>
-      <div class="addons">
-        <div class="addon">Pet Hair Removal <span>$60–$100</span></div>
-        <div class="addon">Headlight Restoration <span>$40–$70</span></div>
-        <div class="addon">Engine Bay Detail (standalone) <span>$50</span></div>
-        <div class="addon">Ozone Odor Treatment <span>$60–$90</span></div>
-        <div class="addon">Leather Conditioning <span>From $30–$60</span></div>
-        <div class="addon">2 Stage Cut, Polish &amp; Wax <span>$250</span></div>
-        <div class="addon">Wash &amp; Wax <span>$50</span></div>
-        <div class="addon">Oil Change <span>$40</span></div>
-        <div class="addon">Tire Swap (Winter/Summer) on Rim <span>$50</span></div>
-        <div class="addon">Window Refresh <span>$30</span></div>
+      <div class="cards-grid">
+        <div class="chip-list">
+          <span class="chip">Pet Hair Removal — $60–$100</span>
+          <span class="chip">Headlight Restoration — $40–$70</span>
+          <span class="chip">Engine Bay Detail (standalone) — $50</span>
+          <span class="chip">Ozone Odor Treatment — $60–$90</span>
+          <span class="chip">Leather Conditioning — From $30–$60</span>
+          <span class="chip">2-Stage Cut, Polish &amp; Wax — $250</span>
+          <span class="chip">Wash &amp; Wax — $50</span>
+          <span class="chip">Oil Change — $40</span>
+          <span class="chip">Tire Swap (Winter/Summer) on Rim — $50</span>
+          <span class="chip">Window Refresh — $30</span>
+        </div>
       </div>
     </section>
 
     <!-- Subscriptions -->
-    <section id="subscriptions" class="section card">
-      <h2>Subscription Plans</h2>
-      <p class="muted">
-        Each subscription includes: ✅ 1× Gold Package • ✅ 3× Silver Packages • 🔁 Renewed every 4 months • 🔐 Priority booking, reminders & flexible scheduling
-      </p>
+    <section id="subscriptions" class="section">
+      <h2>Subscriptions</h2>
+      <p>Each plan includes 1× Gold + 3× Silver every 4 months, plus priority booking &amp; reminders.</p>
 
-      <div class="subs-grid">
-        <div class="sub">
-          <h4>Small Vehicles</h4>
-          <p class="price">$460 &nbsp; <span class="muted">Value ~$580 • Save ~$120</span></p>
-          <a class="wa-mini" target="_blank" rel="noopener" href="https://wa.me/16472440621?text=Small%20Vehicles%20subscription%20(4%20months)">Get</a>
-        </div>
-        <div class="sub">
-          <h4>Sedans</h4>
-          <p class="price">$500 &nbsp; <span class="muted">Value ~$605 • Save ~$105</span></p>
-          <a class="wa-mini" target="_blank" rel="noopener" href="https://wa.me/16472440621?text=Sedans%20subscription%20(4%20months)">Get</a>
-        </div>
-        <div class="sub">
-          <h4>SUVs</h4>
-          <p class="price">$540 &nbsp; <span class="muted">Value ~$640 • Save ~$100</span></p>
-          <a class="wa-mini" target="_blank" rel="noopener" href="https://wa.me/16472440621?text=SUVs%20subscription%20(4%20months)">Get</a>
-        </div>
-        <div class="sub">
-          <h4>Trucks</h4>
-          <p class="price">$570 &nbsp; <span class="muted">Value ~$665 • Save ~$95</span></p>
-          <a class="wa-mini" target="_blank" rel="noopener" href="https://wa.me/16472440621?text=Trucks%20subscription%20(4%20months)">Get</a>
-        </div>
-        <div class="sub">
-          <h4>Vans</h4>
-          <p class="price">$600 &nbsp; <span class="muted">Value ~$690 • Save ~$90</span></p>
-          <a class="wa-mini" target="_blank" rel="noopener" href="https://wa.me/16472440621?text=Vans%20subscription%20(4%20months)">Get</a>
-        </div>
+      <div class="cards-grid">
+        <article class="card">
+          <h3>Small Vehicles</h3>
+          <p class="price">$460 • Value ≈ $580 • You Save ≈ $120</p>
+        </article>
+        <article class="card">
+          <h3>Sedans</h3>
+          <p class="price">$500 • Value ≈ $605 • You Save ≈ $105</p>
+        </article>
+        <article class="card">
+          <h3>SUVs</h3>
+          <p class="price">$540 • Value ≈ $640 • You Save ≈ $100</p>
+        </article>
+        <article class="card">
+          <h3>Trucks</h3>
+          <p class="price">$570 • Value ≈ $665 • You Save ≈ $95</p>
+        </article>
+        <article class="card">
+          <h3>Vans</h3>
+          <p class="price">$600 • Value ≈ $690 • You Save ≈ $90</p>
+        </article>
       </div>
 
-      <hr class="soft">
+      <h3 class="mt">8-Detail Plans</h3>
+      <p>(2× Gold + 6× Silver)</p>
+      <div class="cards-grid">
+        <article class="card"><strong>Small Vehicles</strong> — $860 • Save $300</article>
+        <article class="card"><strong>Sedans</strong> — $940 • Save $280</article>
+        <article class="card"><strong>SUVs</strong> — $1,020 • Save $260</article>
+        <article class="card"><strong>Trucks</strong> — $1,100 • Save $240</article>
+        <article class="card"><strong>Vans</strong> — $1,180 • Save $220</article>
+      </div>
 
-      <h3>8-Detail Subscription Plans</h3>
-      <p class="muted">Ideal for bi-monthly maintenance or seasonal upkeep. Includes 2× Gold + 6× Silver.</p>
-      <ul class="bullets">
-        <li>Small Vehicles – <strong>$860</strong> • Value ~$1,160 → Save $300</li>
-        <li>Sedans – <strong>$940</strong> • Value ~$1,220 → Save $280</li>
-        <li>SUVs – <strong>$1,020</strong> • Value ~$1,280 → Save $260</li>
-        <li>Trucks – <strong>$1,100</strong> • Value ~$1,340 → Save $240</li>
-        <li>Vans – <strong>$1,180</strong> • Value ~$1,400 → Save $220</li>
-      </ul>
+      <h3 class="mt">10-Detail Plans</h3>
+      <p>(2× Gold + 8× Silver)</p>
+      <div class="cards-grid">
+        <article class="card"><strong>Small Vehicles</strong> — $1,030 • Save $390</article>
+        <article class="card"><strong>Sedans</strong> — $1,120 • Save $380</article>
+        <article class="card"><strong>SUVs</strong> — $1,200 • Save $380</article>
+        <article class="card"><strong>Trucks</strong> — $1,290 • Save $370</article>
+        <article class="card"><strong>Vans</strong> — $1,380 • Save $360</article>
+      </div>
 
-      <h3>10-Detail Subscription Plans</h3>
-      <p class="muted">Perfect for monthly detailing or high-use vehicles. Includes 2× Gold + 8× Silver.</p>
-      <ul class="bullets">
-        <li>Small Vehicles – <strong>$1,030</strong> • Value ~$1,420 → Save $390</li>
-        <li>Sedans – <strong>$1,120</strong> • Value ~$1,500 → Save $380</li>
-        <li>SUVs – <strong>$1,200</strong> • Value ~$1,580 → Save $380</li>
-        <li>Trucks – <strong>$1,290</strong> • Value ~$1,660 → Save $370</li>
-        <li>Vans – <strong>$1,380</strong> • Value ~$1,740 → Save $360</li>
-      </ul>
-
-      <p class="muted">Perks: priority scheduling, 10% off add-ons, complimentary scent restock each visit, shareable within a household/small business (limit 2 vehicles).</p>
+      <p class="sub-note">
+        Bonus perks: priority scheduling, 10% off à-la-carte services, complimentary scent restock each visit.
+        Shareable within a household (limit 2 vehicles).
+      </p>
     </section>
 
-    <!-- Contact (Netlify Forms) -->
-    <section id="contact" class="section card card--center">
-      <h2 class="center">Book / Contact</h2>
-      <p class="muted center">Fill this out and we’ll get back to you within the day.</p>
+    <!-- Contact -->
+    <section id="contact" class="section contact">
+      <h2>Contact</h2>
 
-      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html" class="contact-form">
-        <input type="hidden" name="form-name" value="contact">
-        <p class="hidden"><label>Don’t fill this out: <input name="bot-field"></label></p>
+      <form name="contact" method="POST" data-netlify="true" class="contact-form">
+        <input type="hidden" name="form-name" value="contact" />
 
-        <div class="form-grid">
-          <label>Full name
-            <input required name="name" type="text" placeholder="Your name">
-          </label>
-          <label>Email
-            <input required name="email" type="email" placeholder="you@email.com">
-          </label>
-          <label>Phone
-            <input name="phone" type="tel" placeholder="+1 647-244-0621">
-          </label>
-          <label>Preferred date &amp; time
-            <input name="preferred_time" type="datetime-local">
-          </label>
-          <label>Vehicle (Year / Make / Model)
-            <input name="vehicle" type="text" placeholder="2018 Honda Civic">
-          </label>
-          <label>Package interested in
-            <select name="package">
-              <option value="Silver">Silver — Refresh & Shine</option>
-              <option value="Gold">Gold — Deep Clean & Rejuvenate</option>
-              <option value="Platinum">Platinum — Paint Revival & Full Detail</option>
-              <option value="Not sure" selected>Not sure — please recommend</option>
-            </select>
-          </label>
-          <label>Location (City / Area)
-            <input name="location" type="text" placeholder="Ajax / Pickering / Whitby">
-          </label>
-          <label>How did you hear about us?
-            <select name="referrer">
-              <option>Google</option>
-              <option>Instagram</option>
-              <option>Friend / Family</option>
-              <option>Returning customer</option>
-              <option>Other</option>
-            </select>
-          </label>
+        <label>
+          Name
+          <input required type="text" name="name" placeholder="Your name" />
+        </label>
 
-          <label class="full">Message
-            <textarea required name="message" rows="6" placeholder="Example: Interior Deep Clean for family SUV. Spills on rear seats, pet hair, and salt from winter. Ideally this Friday after 3pm."></textarea>
-          </label>
-        </div>
+        <label>
+          Email
+          <input required type="email" name="email" placeholder="name@example.com" />
+        </label>
 
-        <button class="btn btn--full">Send</button>
+        <label>
+          Vehicle Type
+          <select name="vehicle">
+            <option value="Small Vehicle">Small Vehicle</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="Truck">Truck</option>
+            <option value="Van">Van</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+
+        <label class="wide">
+          Make / Model / Year
+          <input type="text" name="mmY" placeholder="e.g., Honda Civic 2019" />
+        </label>
+
+        <label class="wide">
+          Message
+          <textarea name="message" rows="5" placeholder="How can we help?"></textarea>
+        </label>
+
+        <label class="wide">
+          Preferred Contact
+          <div class="radio-row">
+            <label><input type="radio" name="pref" value="Phone" /> Phone</label>
+            <label><input type="radio" name="pref" value="Email" /> Email</label>
+            <label><input type="radio" name="pref" value="WhatsApp" /> WhatsApp</label>
+          </div>
+        </label>
+
+        <button class="btn-wide" type="submit">Send</button>
       </form>
 
-      <p class="muted center">Prefer WhatsApp? <a href="https://wa.me/16472440621" target="_blank" rel="noopener">Tap here.</a></p>
+      <p class="wa-inline">Prefer WhatsApp? <a href="https://wa.me/16472440621" target="_blank" rel="noopener">Tap here.</a></p>
     </section>
   </main>
 
-  <!-- Floating WhatsApp -->
-  <a class="wa-float" href="https://wa.me/16472440621" target="_blank" rel="noopener">Book on WhatsApp</a>
+  <!-- WhatsApp floating button -->
+  <a class="wa-fab" href="https://wa.me/16472440621" target="_blank" rel="noopener" aria-label="Book on WhatsApp">
+    📲 Book on WhatsApp
+  </a>
 
   <!-- Footer -->
   <footer class="site-footer">
-    <div class="container center">
-      <small>© <span id="year"></span> Sorcery Detailing — Ajax, Ontario</small>
-    </div>
+    <p>© <span id="year"></span> Sorcery Detailing — Ajax, Ontario</p>
   </footer>
 
+  <!-- Auto-year + Mobile menu toggle -->
   <script>
-    // Auto year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function(){
+      const toggle = document.querySelector('.menu-toggle');
+      const nav = document.getElementById('nav-menu');
+      if(!toggle || !nav) return;
+      toggle.addEventListener('click', () => {
+        const open = nav.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      nav.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          nav.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded','false');
+        });
+      });
+    })();
   </script>
 </body>
 </html>
