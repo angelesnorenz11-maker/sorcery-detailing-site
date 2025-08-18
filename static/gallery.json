@@ -1,14 +1,7 @@
-{
-  "images": [
-    {
-      "title": "Jet Black Paint Revival",
-      "desc": "Paint correction + protection",
-      "url": "/static/uploads/sample-1.jpg"
-    },
-    {
-      "title": "Interior Deep Clean",
-      "desc": "Steam cleaning + shampoo",
-      "url": "/static/uploads/sample-2.jpg"
-    }
-  ]
-}
+[
+  {
+    "src": "gallery/img-20250816-wa0005.jpg",
+    "title": "Foam Bath",
+    "caption": "Pre-wash stage — deep cleaning with snow foam"
+  }
+]
