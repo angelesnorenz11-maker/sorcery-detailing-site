@@ -4,7 +4,6 @@ async function renderGallery(){
     if(!res.ok) throw new Error('static/gallery.json not found');
     let data = await res.json();
 
-    // Accept either a flat array OR {images:[...]}
     const items = Array.isArray(data) ? data : Array.isArray(data.images) ? data.images : [];
 
     const grid = document.getElementById('gallery-grid');
