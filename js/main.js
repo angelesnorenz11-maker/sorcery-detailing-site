@@ -9,3 +9,35 @@ document.addEventListener('click', (e) => {
     el.scrollIntoView({ behavior: 'smooth' });
   }
 });
+
+// Mobile menu toggle
+(function(){
+  const btn = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.main-nav[data-collapsible]');
+  const backdrop = document.querySelector('.nav-backdrop');
+
+  if(!btn || !nav || !backdrop) return;
+
+  function openMenu(){
+    nav.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    backdrop.hidden = false;
+    requestAnimationFrame(()=>backdrop.classList.add('show'));
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    nav.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    backdrop.classList.remove('show');
+    setTimeout(()=>{ backdrop.hidden = true; }, 180);
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', () => {
+    const open = nav.classList.contains('open');
+    open ? closeMenu() : openMenu();
+  });
+  nav.addEventListener('click', (e) => { if(e.target.matches('a')) closeMenu(); });
+  backdrop.addEventListener('click', closeMenu);
+  window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeMenu(); });
+})();
