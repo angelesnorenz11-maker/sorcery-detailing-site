@@ -6,4 +6,3 @@
   for = "/static/gallery.json"
   [headers.values]
   cache-control = "no-store"
-
