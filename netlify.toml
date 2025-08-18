@@ -1,4 +1,4 @@
-build]
+[build]
   command = "npm run build:gallery"
   publish = "."
 
@@ -6,3 +6,4 @@ build]
   for = "/static/gallery.json"
   [headers.values]
   cache-control = "no-store"
+
