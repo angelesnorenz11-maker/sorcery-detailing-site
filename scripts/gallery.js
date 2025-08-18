@@ -1,3 +1,4 @@
+// scripts/gallery.js
 async function renderGallery(){
   try{
     const res = await fetch('static/gallery.json', { cache:'no-store' });
@@ -14,7 +15,7 @@ async function renderGallery(){
       return;
     }
 
-    // Each thumbnail is also a normal link to the full image (fallback if JS overlay fails)
+    // Thumbs also link to full image (fallback)
     grid.innerHTML = items.map((it, i) => {
       const src = it.src || it.url;
       const title = it.title || 'Detailing photo';
@@ -110,30 +111,53 @@ function setupLightbox(items){
     imgEl.style.transformOrigin = `${originX}% ${originY}%`;
     imgEl.style.transform = `scale(${scale})`;
   }
+
   const zoomIn  = ()=>{ scale = Math.min(scale + 0.25, 4); applyZoom(); };
   const zoomOut = ()=>{ scale = Math.max(scale - 0.25, 1); applyZoom(); };
 
-  // Open overlay when clicking the image (not the link wrapper)
+  // Open overlay on thumbnail click (instead of the <a> opening)
   grid.addEventListener('click', (e)=>{
     const t = e.target.closest('img.zoomable');
     if(!t) return;
-    e.preventDefault(); // stop the <a> from opening since we’re using the overlay
+    e.preventDefault();
     const i = Number(t.dataset.index || 0);
     try { show(i); }
     catch { window.open(items[i]?.src, '_blank', 'noopener'); }
   });
 
   // Controls
-  overlay.querySelector('.lb-close').addEventListener('click', hide);
-  overlay.querySelector('.lb-prev').addEventListener('click', ()=> show(index - 1));
-  overlay.querySelector('.lb-next').addEventListener('click', ()=> show(index + 1));
-  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); }); // tap backdrop to close
-  stage.addEventListener('click', (e)=>{
-    const isControl = e.target.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
-    if (!isControl && e.target === stage) hide();
+  const btnClose  = overlay.querySelector('.lb-close');
+  const btnPrev   = overlay.querySelector('.lb-prev');
+  const btnNext   = overlay.querySelector('.lb-next');
+  const zInBtn    = overlay.querySelector('.z-in');
+  const zOutBtn   = overlay.querySelector('.z-out');
+  const zResetBtn = overlay.querySelector('.z-reset');
+  const zBox      = overlay.querySelector('.lb-zoom');
+
+  btnClose.addEventListener('click', hide);
+  btnPrev.addEventListener('click', ()=> show(index - 1));
+  btnNext.addEventListener('click', ()=> show(index + 1));
+
+  // prevent clicks on zoom UI from bubbling to the stage/backdrop
+  [zBox, zInBtn, zOutBtn, zResetBtn, btnPrev, btnNext, btnClose].forEach(el=>{
+    el.addEventListener('click', e=> e.stopPropagation());
   });
 
-  // Keyboard
+  zInBtn.addEventListener('click', zoomIn);
+  zOutBtn.addEventListener('click', zoomOut);
+  zResetBtn.addEventListener('click', resetZoom);
+
+  // Click backdrop to close
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
+
+  // Also close if you click empty area of the stage (not controls/image)
+  stage.addEventListener('click', (e)=>{
+    const isControl = e.target.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
+    const clickedImg = e.target.closest('.lb-img');
+    if (!isControl && !clickedImg) hide();
+  });
+
+  // Keyboard shortcuts
   window.addEventListener('keydown', (e)=>{
     if(!overlay.classList.contains('show')) return;
     if(e.key === 'Escape') hide();
