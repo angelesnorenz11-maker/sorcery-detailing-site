@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | Sorcery Detailing</title>
 
-  <!-- Basic styling -->
   <style>
     body {
       background:#0f1012;
@@ -13,30 +12,24 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       margin:0;
     }
-    .wrap {
-      max-width: 980px;
-      margin: 3rem auto;
-      padding: 0 1rem;
-    }
+    .wrap { max-width: 980px; margin: 3rem auto; padding: 0 1rem; }
     a { color: #d1a739; }
 
-    /* Small tweak so the first field isn't hidden under the Tabs strip */
+    /* --- Fix: make editor toolbar sticky and give room to the first field --- */
+    #nc-root .EditorContainer .EditorToolbar { position: sticky; top: 0; z-index: 3; }
+    #nc-root .EditorContainer .PaneContent { padding-top: 48px !important; }
+    #nc-root .EditorContainer .EditorControlPane { padding-top: 48px !important; }
+    /* Older builds fallback */
     #nc-root .nc-entryEditor .PaneContent { padding-top: 12px; }
     #nc-root .nc-entryEditor .EditorControlPane { padding-top: 12px; }
   </style>
-  <style>
-  /* Make the editor header/tabs sticky and push the first field down a bit */
-  #nc-root .EditorContainer .EditorToolbar { position: sticky; top: 0; z-index: 3; }
-  #nc-root .EditorContainer .PaneContent { padding-top: 48px !important; }
-  #nc-root .EditorContainer .EditorControlPane { padding-top: 48px !important; }
-</style>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
     <p>
-      Use the <strong>Gallery (Uploads)</strong> section to add or remove photos.  
-      Once you publish, the gallery updates automatically on the live site 🚀.
+      Use the <strong>Gallery (Uploads)</strong> section or the <strong>Media</strong> button to upload photos.
+      After publish/deploy, the gallery updates automatically.
     </p>
     <div id="nc-root"></div>
   </div>
@@ -46,4 +39,3 @@
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 </body>
 </html>
-
