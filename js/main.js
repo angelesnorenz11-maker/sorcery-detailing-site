@@ -34,8 +34,7 @@ document.addEventListener('click', (e) => {
   }
 
   btn.addEventListener('click', () => {
-    const open = nav.classList.contains('open');
-    open ? closeMenu() : openMenu();
+    nav.classList.contains('open') ? closeMenu() : openMenu();
   });
   nav.addEventListener('click', (e) => { if(e.target.matches('a')) closeMenu(); });
   backdrop.addEventListener('click', closeMenu);
