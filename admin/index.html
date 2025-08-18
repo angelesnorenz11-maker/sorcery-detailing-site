@@ -11,7 +11,7 @@
     #nc-root{min-height:70vh;background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
   </style>
 
-  <!-- IMPORTANT: prevent auto-fetch of /admin/config.yml -->
+  <!-- IMPORTANT: do NOT auto-fetch /admin/config.yml -->
   <script>window.CMS_MANUAL_INIT = true;</script>
 </head>
 <body>
@@ -23,17 +23,17 @@
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity + CMS -->
+  <!-- Netlify Identity + CMS (use Decap CMS — actively maintained) -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/netlify-cms@^2/dist/netlify-cms.js"></script>
+  <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
 
   <script>
-    // ---------- robust boot: wait for CMS global then init with inline config ----------
+    // ---- Robust boot: wait for CMS global, then init with inline config
     (function bootCMS(){
       const cfg = {
         backend: { name: 'git-gateway', branch: 'main' },
-        media_folder: 'static/uploads',     // repo path for files
-        public_folder: '/static/uploads',   // site path for files
+        media_folder: 'static/uploads',     // repo folder for files
+        public_folder: '/static/uploads',   // URL path used by the site
         publish_mode: 'editorial_workflow',
         locale: 'en',
         collections: [{
@@ -48,11 +48,12 @@
       };
 
       function init() {
-        if (!window.CMS) { return setTimeout(init, 50); } // wait for script
+        // Decap exposes both DecapCMS and CMS for backward compat; use whichever exists
+        const CMSGlobal = window.CMS || window.DecapCMS;
+        if (!CMSGlobal) return setTimeout(init, 50);
         try {
-          CMS.init({ config: cfg });
-
-          // If already logged in, go straight to media
+          CMSGlobal.init({ config: cfg });
+          // If already logged in, go straight to Media
           if (window.netlifyIdentity?.currentUser()) {
             location.hash = '#/media';
           }
@@ -62,9 +63,17 @@
         }
       }
       init();
+      // Safety: after 5s, if CMS didn't mount, show a hint
+      setTimeout(() => {
+        const root = document.querySelector('#nc-root');
+        if (root && !root.querySelector('iframe, .Pane, .css-')) {
+          root.insertAdjacentHTML('afterbegin',
+            '<p style="padding:1rem;color:#ffa">If nothing appears, make sure ad blockers allow <code>unpkg.com</code> and <code>identity.netlify.com</code>.</p>');
+        }
+      }, 5000);
     })();
 
-    // ---------- Identity: auto-login + invite flow ----------
+    // ---- Identity: auto-login + invite flow → go straight to Media
     (function auth(){
       if (!window.netlifyIdentity) return;
       const goMedia = (reload) => {
