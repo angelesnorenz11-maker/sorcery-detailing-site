@@ -3,77 +3,56 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin • Sorcery Detailing</title>
+  <title>Admin</title>
   <style>
-    :root{--brand:#d1a739;--bg:#0f1012;--text:#eaeaea}
-    body{margin:0;background:#0f1012;color:#eaeaea;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    .wrap{max-width:980px;margin:2rem auto;padding:0 1rem}
-    h1{margin:0 0 .25rem}
-    p{margin:.25rem 0 1rem;color:#c9c9c9}
-    .row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1rem}
-    .btn{appearance:none;border:1px solid #2b2c30;background:#1a1b1f;color:#eaeaea;
-         padding:.55rem .8rem;border-radius:10px;cursor:pointer;font-weight:700}
-    .btn-primary{background:var(--brand);color:#111;border-color:#8d7520}
-
-    /* Make CMS feel like “uploads only” */
-    #nc-root .CollectionNav,
-    #nc-root .Dashboard-container,
-    #nc-root .Pane.PaneSidebar{display:none!important}
-    #nc-root .Pane.PaneContent{width:100%!important}
-    #nc-root .nc-appHeader,#nc-root .Toolbar{position:relative;z-index:2}
-    #nc-root .PaneContent{padding-top:12px}
+    :root{ --brand:#d1a739; --ink:#111; --bg:#0f1012; --text:#eaeaea }
+    html,body{margin:0}
+    body{background:#0f1012;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{max-width:980px;margin:2.25rem auto;padding:0 1rem}
+    h1{margin:.25rem 0 1rem}
+    p{margin:.25rem 0 1rem;opacity:.9}
+    .btn{display:inline-block;background:var(--brand);color:var(--ink);
+         border:none;border-radius:10px;padding:.6rem .9rem;font-weight:700;
+         margin:0 .5rem .75rem 0;cursor:pointer;text-decoration:none}
+    .btn.ghost{background:#222327;color:#eaeaea;border:1px solid #2e2f33}
+    /* keep first control row from hiding the top tabs in some CMS layouts */
+    #nc-root .nc-entryEditor .PaneContent, 
+    #nc-root .nc-entryEditor .EditorControlPane{padding-top:12px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
-    <p>Upload photos to the gallery. After you publish/deploy, the gallery updates automatically.</p>
+    <p>Upload photos to the gallery. After publish/deploy, the gallery updates automatically (files go to <code>static/uploads/</code>).</p>
 
-    <div class="row">
-      <button id="open-media" class="btn btn-primary">📷 Open Media Library</button>
-      <button id="login" class="btn">Log in</button>
-      <button id="logout" class="btn">Log out</button>
-    </div>
+    <!-- Our helpers -->
+    <button id="open-media" class="btn">Open Media Library</button>
+    <a href="/gallery.html" target="_blank" rel="noopener" class="btn ghost">View Gallery</a>
 
-    <p>Files are saved to <code>static/uploads/</code>.</p>
+    <!-- Netlify CMS mounts here -->
     <div id="nc-root"></div>
   </div>
 
+  <!-- Netlify Identity + CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/netlify-cms@^2/dist/netlify-cms.js"></script>
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 
   <script>
-    // Handle Identity UI
-    function setAuthButtons(user){
-      document.getElementById('login').style.display  = user ? 'none' : 'inline-block';
-      document.getElementById('logout').style.display = user ? 'inline-block' : 'none';
-    }
-
-    function openMediaLibrary(){
-      // Try official action first
-      if (window.CMS && CMS.getAction && CMS.getAction('openMediaLibrary')) {
-        CMS.getAction('openMediaLibrary')(); return;
-      }
-      // Fallback: click the "Media" button once CMS finishes mounting
-      let tries = 0;
-      const t = setInterval(() => {
-        tries++;
-        const btn = Array.from(document.querySelectorAll('button, a'))
-          .find(b => /media/i.test(b.textContent));
-        if (btn) { btn.click(); clearInterval(t); }
-        if (tries > 20) clearInterval(t);
-      }, 300);
-    }
-
-    document.getElementById('open-media').addEventListener('click', openMediaLibrary);
-    document.getElementById('login').addEventListener('click', ()=>window.netlifyIdentity && netlifyIdentity.open());
-    document.getElementById('logout').addEventListener('click', ()=>window.netlifyIdentity && netlifyIdentity.logout());
-
-    if (window.netlifyIdentity){
-      netlifyIdentity.on('init', user => { setAuthButtons(user); if (user) setTimeout(openMediaLibrary,600); });
-      netlifyIdentity.on('login', () => { setAuthButtons(netlifyIdentity.currentUser()); netlifyIdentity.close(); setTimeout(openMediaLibrary,600); });
-      netlifyIdentity.on('logout', () => { setAuthButtons(null); location.reload(); });
-    }
+    // Wire up "Open Media Library" to the CMS media modal
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('open-media');
+      btn.addEventListener('click', () => {
+        try {
+          // Modern CMS API
+          if (window.CMS && CMS.getMediaLibrary) {
+            CMS.getMediaLibrary().show();
+            return;
+          }
+        } catch(e) {}
+        // Fallback for older builds
+        window.dispatchEvent(new CustomEvent('nc:open-media-library'));
+      });
+    });
   </script>
 </body>
 </html>
