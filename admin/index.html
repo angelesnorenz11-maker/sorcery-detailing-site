@@ -1,20 +1,44 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Admin</title>
-  <style>body{background:#0f1012;color:#eaeaea;font-family:system-ui;margin:0} .wrap{max-width:980px;margin:3rem auto;padding:0 1rem}</style>
+  <style>
+    body{margin:0;background:#0f1012;color:#eaeaea;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{max-width:980px;margin:3rem auto;padding:0 1rem}
+    a{color:#d1a739}
+    #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
+  </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
-    <p>Log in to manage gallery photos.</p>
+    <p>Upload photos in the <strong>Media Library</strong>. After you publish/deploy, they appear on <a href="/gallery.html">Gallery</a>. Files are saved to <code>static/uploads/</code>.</p>
     <div id="nc-root"></div>
   </div>
 
   <!-- Netlify Identity & CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <script src="https://unpkg.com/netlify-cms@^2/dist/netlify-cms.js"></script>
+
+  <script>
+    // Auto-open login; after login, jump to Media
+    if (window.netlifyIdentity) {
+      netlifyIdentity.on('init', user => {
+        const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
+        if (invited) return netlifyIdentity.open('signup');
+        if (!user) netlifyIdentity.open('login');
+        else goMedia();
+      });
+      netlifyIdentity.on('login', () => goMedia(true));
+    }
+
+    function goMedia(reload){
+      location.hash = '#/media';
+      document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
+      if (reload) location.reload();
+    }
+  </script>
 </body>
 </html>
