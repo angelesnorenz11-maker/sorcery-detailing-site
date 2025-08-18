@@ -1,8 +1,7 @@
 // scripts/gallery.js
 async function renderGallery(){
   try{
-    // Root-absolute prevents path issues on subpages
-    const res = await fetch('/static/gallery.json', { cache:'no-store' });
+    const res = await fetch('static/gallery.json', { cache:'no-store' });
     if(!res.ok) throw new Error('static/gallery.json not found');
     const raw = await res.json();
 
@@ -16,15 +15,23 @@ async function renderGallery(){
       return;
     }
 
-    grid.innerHTML = items.map((it, i) => `
-      <figure class="card">
-        <img data-index="${i}" src="${it.src || it.url}" alt="${(it.title || 'Detailing photo')}" loading="lazy" class="zoomable" />
-        <figcaption>
-          ${it.title ? `<strong>${it.title}</strong>` : ''}
-          ${(it.caption || it.desc) ? `<div>${it.caption || it.desc}</div>` : ''}
-        </figcaption>
-      </figure>
-    `).join('');
+    // Thumbs also link to full image (fallback)
+    grid.innerHTML = items.map((it, i) => {
+      const src = it.src || it.url;
+      const title = it.title || 'Detailing photo';
+      const caption = it.caption || it.desc || '';
+      return `
+        <figure class="card">
+          <a href="${src}" target="_blank" rel="noopener">
+            <img data-index="${i}" src="${src}" alt="${title}" loading="lazy" class="zoomable" />
+          </a>
+          <figcaption>
+            ${it.title ? `<strong>${it.title}</strong>` : ''}
+            ${caption ? `<div>${caption}</div>` : ''}
+          </figcaption>
+        </figure>
+      `;
+    }).join('');
 
     setupLightbox(items.map(it => ({
       src: it.src || it.url,
@@ -41,6 +48,8 @@ async function renderGallery(){
 function setupLightbox(items){
   const grid = document.getElementById('gallery-grid');
   if(!grid) return;
+
+  // Avoid double-inserting overlay
   if (document.querySelector('.lb-overlay')) return;
 
   const overlay = document.createElement('div');
@@ -69,7 +78,9 @@ function setupLightbox(items){
 
   let index = 0, scale = 1, originX = 50, originY = 50;
 
-  const escapeHTML = s => (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function escapeHTML(s){
+    return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
   function renderMeta(){
     const it = items[index];
     metaEl.innerHTML =
@@ -77,7 +88,10 @@ function setupLightbox(items){
       (it.caption ? `<div class="lb-caption">${escapeHTML(it.caption)}</div>` : '');
     dlEl.href = it.src;
   }
-  const preload = i => { const n = new Image(); n.src = items[(i + items.length) % items.length].src; };
+  function preload(i){
+    const n = new Image();
+    n.src = items[(i + items.length) % items.length].src;
+  }
   function show(i){
     index = (i + items.length) % items.length;
     imgEl.src = items[index].src;
@@ -85,29 +99,65 @@ function setupLightbox(items){
     renderMeta();
     overlay.classList.add('show');
     document.body.style.overflow = 'hidden';
-    preload(index + 1); preload(index - 1);
+    preload(index + 1);
+    preload(index - 1);
   }
-  function hide(){ overlay.classList.remove('show'); document.body.style.overflow = ''; }
+  function hide(){
+    overlay.classList.remove('show');
+    document.body.style.overflow = '';
+  }
   function resetZoom(){ scale = 1; originX = 50; originY = 50; applyZoom(); }
-  function applyZoom(){ imgEl.style.transformOrigin = `${originX}% ${originY}%`; imgEl.style.transform = `scale(${scale})`; }
+  function applyZoom(){
+    imgEl.style.transformOrigin = `${originX}% ${originY}%`;
+    imgEl.style.transform = `scale(${scale})`;
+  }
+
   const zoomIn  = ()=>{ scale = Math.min(scale + 0.25, 4); applyZoom(); };
   const zoomOut = ()=>{ scale = Math.max(scale - 0.25, 1); applyZoom(); };
 
+  // Open overlay on thumbnail click (instead of the <a> opening)
   grid.addEventListener('click', (e)=>{
     const t = e.target.closest('img.zoomable');
     if(!t) return;
+    e.preventDefault();
     const i = Number(t.dataset.index || 0);
-    try { show(i); } catch { window.open(items[i]?.src, '_blank', 'noopener'); }
+    try { show(i); }
+    catch { window.open(items[i]?.src, '_blank', 'noopener'); }
   });
 
-  overlay.querySelector('.lb-close').addEventListener('click', hide);
-  overlay.querySelector('.lb-prev').addEventListener('click', ()=> show(index - 1));
-  overlay.querySelector('.lb-next').addEventListener('click', ()=> show(index + 1));
+  // Controls
+  const btnClose  = overlay.querySelector('.lb-close');
+  const btnPrev   = overlay.querySelector('.lb-prev');
+  const btnNext   = overlay.querySelector('.lb-next');
+  const zInBtn    = overlay.querySelector('.z-in');
+  const zOutBtn   = overlay.querySelector('.z-out');
+  const zResetBtn = overlay.querySelector('.z-reset');
+  const zBox      = overlay.querySelector('.lb-zoom');
+
+  btnClose.addEventListener('click', hide);
+  btnPrev.addEventListener('click', ()=> show(index - 1));
+  btnNext.addEventListener('click', ()=> show(index + 1));
+
+  // prevent clicks on zoom UI from bubbling to the stage/backdrop
+  [zBox, zInBtn, zOutBtn, zResetBtn, btnPrev, btnNext, btnClose].forEach(el=>{
+    el.addEventListener('click', e=> e.stopPropagation());
+  });
+
+  zInBtn.addEventListener('click', zoomIn);
+  zOutBtn.addEventListener('click', zoomOut);
+  zResetBtn.addEventListener('click', resetZoom);
+
+  // Click backdrop to close
   overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
 
-  const isControl = el => el.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
-  stage.addEventListener('click', (e)=>{ if (!isControl(e.target) && e.target === stage) hide(); });
+  // Also close if you click empty area of the stage (not controls/image)
+  stage.addEventListener('click', (e)=>{
+    const isControl = e.target.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
+    const clickedImg = e.target.closest('.lb-img');
+    if (!isControl && !clickedImg) hide();
+  });
 
+  // Keyboard shortcuts
   window.addEventListener('keydown', (e)=>{
     if(!overlay.classList.contains('show')) return;
     if(e.key === 'Escape') hide();
@@ -118,11 +168,11 @@ function setupLightbox(items){
     if(e.key === '0') resetZoom();
   });
 
-  overlay.querySelector('.z-in').addEventListener('click', zoomIn);
-  overlay.querySelector('.z-out').addEventListener('click', zoomOut);
-  overlay.querySelector('.z-reset').addEventListener('click', resetZoom);
-
-  stage.addEventListener('wheel', (e)=>{ e.preventDefault(); (e.deltaY < 0 ? zoomIn : zoomOut)(); }, {passive:false});
+  // Wheel zoom + follow cursor
+  stage.addEventListener('wheel', (e)=>{
+    e.preventDefault();
+    (e.deltaY < 0 ? zoomIn : zoomOut)();
+  }, {passive:false});
   stage.addEventListener('mousemove', (e)=>{
     if(scale === 1) return;
     const rect = imgEl.getBoundingClientRect();
@@ -131,9 +181,18 @@ function setupLightbox(items){
     applyZoom();
   });
 
+  // Touch swipe
   let startX = 0, swiping = false;
-  stage.addEventListener('touchstart', (e)=>{ if(e.touches.length !== 1) return; startX = e.touches[0].clientX; swiping = true; }, {passive:true});
-  stage.addEventListener('touchend', (e)=>{ if(!swiping) return; const dx = e.changedTouches[0].clientX - startX; if(Math.abs(dx) > 40){ dx < 0 ? show(index + 1) : show(index - 1); } swiping = false; }, {passive:true});
+  stage.addEventListener('touchstart', (e)=>{
+    if(e.touches.length !== 1) return;
+    startX = e.touches[0].clientX; swiping = true;
+  }, {passive:true});
+  stage.addEventListener('touchend', (e)=>{
+    if(!swiping) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if(Math.abs(dx) > 40){ dx < 0 ? show(index + 1) : show(index - 1); }
+    swiping = false;
+  }, {passive:true});
 }
 
 renderGallery();
