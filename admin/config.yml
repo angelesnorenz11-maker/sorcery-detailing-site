@@ -9,7 +9,7 @@ publish_mode: editorial_workflow
 locale: en
 
 collections:
-  - name: "notes"
+  - name: "notes"          # must be unique
     label: "Notes (ignore)"
     files:
       - file: "admin/README.md"
@@ -17,4 +17,7 @@ collections:
         name: "readme"
         editor: { preview: false }
         fields:
-          - { label: "Content", name: "body", widget: "markdown", default: "Use **Open Media Library** to upload photos. After publish/deploy, the gallery updates from /static/uploads/." }
+          - label: "Content"
+            name: "body"
+            widget: "markdown"
+            default: "Use **Open Media Library** to upload photos. After publish/deploy, the gallery updates from /static/uploads/."
