@@ -16,7 +16,7 @@
     .btn-ghost{background:var(--btn2);color:#fff;border:1px solid #2e2f33}
     a.btn{display:inline-block;text-decoration:none}
     code{background:#1a1b1f;padding:.1rem .35rem;border-radius:6px}
-    #nc-root{background:#111; border:1px solid #1f2024; border-radius:14px; overflow:hidden}
+    #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
   </style>
 </head>
 <body>
@@ -39,19 +39,25 @@
 
   <!-- Netlify Identity (auth) -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Netlify CMS (Decap CMS) -->
+
+  <!-- Tell CMS we'll init it ourselves, then load CMS and pass the config path -->
+  <script>window.CMS_MANUAL_INIT = true;</script>
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <script>
+    // Explicitly load /admin/config.yml so CMS doesn't guess the path
+    CMS.init({ config: '/admin/config.yml' });
+
+    // Optional: pop a friendly alert if YAML has a formatting error
+    window.addEventListener('error', (e) => {
+      const msg = String(e?.message || '').toLowerCase();
+      if (msg.includes('yaml') || msg.includes('mapping') || msg.includes('unexpected')) {
+        alert('Your /admin/config.yml seems to have a YAML formatting error. Check quotes and indentation.');
+      }
+    });
+  </script>
 
   <script>
-    // If an invite token appears anywhere, make sure it’s handled here
-    if ((location.hash && location.hash.includes('invite_token')) ||
-        (location.search && location.search.includes('invite_token'))) {
-      if (!location.pathname.endsWith('/admin/') && !location.pathname.endsWith('/admin')) {
-        // carry the token into /admin/ where the widget can finish signup
-        location.replace('/admin/' + (location.hash || ''));
-      }
-    }
-
+    // ---------- Identity helpers (invites, login state, etc.) ----------
     (function () {
       if (!window.netlifyIdentity) return;
 
@@ -59,8 +65,8 @@
       const logoutBtn = document.getElementById('logout-btn');
 
       function updateButtons(user) {
-        loginBtn.hidden  = !!user;
-        logoutBtn.hidden = !user;
+        if (user) { loginBtn.hidden = true;  logoutBtn.hidden = false; }
+        else      { loginBtn.hidden = false; logoutBtn.hidden = true;  }
       }
 
       netlifyIdentity.on('init', updateButtons);
@@ -70,12 +76,15 @@
       loginBtn.addEventListener('click', () => netlifyIdentity.open('login'));
       logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
 
-      // If arriving with an invite token, open signup to finish account creation
-      const hasInvite = (location.hash && location.hash.includes('invite_token')) ||
-                        (location.search && location.search.includes('invite_token'));
+      // If arriving from an email invite, finish signup
+      const hasInvite = location.hash.includes('invite_token') || location.search.includes('invite_token');
       if (hasInvite) netlifyIdentity.open('signup');
+
+      // If you prefer auto-open login when logged out, uncomment:
+      // netlifyIdentity.on('init', user => { if (!user) netlifyIdentity.open('login'); });
     })();
 
+    // ---------- Ensure "Open Media Library" lands on the Media tab ----------
     (function () {
       const link = document.getElementById('open-media');
       link.addEventListener('click', () => {
