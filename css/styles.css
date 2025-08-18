@@ -244,4 +244,11 @@ textarea{resize:vertical}
 /* Make sure overlay sits above sticky header/nav */
 .lb-overlay{ z-index: 3000; }
 
+/* Ensure overlay is above everything */
+.lb-overlay{ z-index: 9999; }
+
+/* Show the “clickable” cursor on thumbnails */
+img.zoomable{ cursor: zoom-in; }
+
+
 
