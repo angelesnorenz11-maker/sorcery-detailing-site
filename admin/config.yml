@@ -10,8 +10,6 @@ publish_mode: editorial_workflow
 collections:
   - name: "gallery"
     label: "Gallery"
-    label_singular: "Image"
-    delete: false
     files:
       - file: "static/gallery.json"
         label: "Gallery Items"
