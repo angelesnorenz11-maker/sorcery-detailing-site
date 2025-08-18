@@ -1,4 +1,4 @@
-<!doctype html>
+!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -6,18 +6,17 @@
   <title>Admin</title>
   <style>
     :root { --bg:#0f1012; --text:#eaeaea; --muted:#a5a7ad; --btn:#d1a739; --btn2:#222327; }
-    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    body{margin:0;background:#eef0f3;color:#111;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     .wrap{max-width:980px;margin:2.5rem auto;padding:0 1rem}
     h1{margin:.25rem 0 1rem}
-    p.muted{color:var(--muted)}
+    p.muted{color:#6c717c}
     .bar{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 1.25rem}
     .btn{appearance:none;border:0;border-radius:12px;padding:.6rem .9rem;font-weight:700;cursor:pointer}
     .btn-primary{background:var(--btn);color:#111}
     .btn-ghost{background:var(--btn2);color:#fff;border:1px solid #2e2f33}
     a.btn{display:inline-block;text-decoration:none}
-    code{background:#1a1b1f;padding:.1rem .35rem;border-radius:6px}
-    /* Make CMS fit the page styling a bit better */
-    #nc-root{background:#111; border:1px solid #1f2024; border-radius:14px; overflow:hidden}
+    code{background:#1a1b1f;color:#eaeaea;padding:.1rem .35rem;border-radius:6px}
+    #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
   </style>
 </head>
 <body>
@@ -29,14 +28,13 @@
     </p>
 
     <div class="bar">
-      <!-- Opens the CMS directly on the Media page -->
       <a class="btn btn-primary" id="open-media" href="#/media">Open Media Library</a>
       <a class="btn btn-ghost" href="/gallery.html" target="_blank" rel="noopener">View Gallery</a>
       <button class="btn btn-ghost" id="login-btn" hidden>Log in</button>
       <button class="btn btn-ghost" id="logout-btn" hidden>Log out</button>
     </div>
 
-    <!-- Netlify CMS mounts here -->
+    <!-- Netlify CMS will mount here -->
     <div id="nc-root"></div>
   </div>
 
@@ -46,57 +44,68 @@
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 
   <script>
-    // -------- Identity helpers (handles invites, login state, etc.) --------
+    // ============ Identity helper =============
     (function () {
       if (!window.netlifyIdentity) return;
 
       const loginBtn  = document.getElementById('login-btn');
       const logoutBtn = document.getElementById('logout-btn');
 
-      function updateButtons(user) {
-        if (user) {
-          loginBtn.hidden  = true;
-          logoutBtn.hidden = false;
-        } else {
-          loginBtn.hidden  = false;
-          logoutBtn.hidden = true;
-        }
+      function setButtons(user) {
+        loginBtn.hidden  = !!user;
+        logoutBtn.hidden = !user;
       }
 
-      netlifyIdentity.on('init', updateButtons);
+      // When Identity finishes booting
+      netlifyIdentity.on('init', (user) => {
+        setButtons(user);
+
+        const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
+        if (invited) {
+          // If user clicked an invite email, open the signup confirmation
+          netlifyIdentity.open('signup');
+          return;
+        }
+
+        if (!user) {
+          // Auto-open login when logged out
+          netlifyIdentity.open('login');
+        } else {
+          // Already logged in → jump straight to Media
+          location.hash = '#/media';
+          // Scroll CMS into view
+          document.getElementById('nc-root')?.scrollIntoView({ behavior:'smooth' });
+        }
+      });
+
       netlifyIdentity.on('login', () => {
-        updateButtons(netlifyIdentity.currentUser());
-        // Reload so CMS + Media Library pick up the session
+        setButtons(netlifyIdentity.currentUser());
+        // After login, open Media immediately
+        location.hash = '#/media';
         location.reload();
       });
+
       netlifyIdentity.on('logout', () => {
-        updateButtons(null);
+        setButtons(null);
         location.reload();
       });
 
       loginBtn.addEventListener('click', () => netlifyIdentity.open('login'));
       logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
-
-      // If the user clicked an email invite, finish signup automatically:
-      const hasInvite =
-        location.hash.includes('invite_token') || location.search.includes('invite_token');
-      if (hasInvite) netlifyIdentity.open('signup');
-
-      // If you want the widget to open automatically on /admin when logged out,
-      // uncomment the next two lines:
-      // netlifyIdentity.on('init', user => { if (!user) netlifyIdentity.open('login'); });
     })();
 
-    // -------- Convenience: ensure "Open Media Library" shows the Media tab --------
+    // ============ Convenience: ensure "Open Media Library" shows Media tab ============
     (function () {
       const link = document.getElementById('open-media');
-      // When the CMS finishes booting, the hash route works as "#/media".
-      link.addEventListener('click', (e) => {
-        // Let the link set location.hash. On first click CMS might still boot,
-        // so scroll to CMS root to make it visible.
-        setTimeout(() => {
-          document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
-        }, 0);
+      link.addEventListener('click', () => {
+        // Scroll CMS into view (on first click CMS might still be mounting)
+        setTimeout(() => document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}), 0);
+      });
+      // If the page loads and you are already logged in, force Media tab
+      window.addEventListener('load', () => {
+        if (window.netlifyIdentity?.currentUser()) {
+          location.hash = '#/media';
+        }
       });
     })();
   </script>
