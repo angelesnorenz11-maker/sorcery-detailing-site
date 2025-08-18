@@ -26,7 +26,6 @@
       <strong>Sorcery Detailing</strong>
     </a>
 
-    <!-- Mobile MENU button -->
     <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">☰ Menu</button>
 
     <nav id="main-nav" class="main-nav" data-collapsible>
@@ -187,17 +186,22 @@
       <p class="muted">Subscriber perks: priority scheduling, 10% off add-ons, complimentary scent restock each visit, shareable within a household/small business (limit 2 vehicles).</p>
     </section>
 
-    <!-- Contact -->
+    <!-- Contact (Netlify Forms) -->
     <section id="contact" class="section">
       <h2>Contact</h2>
-      <form id="contact-form" class="contact" onsubmit="return sendMail(event)">
+
+      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html" class="contact">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none"><label>Don’t fill this out: <input name="bot-field"></label></p>
+
         <div class="grid-form">
-          <label>Name<input required type="text" id="name" placeholder="Your name" /></label>
-          <label>Email<input required type="email" id="email" placeholder="you@email.com" /></label>
-          <label>Vehicle details<input type="text" id="vehicle" placeholder="Year / Make / Model / Size" /></label>
-          <label>Service interested in<input type="text" id="service" placeholder="Silver / Gold / Platinum / Subscription / Add-ons" /></label>
-          <label class="full">Message<textarea id="msg" rows="5" placeholder="Tell me what you need…"></textarea></label>
+          <label>Name<input required type="text" name="name" placeholder="Your name" /></label>
+          <label>Email<input required type="email" name="email" placeholder="you@email.com" /></label>
+          <label>Vehicle details<input type="text" name="vehicle" placeholder="Year / Make / Model / Size" /></label>
+          <label>Service interested in<input type="text" name="service" placeholder="Silver / Gold / Platinum / Subscription / Add-ons" /></label>
+          <label class="full">Message<textarea name="message" rows="5" placeholder="Tell me what you need…"></textarea></label>
         </div>
+
         <button class="submit" type="submit">Send</button>
         <p class="muted">Prefer WhatsApp? <a href="https://wa.me/16472440621">Tap here.</a></p>
       </form>
@@ -210,25 +214,14 @@
     <div class="container"><small>© <span id="year"></span> Sorcery Detailing — Ajax, Ontario</small></div>
   </footer>
 
+  <!-- Floating WhatsApp -->
+  <a class="wa-float" href="https://wa.me/16472440621" target="_blank" rel="noopener">Book on WhatsApp</a>
+
   <!-- Backdrop for mobile menu -->
   <div class="nav-backdrop" hidden></div>
 
   <!-- Scripts -->
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    function sendMail(e){
-      e.preventDefault();
-      const n = encodeURIComponent(document.getElementById('name').value.trim());
-      const em = encodeURIComponent(document.getElementById('email').value.trim());
-      const v = encodeURIComponent(document.getElementById('vehicle').value.trim());
-      const s = encodeURIComponent(document.getElementById('service').value.trim());
-      const m = encodeURIComponent(document.getElementById('msg').value.trim());
-      const subject = `Website Inquiry from ${n}`;
-      const body = `Name: ${n}%0D%0AEmail: ${em}%0D%0AVehicle: ${v}%0D%0AService: ${s}%0D%0A%0D%0AMessage:%0D%0A${m}`;
-      window.location.href = `mailto:SorceryDetailing@gmail.com?subject=${subject}&body=${body}`;
-      return false;
-    }
-  </script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   <script src="js/main.js" defer></script>
 </body>
 </html>
