@@ -215,10 +215,7 @@
 
   <!-- Scripts -->
   <script>
-    // Auto-update the year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // mailto helper
     function sendMail(e){
       e.preventDefault();
       const n = encodeURIComponent(document.getElementById('name').value.trim());
