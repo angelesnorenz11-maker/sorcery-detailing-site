@@ -9,87 +9,79 @@
     .wrap{max-width:980px;margin:2.5rem auto;padding:0 1rem}
     a{color:#d1a739}
     #nc-root{min-height:70vh;background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
+    .hint{padding:1rem;color:#ffa}.err{padding:1rem;color:#f88}
   </style>
-
-  <!-- IMPORTANT: do NOT auto-fetch /admin/config.yml -->
+  <!-- Do NOT fetch /admin/config.yml -->
   <script>window.CMS_MANUAL_INIT = true;</script>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
-    <p>Upload photos in the <strong>Media Library</strong>. After you publish/deploy, they appear on
+    <p>Upload photos in the <strong>Media Library</strong>. After publish/deploy, they appear on
       <a href="/gallery.html">Gallery</a>. Files are saved to <code>static/uploads/</code>.
     </p>
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity + CMS (use Decap CMS — actively maintained) -->
+  <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
 
   <script>
-    // ---- Robust boot: wait for CMS global, then init with inline config
-    (function bootCMS(){
-      const cfg = {
-        backend: { name: 'git-gateway', branch: 'main' },
-        media_folder: 'static/uploads',     // repo folder for files
-        public_folder: '/static/uploads',   // URL path used by the site
-        publish_mode: 'editorial_workflow',
-        locale: 'en',
-        collections: [{
-          name: 'notes', label: 'Notes (ignore)',
-          files: [{
-            file: 'admin/README.md', label: 'Dashboard Info', name: 'readme',
-            editor: { preview: false },
-            fields: [{ label: 'Content', name: 'body', widget: 'markdown',
-              default: 'Use the Media Library to upload or delete photos. Gallery reads from /static/uploads/.' }]
+    // Load Decap CMS (pinned) with fallback; then init with inline config
+    function loadScript(src, ok, fail){var s=document.createElement('script');s.src=src;s.async=true;s.onload=ok;s.onerror=fail;document.head.appendChild(s);}
+    function initCMS(){
+      const CMSGlobal = window.CMS || window.DecapCMS;
+      if(!CMSGlobal) return setTimeout(initCMS, 40);
+      CMSGlobal.init({
+        config:{
+          backend:{ name:'git-gateway', branch:'main' },
+          media_folder:'static/uploads',
+          public_folder:'/static/uploads',
+          publish_mode:'editorial_workflow',
+          locale:'en',
+          collections:[{
+            name:'notes', label:'Notes (ignore)',
+            files:[{
+              file:'admin/README.md', label:'Dashboard Info', name:'readme',
+              editor:{ preview:false },
+              fields:[{ label:'Content', name:'body', widget:'markdown',
+                default:'Use the Media Library to upload or delete photos. Gallery reads from /static/uploads/.' }]
+            }]
           }]
-        }]
-      };
-
-      function init() {
-        // Decap exposes both DecapCMS and CMS for backward compat; use whichever exists
-        const CMSGlobal = window.CMS || window.DecapCMS;
-        if (!CMSGlobal) return setTimeout(init, 50);
-        try {
-          CMSGlobal.init({ config: cfg });
-          // If already logged in, go straight to Media
-          if (window.netlifyIdentity?.currentUser()) {
-            location.hash = '#/media';
-          }
-        } catch (e) {
-          document.getElementById('nc-root').innerHTML =
-            '<p style="padding:1rem;color:#f88">Failed to initialize CMS: ' + (e?.message||e) + '</p>';
         }
-      }
-      init();
-      // Safety: after 5s, if CMS didn't mount, show a hint
-      setTimeout(() => {
-        const root = document.querySelector('#nc-root');
-        if (root && !root.querySelector('iframe, .Pane, .css-')) {
-          root.insertAdjacentHTML('afterbegin',
-            '<p style="padding:1rem;color:#ffa">If nothing appears, make sure ad blockers allow <code>unpkg.com</code> and <code>identity.netlify.com</code>.</p>');
-        }
-      }, 5000);
-    })();
-
-    // ---- Identity: auto-login + invite flow → go straight to Media
-    (function auth(){
-      if (!window.netlifyIdentity) return;
-      const goMedia = (reload) => {
-        location.hash = '#/media';
-        document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
-        if (reload) location.reload();
-      };
-
-      netlifyIdentity.on('init', user => {
-        const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
-        if (invited) { netlifyIdentity.open('signup'); return; }
-        if (!user) netlifyIdentity.open('login'); else goMedia();
       });
-      netlifyIdentity.on('login', () => goMedia(true));
-      netlifyIdentity.on('logout', () => location.reload());
+      if (window.netlifyIdentity?.currentUser()) location.hash = '#/media';
+    }
+    loadScript(
+      "https://cdn.jsdelivr.net/npm/decap-cms@3.1.9/dist/decap-cms.js",
+      initCMS,
+      () => loadScript(
+        "https://unpkg.com/decap-cms@3.1.9/dist/decap-cms.js",
+        initCMS,
+        () => { document.getElementById('nc-root').innerHTML =
+          '<p class="err">Failed to load CMS. Allow <code>cdn.jsdelivr.net</code> or <code>unpkg.com</code> in your ad-blocker.</p>'; }
+      )
+    );
+
+    // Identity: auto login / invite → go to Media
+    (function(){
+      if(!window.netlifyIdentity) return;
+      const goMedia = (reload)=>{ location.hash='#/media'; document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}); if(reload) location.reload(); };
+      netlifyIdentity.on('init', user=>{
+        const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
+        if(invited){ netlifyIdentity.open('signup'); return; }
+        if(!user) netlifyIdentity.open('login'); else goMedia();
+      });
+      netlifyIdentity.on('login', ()=>goMedia(true));
+      netlifyIdentity.on('logout', ()=>location.reload());
     })();
+
+    // Helpful hint if nothing mounted
+    setTimeout(()=>{
+      const root=document.querySelector('#nc-root');
+      if(root && !root.querySelector('iframe,.Pane')) root.insertAdjacentHTML('afterbegin',
+        '<p class="hint">If the UI doesn’t appear, disable blockers for <code>identity.netlify.com</code>, <code>cdn.jsdelivr.net</code>, and <code>unpkg.com</code>.</p>');
+    }, 5000);
   </script>
 </body>
 </html>
