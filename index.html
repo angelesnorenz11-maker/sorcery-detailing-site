@@ -240,8 +240,15 @@
   <!-- Scripts -->
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   <script src="js/main.js" defer></script>
+
+     <script>
+  if (location.hash && location.hash.includes('invite_token')) {
+    location.replace('/admin/' + location.hash);
+  }
+</script>
 </body>
 </html>
+
 
 
 
