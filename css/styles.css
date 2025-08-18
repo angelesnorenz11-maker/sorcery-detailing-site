@@ -17,6 +17,9 @@ body{
   line-height:1.6;
 }
 
+/* Lock scroll when drawer open */
+.no-scroll{overflow:hidden}
+
 /* Topbar */
 .topbar{
   display:flex; gap:.75rem; align-items:center;
@@ -27,7 +30,7 @@ body{
 
 /* Header */
 .site-header{
-  position:sticky; top:0; z-index:9;
+  position:sticky; top:0; z-index:1000;
   display:flex; justify-content:space-between; align-items:center;
   padding:.85rem 1rem; backdrop-filter:saturate(140%) blur(6px);
   background:rgba(10,10,10,.75); border-bottom:1px solid #1e1f22;
@@ -60,19 +63,29 @@ body{
 .hamburger::before{position:absolute; top:-6px}
 .hamburger::after{position:absolute; top:6px}
 
+/* Backdrop for the drawer */
+.backdrop{
+  position:fixed; inset:0; z-index:900;
+  background:rgba(0,0,0,.55);
+  opacity:0; pointer-events:none;
+  transition:opacity .2s ease;
+}
+
+/* Drawer rules */
 @media (max-width: 900px){
   .main-nav{display:none}
   .menu-toggle{display:flex}
-  /* Full-screen drawer when open */
+
   .nav-open .main-nav{
     display:flex; position:fixed; inset:0;
     background:rgba(10,10,10,.96);
-    flex-direction:column; gap:12px; padding:120px 18px 18px;
-    z-index:8;
+    flex-direction:column; gap:14px; padding:110px 18px 18px;
+    z-index:1001;
   }
   .nav-open .main-nav a{font-size:1.1rem}
   .nav-open .menu-toggle{background:var(--brand); color:#111}
   .nav-open .hamburger,.nav-open .hamburger::before,.nav-open .hamburger::after{background:#111}
+  .nav-open .backdrop{opacity:1; pointer-events:auto}
 }
 
 /* Hero */
