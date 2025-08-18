@@ -2,19 +2,19 @@
   command = "npm run build:gallery"
   publish = "."
 
-# Serve the CMS SPA correctly under /admin
+# ---- Admin SPA (no loops) ----
+# Serve the CMS for /admin and anything under /admin/*
 [[redirects]]
   from = "/admin"
-  to = "/admin/"
-  status = 301
-  force = true
+  to   = "/admin/index.html"
+  status = 200
 
 [[redirects]]
   from = "/admin/*"
-  to = "/admin/index.html"
+  to   = "/admin/index.html"
   status = 200
 
-# Gallery JSON should never be cached so uploads show up immediately
+# ---- Gallery JSON should never be cached ----
 [[headers]]
   for = "/static/gallery.json"
   [headers.values]
