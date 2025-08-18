@@ -5,7 +5,7 @@
   --muted:#9aa0a6;
   --brand:#d1a739;
   --pill:#222327;
-  --accent:#25D366; /* WhatsApp */
+  --accent:#25D366;
 }
 
 *{box-sizing:border-box}
@@ -34,6 +34,7 @@ body{
 }
 .brand{display:flex; gap:.6rem; align-items:center; color:var(--text); text-decoration:none}
 .brand img{width:28px; height:28px; border-radius:50%}
+
 .main-nav{display:flex; gap:.4rem; flex-wrap:wrap}
 .main-nav a{
   color:var(--text); text-decoration:none; padding:.45rem .75rem; border-radius:999px; background:var(--pill);
@@ -41,7 +42,7 @@ body{
 .main-nav a:hover, .main-nav a.active{background:#2b2c30}
 .pill{background:var(--brand) !important; color:#111 !important}
 
-/* Mobile menu button (hidden on desktop) */
+/* Menu button (hidden on desktop) */
 .menu-toggle{
   display:none;
   background:var(--brand); color:#111; border:none; border-radius:999px;
@@ -132,7 +133,7 @@ textarea{resize:vertical}
 /* --- Mobile tweaks --- */
 @media (max-width:760px){
   .topbar{ flex-wrap:wrap; gap:.4rem }
-  .topbar a[href^="mailto:"]{ display:none } /* hide long email chip */
+  .topbar a[href^="mailto:"]{ display:none }
   .menu-toggle{ display:inline-flex; align-items:center; gap:.4rem }
   .main-nav{
     position: fixed; top: 56px; right: 12px; left: 12px;
@@ -150,7 +151,7 @@ textarea{resize:vertical}
   .hero-logo{ width:96px; height:96px }
   .hero h1{ font-size: clamp(1.9rem, 8vw, 2.6rem) }
   .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
-  .grid-form{ grid-template-columns:1fr } /* form stacks on mobile */
+  .grid-form{ grid-template-columns:1fr }
 }
 
 /* Backdrop for menu */
