@@ -11,7 +11,7 @@
     #nc-root{min-height:70vh;background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
     .hint{padding:1rem;color:#ffa}.err{padding:1rem;color:#f88}
   </style>
-  <!-- Do NOT fetch /admin/config.yml -->
+  <!-- MUST come before any CMS script -->
   <script>window.CMS_MANUAL_INIT = true;</script>
 </head>
 <body>
@@ -59,11 +59,11 @@
         "https://unpkg.com/decap-cms@3.1.9/dist/decap-cms.js",
         initCMS,
         () => { document.getElementById('nc-root').innerHTML =
-          '<p class="err">Failed to load CMS. Allow <code>cdn.jsdelivr.net</code> or <code>unpkg.com</code> in your ad-blocker.</p>'; }
+          '<p class="err">Failed to load CMS. Allow <code>cdn.jsdelivr.net</code> or <code>unpkg.com</code> in your blocker.</p>'; }
       )
     );
 
-    // Identity: auto login / invite → go to Media
+    // Identity: auto login / invite → Media
     (function(){
       if(!window.netlifyIdentity) return;
       const goMedia = (reload)=>{ location.hash='#/media'; document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}); if(reload) location.reload(); };
@@ -76,7 +76,7 @@
       netlifyIdentity.on('logout', ()=>location.reload());
     })();
 
-    // Helpful hint if nothing mounted
+    // Hint if nothing mounts
     setTimeout(()=>{
       const root=document.querySelector('#nc-root');
       if(root && !root.querySelector('iframe,.Pane')) root.insertAdjacentHTML('afterbegin',
