@@ -1,20 +1,39 @@
 [build]
+  # keep if you really build gallery.json this way; otherwise remove the command
   command = "npm run build:gallery"
   publish = "."
 
-# ---- Admin SPA (no loops) ----
-# Serve the CMS for /admin and anything under /admin/*
+# --- DO NOT move these above rules lower ---
+# Ensure /admin/ and its files (like config.yml) are served from the filesystem
 [[redirects]]
   from = "/admin"
-  to   = "/admin/index.html"
-  status = 200
+  to   = "/admin/"
+  status = 301
+  force  = true
 
 [[redirects]]
   from = "/admin/*"
-  to   = "/admin/index.html"
+  to   = "/admin/:splat"
   status = 200
 
-# ---- Gallery JSON should never be cached ----
+# Keep static assets on the filesystem too (good hygiene)
+[[redirects]]
+  from = "/static/*"
+  to   = "/static/:splat"
+  status = 200
+
+# SPA catch-all — MUST BE LAST
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200
+
+# Avoid stale config/gallery json in browsers/CDN
+[[headers]]
+  for = "/admin/config.yml"
+  [headers.values]
+  cache-control = "no-store"
+
 [[headers]]
   for = "/static/gallery.json"
   [headers.values]
