@@ -1,15 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Admin</title>
   <style>
-    :root { --bg:#0f1012; --text:#eaeaea; --muted:#a5a7ad; --btn:#d1a739; --btn2:#222327; }
-    body{margin:0;background:#eef0f3;color:#111;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    :root { --text:#111; --muted:#6c717c; --btn:#d1a739; --btn2:#222327; }
+    body{margin:0;background:#eef0f3;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     .wrap{max-width:980px;margin:2.5rem auto;padding:0 1rem}
     h1{margin:.25rem 0 1rem}
-    p.muted{color:#6c717c}
+    p.muted{color:var(--muted)}
     .bar{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 1.25rem}
     .btn{appearance:none;border:0;border-radius:12px;padding:.6rem .9rem;font-weight:700;cursor:pointer}
     .btn-primary{background:var(--btn);color:#111}
@@ -34,17 +35,17 @@
       <button class="btn btn-ghost" id="logout-btn" hidden>Log out</button>
     </div>
 
-    <!-- Netlify CMS will mount here -->
+    <!-- Netlify CMS mounts here -->
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity (auth) -->
+  <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Netlify CMS (Decap CMS) -->
+  <!-- Decap/Netlify CMS -->
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 
   <script>
-    // ============ Identity helper =============
+    // --- Identity: auto-login flow + invite confirmation ---
     (function () {
       if (!window.netlifyIdentity) return;
 
@@ -56,32 +57,24 @@
         logoutBtn.hidden = !user;
       }
 
-      // When Identity finishes booting
       netlifyIdentity.on('init', (user) => {
         setButtons(user);
 
         const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
-        if (invited) {
-          // If user clicked an invite email, open the signup confirmation
-          netlifyIdentity.open('signup');
-          return;
-        }
+        if (invited) { netlifyIdentity.open('signup'); return; }
 
         if (!user) {
-          // Auto-open login when logged out
           netlifyIdentity.open('login');
         } else {
-          // Already logged in → jump straight to Media
           location.hash = '#/media';
-          // Scroll CMS into view
           document.getElementById('nc-root')?.scrollIntoView({ behavior:'smooth' });
         }
       });
 
       netlifyIdentity.on('login', () => {
         setButtons(netlifyIdentity.currentUser());
-        // After login, open Media immediately
         location.hash = '#/media';
+        // Reload so CMS sees the new session
         location.reload();
       });
 
@@ -94,21 +87,18 @@
       logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
     })();
 
-    // ============ Convenience: ensure "Open Media Library" shows Media tab ============
+    // Ensure "Open Media Library" shows the Media tab
     (function () {
       const link = document.getElementById('open-media');
       link.addEventListener('click', () => {
-        // Scroll CMS into view (on first click CMS might still be mounting)
-        setTimeout(() => document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}), 0);
+        setTimeout(() => {
+          document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
+        }, 0);
       });
-      // If the page loads and you are already logged in, force Media tab
       window.addEventListener('load', () => {
-        if (window.netlifyIdentity?.currentUser()) {
-          location.hash = '#/media';
-        }
+        if (window.netlifyIdentity?.currentUser()) location.hash = '#/media';
       });
     })();
   </script>
 </body>
 </html>
-
