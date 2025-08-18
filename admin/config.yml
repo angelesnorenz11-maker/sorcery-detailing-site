@@ -2,12 +2,14 @@ backend:
   name: git-gateway
   branch: main
 
+# Where uploads from the Admin Media Library are stored
 media_folder: "static/uploads"
 public_folder: "/static/uploads"
 
 publish_mode: editorial_workflow
 locale: en
 
+# Keep one tiny file so CMS initializes. You can ignore it.
 collections:
   - name: "notes"
     label: "Notes (optional)"
