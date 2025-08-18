@@ -19,6 +19,9 @@
     code{background:#1a1b1f;color:#eaeaea;padding:.1rem .35rem;border-radius:6px}
     #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
   </style>
+
+  <!-- Tell CMS we will initialize it manually (so it won't fetch /admin/config.yml) -->
+  <script>window.CMS_MANUAL_INIT = true;</script>
 </head>
 <body>
   <div class="wrap">
@@ -45,55 +48,69 @@
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 
   <script>
-    // --- Identity: auto-login flow + invite confirmation ---
+    // ---------- Identity: auto-login + invite signup ----------
     (function () {
       if (!window.netlifyIdentity) return;
 
       const loginBtn  = document.getElementById('login-btn');
       const logoutBtn = document.getElementById('logout-btn');
-
-      function setButtons(user) {
-        loginBtn.hidden  = !!user;
-        logoutBtn.hidden = !user;
-      }
+      const setButtons = (user) => { loginBtn.hidden = !!user; logoutBtn.hidden = !user; };
 
       netlifyIdentity.on('init', (user) => {
         setButtons(user);
-
         const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
         if (invited) { netlifyIdentity.open('signup'); return; }
-
-        if (!user) {
-          netlifyIdentity.open('login');
-        } else {
-          location.hash = '#/media';
-          document.getElementById('nc-root')?.scrollIntoView({ behavior:'smooth' });
-        }
+        if (!user) { netlifyIdentity.open('login'); } else { goMedia(); }
       });
 
-      netlifyIdentity.on('login', () => {
-        setButtons(netlifyIdentity.currentUser());
-        location.hash = '#/media';
-        // Reload so CMS sees the new session
-        location.reload();
-      });
-
-      netlifyIdentity.on('logout', () => {
-        setButtons(null);
-        location.reload();
-      });
+      netlifyIdentity.on('login', () => { setButtons(netlifyIdentity.currentUser()); goMedia(true); });
+      netlifyIdentity.on('logout', () => { setButtons(null); location.reload(); });
 
       loginBtn.addEventListener('click', () => netlifyIdentity.open('login'));
       logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
+
+      function goMedia(reload){
+        location.hash = '#/media';
+        document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
+        if (reload) location.reload(); // lets CMS pick up the new session
+      }
     })();
 
-    // Ensure "Open Media Library" shows the Media tab
+    // ---------- Initialize CMS with an embedded config ----------
+    // This avoids loading /admin/config.yml (which is what's stuck on your site)
+    CMS.init({
+      config: {
+        backend: { name: 'git-gateway', branch: 'main' },
+        media_folder: 'static/uploads',
+        public_folder: '/static/uploads',
+        publish_mode: 'editorial_workflow',
+        locale: 'en',
+
+        // Minimal collection just to satisfy CMS; you won't use it.
+        collections: [
+          {
+            name: 'notes',
+            label: 'Notes (ignore)',
+            files: [{
+              file: 'admin/README.md',
+              label: 'Dashboard Info',
+              name: 'readme',
+              editor: { preview: false },
+              fields: [
+                { label: 'Content', name: 'body', widget: 'markdown',
+                  default: 'Use **Open Media Library** to upload or delete photos. After publish/deploy, the gallery updates automatically from /static/uploads/.' }
+              ]
+            }]
+          }
+        ]
+      }
+    });
+
+    // Ensure the “Open Media Library” button scrolls to CMS area
     (function () {
       const link = document.getElementById('open-media');
       link.addEventListener('click', () => {
-        setTimeout(() => {
-          document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
-        }, 0);
+        setTimeout(() => document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}), 0);
       });
       window.addEventListener('load', () => {
         if (window.netlifyIdentity?.currentUser()) location.hash = '#/media';
