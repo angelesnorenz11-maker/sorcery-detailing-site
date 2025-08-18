@@ -1,63 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin</title>
-  <style>
-    body{margin:0;background:#0f1012;color:#eaeaea;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    .wrap{max-width:980px;margin:2.5rem auto;padding:0 1rem}
-    a{color:#d1a739}
-    #nc-root{min-height:70vh;background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
-  </style>
-
-  <!-- MUST be before the CMS script -->
-  <script>window.CMS_MANUAL_INIT = true;</script>
+  <style>body{background:#0f1012;color:#eaeaea;font-family:system-ui;margin:0} .wrap{max-width:980px;margin:3rem auto;padding:0 1rem}</style>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
-    <p>Upload photos in the <strong>Media Library</strong>. After publish/deploy, they appear on
-      <a href="/gallery.html">Gallery</a>. Files go to <code>static/uploads/</code>.
-    </p>
+    <p>Log in to manage gallery photos.</p>
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity (for login/invites) -->
+  <!-- Netlify Identity & CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-  <!-- Decap CMS (pinned). DO NOT include the old netlify-cms@^2 script. -->
-  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.1.9/dist/decap-cms.js"></script>
-
-  <script>
-    // Inline config so the CMS never fetches /admin/config.yml
-    const CMSGlobal = window.CMS || window.DecapCMS;
-    CMSGlobal.init({
-      config: {
-        backend: { name: 'git-gateway', branch: 'main' },
-        media_folder: 'static/uploads',
-        public_folder: '/static/uploads',
-        publish_mode: 'editorial_workflow',
-        locale: 'en',
-        collections: [{
-          name:'notes', label:'Notes (ignore)',
-          files:[{
-            file:'admin/README.md', label:'Dashboard Info', name:'readme',
-            editor:{ preview:false },
-            fields:[{ label:'Content', name:'body', widget:'markdown',
-              default:'Use the Media Library to upload/delete photos. Gallery reads from /static/uploads/.' }]
-          }]
-        }]
-      }
-    });
-
-    // Optional: auto open login and jump to Media
-    if (window.netlifyIdentity) {
-      const goMedia = (reload)=>{ location.hash = '#/media'; if(reload) location.reload(); };
-      netlifyIdentity.on('init', user => { if (!user) netlifyIdentity.open('login'); else goMedia(); });
-      netlifyIdentity.on('login', () => goMedia(true));
-      netlifyIdentity.on('logout', () => location.reload());
-    }
-  </script>
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 </body>
 </html>
