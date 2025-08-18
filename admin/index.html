@@ -16,7 +16,8 @@
     .btn-ghost{background:var(--btn2);color:#fff;border:1px solid #2e2f33}
     a.btn{display:inline-block;text-decoration:none}
     code{background:#1a1b1f;padding:.1rem .35rem;border-radius:6px}
-    #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
+    /* Make CMS fit the page styling a bit better */
+    #nc-root{background:#111; border:1px solid #1f2024; border-radius:14px; overflow:hidden}
   </style>
 </head>
 <body>
@@ -28,45 +29,74 @@
     </p>
 
     <div class="bar">
+      <!-- Opens the CMS directly on the Media page -->
       <a class="btn btn-primary" id="open-media" href="#/media">Open Media Library</a>
       <a class="btn btn-ghost" href="/gallery.html" target="_blank" rel="noopener">View Gallery</a>
       <button class="btn btn-ghost" id="login-btn" hidden>Log in</button>
       <button class="btn btn-ghost" id="logout-btn" hidden>Log out</button>
     </div>
 
+    <!-- Netlify CMS mounts here -->
     <div id="nc-root"></div>
   </div>
 
   <!-- Netlify Identity (auth) -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Netlify CMS -->
+  <!-- Netlify CMS (Decap CMS) -->
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 
   <script>
-    // Identity helpers
+    // -------- Identity helpers (handles invites, login state, etc.) --------
     (function () {
       if (!window.netlifyIdentity) return;
+
       const loginBtn  = document.getElementById('login-btn');
       const logoutBtn = document.getElementById('logout-btn');
 
-      function setButtons(user){ loginBtn.hidden = !!user; logoutBtn.hidden = !user; }
-      netlifyIdentity.on('init', setButtons);
-      netlifyIdentity.on('login',  () => { setButtons(netlifyIdentity.currentUser()); location.reload(); });
-      netlifyIdentity.on('logout', () => { setButtons(null); location.reload(); });
+      function updateButtons(user) {
+        if (user) {
+          loginBtn.hidden  = true;
+          logoutBtn.hidden = false;
+        } else {
+          loginBtn.hidden  = false;
+          logoutBtn.hidden = true;
+        }
+      }
+
+      netlifyIdentity.on('init', updateButtons);
+      netlifyIdentity.on('login', () => {
+        updateButtons(netlifyIdentity.currentUser());
+        // Reload so CMS + Media Library pick up the session
+        location.reload();
+      });
+      netlifyIdentity.on('logout', () => {
+        updateButtons(null);
+        location.reload();
+      });
 
       loginBtn.addEventListener('click', () => netlifyIdentity.open('login'));
       logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
 
-      // Complete email invite flow if present
-      if (location.hash.includes('invite_token') || location.search.includes('invite_token')) {
-        netlifyIdentity.open('signup');
-      }
+      // If the user clicked an email invite, finish signup automatically:
+      const hasInvite =
+        location.hash.includes('invite_token') || location.search.includes('invite_token');
+      if (hasInvite) netlifyIdentity.open('signup');
+
+      // If you want the widget to open automatically on /admin when logged out,
+      // uncomment the next two lines:
+      // netlifyIdentity.on('init', user => { if (!user) netlifyIdentity.open('login'); });
     })();
 
-    // Smooth-scroll to CMS when clicking "Open Media Library"
+    // -------- Convenience: ensure "Open Media Library" shows the Media tab --------
     (function () {
-      document.getElementById('open-media').addEventListener('click', () => {
-        setTimeout(() => document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}), 0);
+      const link = document.getElementById('open-media');
+      // When the CMS finishes booting, the hash route works as "#/media".
+      link.addEventListener('click', (e) => {
+        // Let the link set location.hash. On first click CMS might still boot,
+        // so scroll to CMS root to make it visible.
+        setTimeout(() => {
+          document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
+        }, 0);
       });
     })();
   </script>
