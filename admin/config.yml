@@ -2,6 +2,7 @@ backend:
   name: git-gateway
   branch: main
 
+# Media Library paths (uploads go here)
 media_folder: "static/uploads"
 public_folder: "/static/uploads"
 
@@ -9,12 +10,11 @@ publish_mode: editorial_workflow
 locale: en
 
 collections:
-  # Visible Gallery upload section — creates small metadata files
-  # while the actual images are stored in static/uploads.
+  # Optional helper collection (you can ignore it and just use the Media tab)
   - name: "gallery"
     label: "Gallery (Uploads)"
     label_singular: "Upload"
-    folder: "content/gallery"
+    folder: "content/gallery"          # small metadata files so the section appears
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     editor:
@@ -23,13 +23,13 @@ collections:
       - label: "Image"
         name: "image"
         widget: "image"
-        allow_multiple: false
+        required: false                # ← not required (no blocking)
         choose_url: false
-        hint: "Upload/select an image. File is saved to static/uploads/. The gallery builds from that folder."
+        hint: "Upload/select an image. Saved to static/uploads/. The build scans that folder."
       - { label: "Title (optional)", name: "title", widget: "string", required: false }
       - { label: "Caption (optional)", name: "caption", widget: "text", required: false }
 
-  # Optional note entry to keep dashboard populated
+  # Optional note to show instructions on the dashboard (can be removed)
   - name: "notes"
     label: "Notes (optional)"
     files:
@@ -40,4 +40,4 @@ collections:
           - label: "Content"
             name: "body"
             widget: "markdown"
-            default: "Upload images in **Gallery (Uploads)**. On deploy, the site scans `static/uploads/` and updates the gallery automatically."
+            default: "Use **Media** (top bar) to upload photos. On deploy, the site scans `static/uploads/` and updates the gallery automatically."
