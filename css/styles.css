@@ -206,13 +206,16 @@ textarea{resize:vertical}
 .lb-overlay{
   position: fixed; inset: 0; background: rgba(0,0,0,.88);
   display: grid; place-items: center; opacity: 0; pointer-events: none;
-  transition: opacity .18s ease; z-index: 2000;
+  transition: opacity .18s ease;
+  z-index: 9999; /* one high value, no duplicates */
 }
 .lb-overlay.show{ opacity:1; pointer-events:auto; }
+
 .lb-stage{
   position: relative; width: min(96vw, 1200px); height: min(86vh, 900px);
   display: grid; place-items: center; background: #0b0b0c; border:1px solid #222; border-radius: 12px;
 }
+
 .lb-img{ max-width: 100%; max-height: 100%; transition: transform .12s ease; }
 
 .lb-close, .lb-prev, .lb-next{
@@ -224,6 +227,7 @@ textarea{resize:vertical}
 .lb-prev{ left: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
 .lb-next{ right: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
 
+/* Zoom controls */
 .lb-zoom{
   position: absolute; bottom: 10px; right: 10px; display:flex; gap:6px;
 }
@@ -232,29 +236,7 @@ textarea{resize:vertical}
   border-radius: 8px; padding:.45rem .6rem; cursor:pointer;
 }
 
-/* Lightbox caption/meta */
-.lb-meta{
-  position:absolute; left:12px; bottom:10px; right:120px;
-  color:#eaeaea; font-size:.95rem; line-height:1.35;
-  text-shadow: 0 1px 2px rgba(0,0,0,.6);
-}
-.lb-title{ font-weight:700; margin-bottom:2px }
-.lb-caption{ color:#c9c9c9 }
-
-/* Make sure overlay sits above sticky header/nav */
-.lb-overlay{ z-index: 3000; }
-
-/* Ensure overlay is above everything */
-.lb-overlay{ z-index: 9999; }
-
-/* Show the “clickable” cursor on thumbnails */
-img.zoomable{ cursor: zoom-in; }
-
-/* Make overlay sit above everything and show “zoom” cursor on thumbs */
-img.zoomable{ cursor: zoom-in; }
-.lb-overlay{ z-index: 9999; }
-
-/* Lightbox caption/meta */
+/* Captions / meta */
 .lb-meta{
   position:absolute; left:12px; bottom:10px; right:140px;
   color:#eaeaea; font-size:.95rem; line-height:1.35;
@@ -269,5 +251,8 @@ img.zoomable{ cursor: zoom-in; }
   background: rgba(34,35,39,.85); color:#fff; border:1px solid #3a3b3f;
   border-radius: 8px; padding:.45rem .6rem; cursor:pointer; text-decoration:none;
 }
+
+/* Thumbs indicate they’re zoomable */
+img.zoomable{ cursor: zoom-in; }
 
 
