@@ -190,21 +190,33 @@
     <section id="contact" class="section">
       <h2>Contact</h2>
 
-      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html" class="contact">
-        <input type="hidden" name="form-name" value="contact">
-        <p style="display:none"><label>Don’t fill this out: <input name="bot-field"></label></p>
+      <form id="contact-form" class="contact" autocomplete="on">
+  <div class="grid-form">
+    <label>Name
+      <input required type="text" id="name" name="name" placeholder="Your name" />
+    </label>
+    <label>Email
+      <input type="email" id="email" name="email" placeholder="you@email.com (optional)" />
+    </label>
+    <label>Vehicle details
+      <input type="text" id="vehicle" name="vehicle" placeholder="Year / Make / Model / Size" />
+    </label>
+    <label>Service interested in
+      <input type="text" id="service" name="service" placeholder="Silver / Gold / Platinum / Subscription / Add-ons" />
+    </label>
+    <label class="full">Message
+      <textarea id="message" name="message" rows="5" placeholder="Tell me what you need…"></textarea>
+    </label>
+  </div>
 
-        <div class="grid-form">
-          <label>Name<input required type="text" name="name" placeholder="Your name" /></label>
-          <label>Email<input required type="email" name="email" placeholder="you@email.com" /></label>
-          <label>Vehicle details<input type="text" name="vehicle" placeholder="Year / Make / Model / Size" /></label>
-          <label>Service interested in<input type="text" name="service" placeholder="Silver / Gold / Platinum / Subscription / Add-ons" /></label>
-          <label class="full">Message<textarea name="message" rows="5" placeholder="Tell me what you need…"></textarea></label>
-        </div>
+  <!-- Choice row -->
+  <div class="btn-row">
+    <button type="button" class="submit" id="send-wa">Send via WhatsApp</button>
+    <button type="button" class="btn-secondary" id="send-sms">Send via SMS</button>
+  </div>
 
-        <button class="submit" type="submit">Send</button>
-        <p class="muted">Prefer WhatsApp? <a href="https://wa.me/16472440621">Tap here.</a></p>
-      </form>
+  <p class="muted">Prefer email? Use <a href="mailto:SorceryDetailing@gmail.com">SorceryDetailing@gmail.com</a>.</p>
+</form>
     </section>
   </main>
 
@@ -225,3 +237,4 @@
   <script src="js/main.js" defer></script>
 </body>
 </html>
+
