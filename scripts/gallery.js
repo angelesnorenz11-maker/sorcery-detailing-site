@@ -1,7 +1,8 @@
+// Render gallery from /static/gallery.json
 async function renderGallery(){
   try{
-    const res = await fetch('gallery.json', { cache:'no-store' });
-    if(!res.ok) throw new Error('gallery.json not found');
+    const res = await fetch('static/gallery.json', { cache:'no-store' });
+    if(!res.ok) throw new Error('static/gallery.json not found');
     const items = await res.json();
 
     const grid = document.getElementById('gallery-grid');
