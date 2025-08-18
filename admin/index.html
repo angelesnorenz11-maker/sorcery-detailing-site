@@ -6,39 +6,68 @@
   <title>Admin</title>
   <style>
     body{margin:0;background:#0f1012;color:#eaeaea;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    .wrap{max-width:980px;margin:3rem auto;padding:0 1rem}
+    .wrap{max-width:980px;margin:2.5rem auto;padding:0 1rem}
     a{color:#d1a739}
     #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
   </style>
+
+  <!-- IMPORTANT: tell CMS not to fetch /admin/config.yml -->
+  <script>window.CMS_MANUAL_INIT = true;</script>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
-    <p>Upload photos in the <strong>Media Library</strong>. After you publish/deploy, they appear on <a href="/gallery.html">Gallery</a>. Files are saved to <code>static/uploads/</code>.</p>
+    <p>Upload photos in the <strong>Media Library</strong>. After you publish/deploy, they appear on
+      <a href="/gallery.html">Gallery</a>. Files are saved to <code>static/uploads/</code>.
+    </p>
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity & CMS -->
+  <!-- Netlify Identity + CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/netlify-cms@^2/dist/netlify-cms.js"></script>
 
   <script>
-    // Auto-open login; after login, jump to Media
+    // Auto-login / invite flow → go straight to Media
     if (window.netlifyIdentity) {
-      netlifyIdentity.on('init', user => {
+      netlifyIdentity.on('init', (user) => {
         const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
         if (invited) return netlifyIdentity.open('signup');
-        if (!user) netlifyIdentity.open('login');
-        else goMedia();
+        if (!user) netlifyIdentity.open('login'); else goMedia();
       });
       netlifyIdentity.on('login', () => goMedia(true));
     }
-
     function goMedia(reload){
       location.hash = '#/media';
       document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'});
-      if (reload) location.reload();
+      if (reload) location.reload(); // let CMS pick up session
     }
+
+    // Inline CMS config (no external config.yml)
+    CMS.init({
+      config: {
+        backend: { name: 'git-gateway', branch: 'main' },
+        media_folder: 'static/uploads',     // repo folder for files
+        public_folder: '/static/uploads',   // site path for files
+        publish_mode: 'editorial_workflow',
+        locale: 'en',
+        collections: [{
+          // tiny placeholder so CMS boots; you won't use it
+          name: 'notes',
+          label: 'Notes (ignore)',
+          files: [{
+            file: 'admin/README.md',
+            label: 'Dashboard Info',
+            name: 'readme',
+            editor: { preview: false },
+            fields: [
+              { label: 'Content', name: 'body', widget: 'markdown',
+                default: 'Use the **Media Library** to upload or delete photos. After deploy, the gallery updates automatically from /static/uploads/.' }
+            ]
+          }]
+        }]
+      }
+    });
   </script>
 </body>
 </html>
