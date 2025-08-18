@@ -2,21 +2,20 @@ backend:
   name: git-gateway
   branch: main
 
-# Where uploaded files are stored in the repo, and how they’re referenced on the site
 media_folder: "static/uploads"
 public_folder: "/static/uploads"
 
-# Keep the UI simple
 publish_mode: editorial_workflow
 locale: en
 
-# Collections shown in the Admin UI
 collections:
+  # Visible Gallery upload section — creates small metadata files
+  # while the actual images are stored in static/uploads.
   - name: "gallery"
     label: "Gallery (Uploads)"
     label_singular: "Upload"
-    folder: "content/gallery"      # dummy metadata files so the collection appears in Admin
-    create: true                   # allow creating new entries
+    folder: "content/gallery"
+    create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     editor:
       preview: false
@@ -25,12 +24,12 @@ collections:
         name: "image"
         widget: "image"
         allow_multiple: false
-        choose_url: false          # force file upload / media selection
-        hint: "Upload a photo. It will be saved to static/uploads/ and picked up by the gallery build."
+        choose_url: false
+        hint: "Upload/select an image. File is saved to static/uploads/. The gallery builds from that folder."
       - { label: "Title (optional)", name: "title", widget: "string", required: false }
       - { label: "Caption (optional)", name: "caption", widget: "text", required: false }
 
-  # Optional tiny page so the dashboard isn't empty; you can delete this block if you want
+  # Optional note entry to keep dashboard populated
   - name: "notes"
     label: "Notes (optional)"
     files:
@@ -41,4 +40,4 @@ collections:
           - label: "Content"
             name: "body"
             widget: "markdown"
-            default: "Use **Gallery (Uploads)** to add photos. On deploy, the site scans `static/uploads/` and updates the gallery automatically."
+            default: "Upload images in **Gallery (Uploads)**. On deploy, the site scans `static/uploads/` and updates the gallery automatically."
