@@ -2,22 +2,16 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/uploads"
-public_folder: "/static/uploads"
-
-publish_mode: editorial_workflow
-locale: en
+media_folder: "gallery"
+public_folder: "/gallery"
 
 collections:
-  - name: "notes"          # must be unique
-    label: "Notes (ignore)"
-    files:
-      - file: "admin/README.md"
-        label: "Dashboard Info"
-        name: "readme"
-        editor: { preview: false }
-        fields:
-          - label: "Content"
-            name: "body"
-            widget: "markdown"
-            default: "Use **Open Media Library** to upload photos. After publish/deploy, the gallery updates from /static/uploads/."
+  - name: "gallery"
+    label: "Gallery"
+    folder: "gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: "title", label: "Title", widget: "string", required: false }
+      - { name: "caption", label: "Caption", widget: "string", required: false }
+      - { name: "image", label: "Image", widget: "image" }
