@@ -16,7 +16,7 @@
     .btn-ghost{background:var(--btn2);color:#fff;border:1px solid #2e2f33}
     a.btn{display:inline-block;text-decoration:none}
     code{background:#1a1b1f;padding:.1rem .35rem;border-radius:6px}
-    #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
+    #nc-root{background:#111; border:1px solid #1f2024; border-radius:14px; overflow:hidden}
   </style>
 </head>
 <body>
@@ -37,27 +37,15 @@
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity (auth) -->
+  <!-- Identity & CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-  <!-- Tell CMS we'll init it ourselves, then load CMS and pass the config path -->
-  <script>window.CMS_MANUAL_INIT = true;</script>
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-  <script>
-    // Explicitly load /admin/config.yml so CMS doesn't guess the path
-    CMS.init({ config: '/admin/config.yml' });
-
-    // Optional: pop a friendly alert if YAML has a formatting error
-    window.addEventListener('error', (e) => {
-      const msg = String(e?.message || '').toLowerCase();
-      if (msg.includes('yaml') || msg.includes('mapping') || msg.includes('unexpected')) {
-        alert('Your /admin/config.yml seems to have a YAML formatting error. Check quotes and indentation.');
-      }
-    });
-  </script>
 
   <script>
-    // ---------- Identity helpers (invites, login state, etc.) ----------
+    // Load CMS using the local config file.
+    CMS.init({ config: 'config.yml' });
+
+    // Identity helpers (invites/login/logout)
     (function () {
       if (!window.netlifyIdentity) return;
 
@@ -65,32 +53,26 @@
       const logoutBtn = document.getElementById('logout-btn');
 
       function updateButtons(user) {
-        if (user) { loginBtn.hidden = true;  logoutBtn.hidden = false; }
-        else      { loginBtn.hidden = false; logoutBtn.hidden = true;  }
+        loginBtn.hidden  = !!user;
+        logoutBtn.hidden = !user;
       }
 
-      netlifyIdentity.on('init', updateButtons);
+      netlifyIdentity.on('init',  updateButtons);
       netlifyIdentity.on('login', () => { updateButtons(netlifyIdentity.currentUser()); location.reload(); });
       netlifyIdentity.on('logout', () => { updateButtons(null); location.reload(); });
 
-      loginBtn.addEventListener('click', () => netlifyIdentity.open('login'));
+      loginBtn.addEventListener('click',  () => netlifyIdentity.open('login'));
       logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
 
-      // If arriving from an email invite, finish signup
+      // If the user came via an invite link, show signup flow
       const hasInvite = location.hash.includes('invite_token') || location.search.includes('invite_token');
       if (hasInvite) netlifyIdentity.open('signup');
-
-      // If you prefer auto-open login when logged out, uncomment:
-      // netlifyIdentity.on('init', user => { if (!user) netlifyIdentity.open('login'); });
     })();
 
-    // ---------- Ensure "Open Media Library" lands on the Media tab ----------
-    (function () {
-      const link = document.getElementById('open-media');
-      link.addEventListener('click', () => {
-        setTimeout(() => document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}), 0);
-      });
-    })();
+    // Make the "Open Media Library" button scroll to the CMS
+    document.getElementById('open-media').addEventListener('click', () => {
+      setTimeout(() => document.getElementById('nc-root')?.scrollIntoView({ behavior: 'smooth' }), 0);
+    });
   </script>
 </body>
 </html>
