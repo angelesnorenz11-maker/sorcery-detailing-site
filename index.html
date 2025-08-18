@@ -20,12 +20,18 @@
 
   <!-- Header / Nav -->
   <header class="site-header">
-    <a href="#top" class="brand">
+    <a href="#top" class="brand" aria-label="Sorcery Detailing — back to top">
       <img src="static/logo.png" alt="Sorcery Detailing logo" />
       <strong>Sorcery Detailing</strong>
     </a>
 
-    <nav class="main-nav">
+    <!-- Mobile menu toggle -->
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-menu">
+      <span class="bars" aria-hidden="true"></span>
+      <span class="label">Menu</span>
+    </button>
+
+    <nav id="site-menu" class="main-nav">
       <a href="#about">About</a>
       <a href="#packages">Packages</a>
       <a href="#addons">Add-ons</a>
@@ -41,7 +47,7 @@
       <img class="hero-logo" src="static/logo.png" alt="" />
       <h1>Sorcery Detailing</h1>
       <p class="tagline">“From Spells to Shine — We Do it All”</p>
-	  <p>“Professional auto detailing in Ajax and surrounding areas.”</p>
+      <p>Professional auto detailing in Ajax and surrounding areas.</p>
     </div>
   </section>
 
@@ -203,22 +209,36 @@
   <!-- Footer -->
   <footer class="footer">
     <a href="#top" class="brand"><img src="static/logo.png" alt="" /> Sorcery Detailing</a>
-	<div class="container">
-    <small>© <span id="year"></span> Sorcery Detailing — Ajax, Ontario</small>
-  </div>
-	
-      </footer>
-  
-  
-<script>
-  // Auto-update the year
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
-
-  <!-- Floating WhatsApp -->
-  <a class="wa-float" href="https://wa.me/16472440621">Book on WhatsApp</a>
+    <div class="container">
+      <small>© <span id="year"></span> Sorcery Detailing — Ajax, Ontario</small>
+    </div>
+  </footer>
 
   <script>
+    // Auto-update the year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    (function () {
+      const header = document.querySelector('.site-header');
+      const btn = document.querySelector('.nav-toggle');
+      const nav = document.getElementById('site-menu');
+
+      btn.addEventListener('click', () => {
+        const open = header.classList.toggle('nav-open');
+        btn.setAttribute('aria-expanded', open);
+      });
+
+      // Close after tapping a link on small screens
+      nav.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A' && window.matchMedia('(max-width: 900px)').matches) {
+          header.classList.remove('nav-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+
+    // Mailto builder for contact form
     function sendMail(e){
       e.preventDefault();
       const n = encodeURIComponent(document.getElementById('name').value.trim());
@@ -233,5 +253,8 @@
       return false;
     }
   </script>
+
+  <!-- Floating WhatsApp -->
+  <a class="wa-float" href="https://wa.me/16472440621">Book on WhatsApp</a>
 </body>
 </html>
