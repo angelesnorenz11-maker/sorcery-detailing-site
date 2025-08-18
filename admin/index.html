@@ -2,40 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin | Sorcery Detailing</title>
-
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin • Sorcery Detailing</title>
   <style>
-    body {
-      background:#0f1012;
-      color:#eaeaea;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      margin:0;
-    }
-    .wrap { max-width: 980px; margin: 3rem auto; padding: 0 1rem; }
-    a { color: #d1a739; }
+    :root{--brand:#d1a739;--bg:#0f1012;--text:#eaeaea}
+    body{margin:0;background:#0f1012;color:#eaeaea;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{max-width:980px;margin:2rem auto;padding:0 1rem}
+    h1{margin:0 0 .25rem}
+    p{margin:.25rem 0 1rem;color:#c9c9c9}
+    .row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+    .btn{appearance:none;border:1px solid #2b2c30;background:#1a1b1f;color:#eaeaea;
+         padding:.55rem .8rem;border-radius:10px;cursor:pointer;font-weight:700}
+    .btn-primary{background:var(--brand);color:#111;border-color:#8d7520}
 
-    /* --- Fix: make editor toolbar sticky and give room to the first field --- */
-    #nc-root .EditorContainer .EditorToolbar { position: sticky; top: 0; z-index: 3; }
-    #nc-root .EditorContainer .PaneContent { padding-top: 48px !important; }
-    #nc-root .EditorContainer .EditorControlPane { padding-top: 48px !important; }
-    /* Older builds fallback */
-    #nc-root .nc-entryEditor .PaneContent { padding-top: 12px; }
-    #nc-root .nc-entryEditor .EditorControlPane { padding-top: 12px; }
+    /* Make CMS feel like “uploads only” */
+    #nc-root .CollectionNav,
+    #nc-root .Dashboard-container,
+    #nc-root .Pane.PaneSidebar{display:none!important}
+    #nc-root .Pane.PaneContent{width:100%!important}
+    #nc-root .nc-appHeader,#nc-root .Toolbar{position:relative;z-index:2}
+    #nc-root .PaneContent{padding-top:12px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
-    <p>
-      Use the <strong>Gallery (Uploads)</strong> section or the <strong>Media</strong> button to upload photos.
-      After publish/deploy, the gallery updates automatically.
-    </p>
+    <p>Upload photos to the gallery. After you publish/deploy, the gallery updates automatically.</p>
+
+    <div class="row">
+      <button id="open-media" class="btn btn-primary">📷 Open Media Library</button>
+      <button id="login" class="btn">Log in</button>
+      <button id="logout" class="btn">Log out</button>
+    </div>
+
+    <p>Files are saved to <code>static/uploads/</code>.</p>
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity + CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  <script src="https://unpkg.com/netlify-cms@^2/dist/netlify-cms.js"></script>
+
+  <script>
+    // Handle Identity UI
+    function setAuthButtons(user){
+      document.getElementById('login').style.display  = user ? 'none' : 'inline-block';
+      document.getElementById('logout').style.display = user ? 'inline-block' : 'none';
+    }
+
+    function openMediaLibrary(){
+      // Try official action first
+      if (window.CMS && CMS.getAction && CMS.getAction('openMediaLibrary')) {
+        CMS.getAction('openMediaLibrary')(); return;
+      }
+      // Fallback: click the "Media" button once CMS finishes mounting
+      let tries = 0;
+      const t = setInterval(() => {
+        tries++;
+        const btn = Array.from(document.querySelectorAll('button, a'))
+          .find(b => /media/i.test(b.textContent));
+        if (btn) { btn.click(); clearInterval(t); }
+        if (tries > 20) clearInterval(t);
+      }, 300);
+    }
+
+    document.getElementById('open-media').addEventListener('click', openMediaLibrary);
+    document.getElementById('login').addEventListener('click', ()=>window.netlifyIdentity && netlifyIdentity.open());
+    document.getElementById('logout').addEventListener('click', ()=>window.netlifyIdentity && netlifyIdentity.logout());
+
+    if (window.netlifyIdentity){
+      netlifyIdentity.on('init', user => { setAuthButtons(user); if (user) setTimeout(openMediaLibrary,600); });
+      netlifyIdentity.on('login', () => { setAuthButtons(netlifyIdentity.currentUser()); netlifyIdentity.close(); setTimeout(openMediaLibrary,600); });
+      netlifyIdentity.on('logout', () => { setAuthButtons(null); location.reload(); });
+    }
+  </script>
 </body>
 </html>
