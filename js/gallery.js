@@ -1,6 +1,7 @@
-sync function renderGallery(){
+// scripts/gallery.js
+async function renderGallery(){
   try{
-    const res = await fetch('static/gallery.json', { cache:'no-store' });
+    const res = await fetch('/static/gallery.json', { cache:'no-store' }); // keep leading slash
     if(!res.ok) throw new Error('static/gallery.json not found');
     const raw = await res.json();
 
@@ -41,7 +42,6 @@ function setupLightbox(items){
   const grid = document.getElementById('gallery-grid');
   if(!grid) return;
 
-  // Don’t double insert
   if (document.querySelector('.lb-overlay')) return;
 
   const overlay = document.createElement('div');
@@ -119,11 +119,11 @@ function setupLightbox(items){
   overlay.querySelector('.lb-close').addEventListener('click', hide);
   overlay.querySelector('.lb-prev').addEventListener('click', ()=> show(index - 1));
   overlay.querySelector('.lb-next').addEventListener('click', ()=> show(index + 1));
-  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); }); // tap backdrop to close
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
   stage.addEventListener('click', (e)=>{
-    // Close if you tap empty space in stage (not on buttons or image)
     const isControl = e.target.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
-    if (!isControl && e.target === stage) hide();
+    const clickedImg = e.target.closest('.lb-img');
+    if (!isControl && !clickedImg) hide();
   });
 
   // Keyboard
@@ -137,11 +137,6 @@ function setupLightbox(items){
     if(k === '-') zoomOut();
     if(k === '0') resetZoom();
   });
-
-  // Zoom buttons
-  overlay.querySelector('.z-in').addEventListener('click', zoomIn);
-  overlay.querySelector('.z-out').addEventListener('click', zoomOut);
-  overlay.querySelector('.z-reset').addEventListener('click', resetZoom);
 
   // Wheel zoom + follow cursor
   stage.addEventListener('wheel', (e)=>{
