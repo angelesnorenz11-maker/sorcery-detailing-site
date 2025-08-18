@@ -2,17 +2,35 @@ backend:
   name: git-gateway
   branch: main
 
-media_library:
-  name: uploadcare
-  config:
-    # fallback to default if Uploadcare not set; CMS will still show media library
-    publicKey: ""
-
+# Where uploaded files are stored in the repo, and how they’re referenced on the site
 media_folder: "static/uploads"
 public_folder: "/static/uploads"
 
-# No collections needed for Option B — you just use Media assets.
+# Keep the UI simple
+publish_mode: editorial_workflow
+locale: en
+
+# Collections shown in the Admin UI
 collections:
+  - name: "gallery"
+    label: "Gallery (Uploads)"
+    label_singular: "Upload"
+    folder: "content/gallery"      # dummy metadata files so the collection appears in Admin
+    create: true                   # allow creating new entries
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - label: "Image"
+        name: "image"
+        widget: "image"
+        allow_multiple: false
+        choose_url: false          # force file upload / media selection
+        hint: "Upload a photo. It will be saved to static/uploads/ and picked up by the gallery build."
+      - { label: "Title (optional)", name: "title", widget: "string", required: false }
+      - { label: "Caption (optional)", name: "caption", widget: "text", required: false }
+
+  # Optional tiny page so the dashboard isn't empty; you can delete this block if you want
   - name: "notes"
     label: "Notes (optional)"
     files:
@@ -20,4 +38,7 @@ collections:
         label: "Dashboard Info"
         name: "readme"
         fields:
-          - { label: "Content", name: "body", widget: "markdown", default: "Upload images in Media. On deploy, the gallery updates automatically." }
+          - label: "Content"
+            name: "body"
+            widget: "markdown"
+            default: "Use **Gallery (Uploads)** to add photos. On deploy, the site scans `static/uploads/` and updates the gallery automatically."
