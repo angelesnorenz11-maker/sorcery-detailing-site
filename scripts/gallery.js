@@ -1,6 +1,7 @@
 // scripts/gallery.js
 async function renderGallery(){
   try{
+    // Root-absolute prevents path issues on subpages
     const res = await fetch('/static/gallery.json', { cache:'no-store' });
     if(!res.ok) throw new Error('static/gallery.json not found');
     const raw = await res.json();
@@ -25,7 +26,6 @@ async function renderGallery(){
       </figure>
     `).join('');
 
-    // Build lightbox with captions + controls
     setupLightbox(items.map(it => ({
       src: it.src || it.url,
       title: it.title || '',
@@ -41,7 +41,6 @@ async function renderGallery(){
 function setupLightbox(items){
   const grid = document.getElementById('gallery-grid');
   if(!grid) return;
-
   if (document.querySelector('.lb-overlay')) return;
 
   const overlay = document.createElement('div');
@@ -70,20 +69,15 @@ function setupLightbox(items){
 
   let index = 0, scale = 1, originX = 50, originY = 50;
 
-  function escapeHTML(s){
-    return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
+  const escapeHTML = s => (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function renderMeta(){
     const it = items[index];
-    const title = it.title ? `<div class="lb-title">${escapeHTML(it.title)}</div>` : '';
-    const caption = it.caption ? `<div class="lb-caption">${escapeHTML(it.caption)}</div>` : '';
-    metaEl.innerHTML = title + caption;
+    metaEl.innerHTML =
+      (it.title ? `<div class="lb-title">${escapeHTML(it.title)}</div>` : '') +
+      (it.caption ? `<div class="lb-caption">${escapeHTML(it.caption)}</div>` : '');
     dlEl.href = it.src;
   }
-  function preload(i){
-    const n = new Image();
-    n.src = items[(i + items.length) % items.length].src;
-  }
+  const preload = i => { const n = new Image(); n.src = items[(i + items.length) % items.length].src; };
   function show(i){
     index = (i + items.length) % items.length;
     imgEl.src = items[index].src;
@@ -91,63 +85,44 @@ function setupLightbox(items){
     renderMeta();
     overlay.classList.add('show');
     document.body.style.overflow = 'hidden';
-    preload(index + 1);
-    preload(index - 1);
+    preload(index + 1); preload(index - 1);
   }
-  function hide(){
-    overlay.classList.remove('show');
-    document.body.style.overflow = '';
-  }
+  function hide(){ overlay.classList.remove('show'); document.body.style.overflow = ''; }
   function resetZoom(){ scale = 1; originX = 50; originY = 50; applyZoom(); }
-  function applyZoom(){
-    imgEl.style.transformOrigin = `${originX}% ${originY}%`;
-    imgEl.style.transform = `scale(${scale})`;
-  }
+  function applyZoom(){ imgEl.style.transformOrigin = `${originX}% ${originY}%`; imgEl.style.transform = `scale(${scale})`; }
   const zoomIn  = ()=>{ scale = Math.min(scale + 0.25, 4); applyZoom(); };
   const zoomOut = ()=>{ scale = Math.max(scale - 0.25, 1); applyZoom(); };
 
-  // Open from grid
   grid.addEventListener('click', (e)=>{
     const t = e.target.closest('img.zoomable');
     if(!t) return;
     const i = Number(t.dataset.index || 0);
-    try { show(i); }
-    catch { window.open(items[i]?.src, '_blank', 'noopener'); }
+    try { show(i); } catch { window.open(items[i]?.src, '_blank', 'noopener'); }
   });
 
-  // Controls & interactions
   overlay.querySelector('.lb-close').addEventListener('click', hide);
   overlay.querySelector('.lb-prev').addEventListener('click', ()=> show(index - 1));
   overlay.querySelector('.lb-next').addEventListener('click', ()=> show(index + 1));
-  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); }); // tap backdrop to close
-  stage.addEventListener('click', (e)=>{
-    const isControl = e.target.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
-    const clickedImg = e.target.closest('.lb-img');
-    if (!isControl && !clickedImg) hide();
-  });
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); });
 
-  // Keyboard
+  const isControl = el => el.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
+  stage.addEventListener('click', (e)=>{ if (!isControl(e.target) && e.target === stage) hide(); });
+
   window.addEventListener('keydown', (e)=>{
     if(!overlay.classList.contains('show')) return;
-    const k = e.key;
-    if(k === 'Escape') hide();
-    if(k === 'ArrowLeft') show(index - 1);
-    if(k === 'ArrowRight') show(index + 1);
-    if(k === '+' || k === '=') zoomIn();
-    if(k === '-') zoomOut();
-    if(k === '0') resetZoom();
+    if(e.key === 'Escape') hide();
+    if(e.key === 'ArrowLeft') show(index - 1);
+    if(e.key === 'ArrowRight') show(index + 1);
+    if(e.key === '+' || e.key === '=') zoomIn();
+    if(e.key === '-') zoomOut();
+    if(e.key === '0') resetZoom();
   });
 
-  // Zoom buttons
   overlay.querySelector('.z-in').addEventListener('click', zoomIn);
   overlay.querySelector('.z-out').addEventListener('click', zoomOut);
   overlay.querySelector('.z-reset').addEventListener('click', resetZoom);
 
-  // Wheel zoom + follow cursor
-  stage.addEventListener('wheel', (e)=>{
-    e.preventDefault();
-    (e.deltaY < 0 ? zoomIn : zoomOut)();
-  }, {passive:false});
+  stage.addEventListener('wheel', (e)=>{ e.preventDefault(); (e.deltaY < 0 ? zoomIn : zoomOut)(); }, {passive:false});
   stage.addEventListener('mousemove', (e)=>{
     if(scale === 1) return;
     const rect = imgEl.getBoundingClientRect();
@@ -156,18 +131,9 @@ function setupLightbox(items){
     applyZoom();
   });
 
-  // Touch swipe
   let startX = 0, swiping = false;
-  stage.addEventListener('touchstart', (e)=>{
-    if(e.touches.length !== 1) return;
-    startX = e.touches[0].clientX; swiping = true;
-  }, {passive:true});
-  stage.addEventListener('touchend', (e)=>{
-    if(!swiping) return;
-    const dx = e.changedTouches[0].clientX - startX;
-    if(Math.abs(dx) > 40){ dx < 0 ? show(index + 1) : show(index - 1); }
-    swiping = false;
-  }, {passive:true});
+  stage.addEventListener('touchstart', (e)=>{ if(e.touches.length !== 1) return; startX = e.touches[0].clientX; swiping = true; }, {passive:true});
+  stage.addEventListener('touchend', (e)=>{ if(!swiping) return; const dx = e.changedTouches[0].clientX - startX; if(Math.abs(dx) > 40){ dx < 0 ? show(index + 1) : show(index - 1); } swiping = false; }, {passive:true});
 }
 
 renderGallery();
