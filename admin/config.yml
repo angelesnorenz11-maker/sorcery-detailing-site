@@ -2,6 +2,7 @@ backend:
   name: git-gateway
   branch: main
 
+# Uploads from the Media Library go here
 media_folder: "gallery"
 public_folder: "/gallery"
 
