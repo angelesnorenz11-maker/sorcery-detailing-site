@@ -180,3 +180,30 @@ textarea{resize:vertical}
 
 /* Optional centered layout (thank-you page) */
 .centered{display:grid; place-items:center; min-height:100dvh}
+
+/* ===== Mobile-fitting fixes ===== */
+
+/* 1) Never allow horizontal scroll caused by wide children */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* 2) Let flex/grid items shrink so they don’t force overflow */
+* { min-width: 0; }
+
+/* 3) Images/videos never exceed the viewport width */
+img, video { max-width: 100%; height: auto; }
+
+/* 4) The contact chips at the top can be long — let them wrap
+      and truncate nicely on small screens */
+.topbar { flex-wrap: wrap; }
+.topbar .chip {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 5) Mobile browsers hate background-attachment: fixed.
+      Disable the fixed background on phones to prevent zoom/bleed. */
+@media (max-width: 900px){
+  body { background-attachment: scroll; }
+}
