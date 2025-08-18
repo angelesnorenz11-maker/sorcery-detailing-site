@@ -31,7 +31,7 @@
       <span class="menu-label">Menu</span>
     </button>
 
-    <!-- Drawer / normal nav -->
+    <!-- Normal nav (becomes drawer on mobile) -->
     <nav class="main-nav" id="site-nav">
       <a href="#about">About</a>
       <a href="#packages">Packages</a>
@@ -42,13 +42,16 @@
     </nav>
   </header>
 
+  <!-- Backdrop for the mobile drawer -->
+  <div class="backdrop" id="nav-backdrop" aria-hidden="true"></div>
+
   <!-- Hero -->
   <section class="hero">
     <div class="hero-inner">
       <img class="hero-logo" src="static/logo.png" alt="" />
       <h1>Sorcery Detailing</h1>
       <p class="tagline">“From Spells to Shine — We Do it All”</p>
-      <p>“Professional auto detailing in Ajax and surrounding areas.”</p>
+      <p>Professional auto detailing in Ajax and surrounding areas.</p>
     </div>
   </section>
 
@@ -219,22 +222,25 @@
   <a class="wa-float" href="https://wa.me/16472440621">Book on WhatsApp</a>
 
   <script>
-    // Auto-update the year
+    // Update year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu
-    const toggle = document.querySelector('.menu-toggle');
-    const links  = document.querySelectorAll('.main-nav a');
-    toggle.addEventListener('click', () => {
-      const open = document.body.classList.toggle('nav-open');
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    links.forEach(a => a.addEventListener('click', () => {
-      document.body.classList.remove('nav-open');
-      toggle.setAttribute('aria-expanded','false');
-    }));
+    // Mobile drawer toggle
+    const toggle   = document.querySelector('.menu-toggle');
+    const nav      = document.getElementById('site-nav');
+    const backdrop = document.getElementById('nav-backdrop');
+    const links    = nav.querySelectorAll('a');
 
-    // Email compose
+    function openNav(open){
+      document.body.classList.toggle('nav-open', open);
+      document.body.classList.toggle('no-scroll', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    toggle.addEventListener('click', () => openNav(!document.body.classList.contains('nav-open')));
+    backdrop.addEventListener('click', () => openNav(false));
+    links.forEach(a => a.addEventListener('click', () => openNav(false)));
+
+    // Email compose (opens the user's mail app)
     function sendMail(e){
       e.preventDefault();
       const n = encodeURIComponent(document.getElementById('name').value.trim());
