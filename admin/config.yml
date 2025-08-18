@@ -8,6 +8,7 @@ public_folder: "/static/uploads"
 publish_mode: editorial_workflow
 locale: en
 
+# Keep a tiny collection so the CMS boots; you’ll mostly use the Media tab.
 collections:
   - name: "notes"
     label: "Notes (optional)"
@@ -18,7 +19,4 @@ collections:
         editor:
           preview: false
         fields:
-          - label: "Content"
-            name: "body"
-            widget: "markdown"
-            default: "Use the **Media** button to upload or delete photos. After publish/deploy, the gallery updates automatically from /static/uploads/."
+          - { label: "Content", name: "body", widget: "markdown", default: "Use the **Media** button to upload or delete photos. After publish/deploy, the gallery updates automatically from /static/uploads/." }
