@@ -1,29 +1,42 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Sorcery Detailing</title>
+
+  <!-- Basic styling -->
   <style>
-    body{background:#0f1012;color:#eaeaea;font-family:system-ui;margin:0}
-    .wrap{max-width:980px;margin:3rem auto;padding:0 1rem}
-    a{color:#d1a739}
+    body {
+      background:#0f1012;
+      color:#eaeaea;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin:0;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+    a { color: #d1a739; }
+
+    /* Small tweak so the first field isn't hidden under the Tabs strip */
+    #nc-root .nc-entryEditor .PaneContent { padding-top: 12px; }
+    #nc-root .nc-entryEditor .EditorControlPane { padding-top: 12px; }
   </style>
-  <style>
-  /* Nudge the first field down so it's not hidden under the Tabs strip */
-  #nc-root .nc-entryEditor .PaneContent { padding-top: 12px; }
-  #nc-root .nc-entryEditor .EditorControlPane { padding-top: 12px; }
-</style>
 </head>
 <body>
   <div class="wrap">
     <h1>Admin</h1>
-    <p>Use the <strong>Gallery (Uploads)</strong> section to add photos. On deploy, the gallery updates automatically.</p>
+    <p>
+      Use the <strong>Gallery (Uploads)</strong> section to add or remove photos.  
+      Once you publish, the gallery updates automatically on the live site 🚀.
+    </p>
     <div id="nc-root"></div>
   </div>
 
+  <!-- Netlify Identity + CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 </body>
 </html>
-
