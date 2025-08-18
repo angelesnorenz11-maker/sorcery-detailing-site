@@ -24,6 +24,12 @@
     #nc-root .nc-entryEditor .PaneContent { padding-top: 12px; }
     #nc-root .nc-entryEditor .EditorControlPane { padding-top: 12px; }
   </style>
+  <style>
+  /* Make the editor header/tabs sticky and push the first field down a bit */
+  #nc-root .EditorContainer .EditorToolbar { position: sticky; top: 0; z-index: 3; }
+  #nc-root .EditorContainer .PaneContent { padding-top: 48px !important; }
+  #nc-root .EditorContainer .EditorControlPane { padding-top: 48px !important; }
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -40,3 +46,4 @@
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 </body>
 </html>
+
