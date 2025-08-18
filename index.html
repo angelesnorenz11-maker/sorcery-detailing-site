@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sorcery Detailing</title>
+  <meta name="description" content="Professional auto detailing in Ajax, Ontario. Silver, Gold, and Platinum packages with add-ons, subscriptions, and mobile service." />
   <link rel="icon" href="static/logo.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -25,7 +26,10 @@
       <strong>Sorcery Detailing</strong>
     </a>
 
-    <nav class="main-nav">
+    <!-- Mobile MENU button -->
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">☰ Menu</button>
+
+    <nav id="main-nav" class="main-nav" data-collapsible>
       <a href="#about">About</a>
       <a href="#packages">Packages</a>
       <a href="#addons">Add-ons</a>
@@ -41,7 +45,7 @@
       <img class="hero-logo" src="static/logo.png" alt="" />
       <h1>Sorcery Detailing</h1>
       <p class="tagline">“From Spells to Shine — We Do it All”</p>
-	  <p>“Professional auto detailing in Ajax and surrounding areas.”</p>
+      <p>Professional auto detailing in Ajax and surrounding areas.</p>
     </div>
   </section>
 
@@ -203,22 +207,18 @@
   <!-- Footer -->
   <footer class="footer">
     <a href="#top" class="brand"><img src="static/logo.png" alt="" /> Sorcery Detailing</a>
-	<div class="container">
-    <small>© <span id="year"></span> Sorcery Detailing — Ajax, Ontario</small>
-  </div>
-	
-      </footer>
-  
-  
-<script>
-  // Auto-update the year
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+    <div class="container"><small>© <span id="year"></span> Sorcery Detailing — Ajax, Ontario</small></div>
+  </footer>
 
-  <!-- Floating WhatsApp -->
-  <a class="wa-float" href="https://wa.me/16472440621">Book on WhatsApp</a>
+  <!-- Backdrop for mobile menu -->
+  <div class="nav-backdrop" hidden></div>
 
+  <!-- Scripts -->
   <script>
+    // Auto-update the year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // mailto helper
     function sendMail(e){
       e.preventDefault();
       const n = encodeURIComponent(document.getElementById('name').value.trim());
@@ -226,12 +226,12 @@
       const v = encodeURIComponent(document.getElementById('vehicle').value.trim());
       const s = encodeURIComponent(document.getElementById('service').value.trim());
       const m = encodeURIComponent(document.getElementById('msg').value.trim());
-
       const subject = `Website Inquiry from ${n}`;
       const body = `Name: ${n}%0D%0AEmail: ${em}%0D%0AVehicle: ${v}%0D%0AService: ${s}%0D%0A%0D%0AMessage:%0D%0A${m}`;
       window.location.href = `mailto:SorceryDetailing@gmail.com?subject=${subject}&body=${body}`;
       return false;
     }
   </script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>
