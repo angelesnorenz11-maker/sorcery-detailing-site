@@ -1,85 +1,65 @@
-// Smooth-scroll for internal links
-document.addEventListener('click', (e) => {
-  const a = e.target.closest('a[href^="#"]');
-  if (!a) return;
-  const id = a.getAttribute('href').slice(1);
-  const el = document.getElementById(id);
-  if (el) {
-    e.preventDefault();
-    el.scrollIntoView({ behavior: 'smooth' });
-  }
-});
-
-// Mobile menu toggle
-(function(){
-  const btn = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('.main-nav[data-collapsible]');
+// js/main.js
+(function () {
+  // Mobile menu
+  const toggle = document.querySelector('.menu-toggle');
+  const nav = document.getElementById('main-nav');
   const backdrop = document.querySelector('.nav-backdrop');
 
-  if(!btn || !nav || !backdrop) return;
-
-  function openMenu(){
-    nav.classList.add('open');
-    btn.setAttribute('aria-expanded', 'true');
-    backdrop.hidden = false;
-    requestAnimationFrame(()=>backdrop.classList.add('show'));
-    document.body.style.overflow = 'hidden';
+  if (toggle && nav && backdrop) {
+    const open = () => {
+      nav.classList.add('open');
+      toggle.setAttribute('aria-expanded', 'true');
+      backdrop.removeAttribute('hidden');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      backdrop.setAttribute('hidden', '');
+      document.body.style.overflow = '';
+    };
+    toggle.addEventListener('click', () =>
+      nav.classList.contains('open') ? close() : open()
+    );
+    backdrop.addEventListener('click', close);
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 760) close();
+    });
   }
-  function closeMenu(){
-    nav.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-    backdrop.classList.remove('show');
-    setTimeout(()=>{ backdrop.hidden = true; }, 180);
-    document.body.style.overflow = '';
-  }
 
-  btn.addEventListener('click', () => {
-    nav.classList.contains('open') ? closeMenu() : openMenu();
-  });
-  nav.addEventListener('click', (e) => { if(e.target.matches('a')) closeMenu(); });
-  backdrop.addEventListener('click', closeMenu);
-  window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeMenu(); });
-})();
+  // Footer year
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
 
-// ===== Direct messaging: WhatsApp or SMS =====
-(function () {
+  // Contact helpers (WhatsApp / SMS)
   const form = document.getElementById('contact-form');
-  if (!form) return;
+  if (form) {
+    const get = id => document.getElementById(id)?.value?.trim() || '';
+    const compose = () => {
+      const name = get('name');
+      const email = get('email');
+      const vehicle = get('vehicle');
+      const service = get('service');
+      const msg = get('message');
+      return [
+        `Hi Julian!`,
+        name && `Name: ${name}`,
+        email && `Email: ${email}`,
+        vehicle && `Vehicle: ${vehicle}`,
+        service && `Service: ${service}`,
+        msg && `Message: ${msg}`,
+      ].filter(Boolean).join('\n');
+    };
+    const wa = document.getElementById('send-whatsapp');
+    const sms = document.getElementById('send-sms');
 
-  // Your business phone (digits only, no + or spaces)
-  const PHONE = '16472440621'; // +1 647-244-0621
-
-  const el = (id) => form.querySelector('#' + id);
-  const v  = (id) => (el(id)?.value || '').trim();
-
-  function buildMessage() {
-    const name    = v('name');
-    const email   = v('email');
-    const vehicle = v('vehicle');
-    const service = v('service');
-    const msg     = v('message');
-
-    const lines = [
-      'Hi Julian!',
-      name ? `I'm ${name}${email ? ` (${email})` : ''}.` : '',
-      vehicle ? `Vehicle: ${vehicle}` : '',
-      service ? `Service: ${service}` : '',
-      msg ? `Message: ${msg}` : ''
-    ].filter(Boolean);
-
-    return lines.join('\n');
+    if (wa) wa.addEventListener('click', () => {
+      const text = encodeURIComponent(compose());
+      window.location.href = `https://wa.me/16472440621?text=${text}`;
+    });
+    if (sms) sms.addEventListener('click', () => {
+      const text = encodeURIComponent(compose());
+      window.location.href = `sms:+16472440621?&body=${text}`;
+    });
   }
-
-  // WhatsApp
-  form.querySelector('#send-wa')?.addEventListener('click', () => {
-    const url = `https://wa.me/${PHONE}?text=${encodeURIComponent(buildMessage())}`;
-    window.location.href = url; // opens app on mobile / web.whatsapp on desktop
-  });
-
-  // SMS (opens default Messages app with prefilled text)
-  form.querySelector('#send-sms')?.addEventListener('click', () => {
-    const url = `sms:+${PHONE}?&body=${encodeURIComponent(buildMessage())}`;
-    window.location.href = url;
-  });
 })();
-
