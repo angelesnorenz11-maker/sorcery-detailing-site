@@ -1,335 +1,329 @@
 <!doctype html>
-<html lang="en" id="top">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sorcery Detailing – From Spells to Shine</title>
-  <meta name="description" content="Professional auto detailing in Ajax and surrounding areas. From Spells to Shine — We Do it All.">
-  <link rel="preload" href="static/bg-hero.jpg" as="image">
+  <title>Sorcery Detailing</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="static/logo.png" />
 </head>
-
 <body>
 
-  <!-- ===== Top chips (owner / phone / email) ===== -->
-  <div class="chipbar" aria-label="Contact quick info">
-    <div class="chips">
-      <a class="chip" tabindex="0">Julian Salvador</a>
-      <a class="chip" tabindex="0">Professional Detailer</a>
+  <!-- ===== Fixed Header ===== -->
+  <header class="site-top" id="top">
+    <!-- Chips row (desktop only). Hidden on phones -->
+    <div class="top-chips">
+      <span class="chip">Julian Salvador</span>
+      <span class="chip">Professional Detailer</span>
       <a class="chip" href="tel:+16472440621">647-244-0621</a>
       <a class="chip" href="mailto:SorceryDetailing@gmail.com">SorceryDetailing@gmail.com</a>
     </div>
-  </div>
 
-  <!-- ===== Header with brand + responsive Menu/Drawer ===== -->
-  <header class="site-header">
-    <div class="brand-row">
-      <a href="#top" class="brand">
-        <img src="static/logo.png" alt="Sorcery Detailing logo">
+    <div class="top-bar">
+      <a class="brand" href="#top" aria-label="Home">
+        <img src="static/logo.png" alt="" />
         <span>Sorcery Detailing</span>
       </a>
 
-      <!-- Mobile toggle -->
-      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
-        <span class="menu-icon" aria-hidden="true">☰</span>
-        <span class="menu-text">Menu</span>
-      </button>
+      <!-- Mobile menu toggle (no JS) -->
+      <input type="checkbox" id="navcheck" class="navcheck" aria-label="Open menu" />
+      <label for="navcheck" class="menu-btn" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span>Menu</span>
+      </label>
+
+      <!-- Desktop nav; becomes a slide-down overlay on phones -->
+      <nav class="main-nav" role="navigation">
+        <a href="#about">About</a>
+        <a href="#packages">Packages</a>
+        <a href="#addons">Add-ons</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#subscriptions">Subscriptions</a>
+        <a href="/admin/" class="admin">Admin</a>
+      </nav>
     </div>
-
-    <!-- ONE list used for desktop and mobile drawer -->
-    <nav id="site-nav" class="nav-links" aria-label="Main">
-      <a href="#about">About</a>
-      <a href="#packages">Packages</a>
-      <a href="#addons">Add-ons</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#subscriptions">Subscriptions</a>
-      <a href="admin/" class="admin-link">Admin</a>
-    </nav>
-
-    <!-- Drawer backdrop -->
-    <button class="nav-overlay" hidden aria-label="Close menu"></button>
   </header>
+  <!-- ===== /Fixed Header ===== -->
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <div class="hero-inner">
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="home" aria-label="Sorcery Detailing">
+    <div class="hero-inner container">
       <img class="hero-badge" src="static/logo.png" alt="" />
       <h1 class="hero-title">Sorcery Detailing</h1>
-      <p class="hero-sub">“From Spells to Shine — We Do it All”</p>
-      <p class="hero-tag">Professional auto detailing in Ajax and surrounding areas.</p>
+      <p class="hero-tag">“From Spells to Shine — We Do it All”</p>
+      <p class="hero-sub">Professional auto detailing in Ajax and surrounding areas.</p>
     </div>
   </section>
 
-  <!-- ===== ABOUT ===== -->
-  <main>
-    <section id="about" class="section">
-      <div class="container">
-        <h2>Our Mission</h2>
-        <p>
-          With over 10 years of detailing experience—including 7 years at one of Canada’s busiest dealerships—we bring
-          dealership-level quality straight to your driveway. At Sorcery Detailing, our mission is simple: deliver
-          top-tier, hassle-free car care with pride, precision, and a personal touch. Every detail matters, and every car
-          gets the VIP treatment.
-        </p>
-      </div>
-    </section>
-
-    <!-- ===== PACKAGES ===== -->
-    <section id="packages" class="section">
-      <div class="container">
-        <h2>Packages</h2>
-
-        <div class="grid3">
-
-          <!-- Silver -->
-          <article class="card">
-            <h3>🥈 Silver – “Refresh &amp; Shine”</h3>
-            <p class="price">$120–$150 <span>(compact to SUV)</span></p>
-            <h4>Includes</h4>
-            <ul class="list">
-              <li>Exterior hand wash (foam cannon &amp; two-bucket method)</li>
-              <li>Wheel &amp; tire clean + tire shine</li>
-              <li>Door jambs wiped</li>
-              <li>Interior vacuum (seats, floors, mats, trunk)</li>
-              <li>Wipe down of all interior surfaces</li>
-              <li>Interior window cleaning</li>
-              <li>Air freshener</li>
-            </ul>
-            <h4>Best for</h4>
-            <ul class="list">
-              <li>Busy commuters needing a quick refresh</li>
-              <li>Parents or rideshare drivers looking for light upkeep</li>
-              <li>Prepping for a weekend or short trip</li>
-            </ul>
-
-            <a class="wa-btn" target="_blank"
-               href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%20want%20to%20book%20the%20Silver%20package.">
-               Book on WhatsApp
-            </a>
-          </article>
-
-          <!-- Gold -->
-          <article class="card">
-            <h3>🥇 Gold – “Deep Clean &amp; Rejuvenate”</h3>
-            <p class="price">$220–$270 <span>(compact to SUV)</span></p>
-            <h4>Includes everything in Silver, plus</h4>
-            <ul class="list">
-              <li>Full interior shampoo (seats, carpets, floor mats)</li>
-              <li>Salt &amp; stain removal (as much as possible)</li>
-              <li>Steam cleaning for vents, crevices, &amp; cupholders</li>
-              <li>Leather conditioning (if applicable)</li>
-              <li>Bug &amp; tar removal from front end</li>
-              <li>Spray wax or sealant (3-month protection)</li>
-            </ul>
-            <h4>Best for</h4>
-            <ul class="list">
-              <li>Used car owners restoring that “like-new” feel</li>
-              <li>Families with kids (food spills, salt, pet hair, etc.)</li>
-              <li>Seasonal cleanings (pre/post-winter deep cleans)</li>
-            </ul>
-
-            <a class="wa-btn" target="_blank"
-               href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%20want%20to%20book%20the%20Gold%20package.">
-               Book on WhatsApp
-            </a>
-          </article>
-
-          <!-- Platinum -->
-          <article class="card">
-            <h3>💎 Platinum – “Paint Revival &amp; Full Detail”</h3>
-            <p class="price">$450–$600 <span>(compact to SUV)</span></p>
-            <h4>Includes everything in Gold, plus</h4>
-            <ul class="list">
-              <li>2-stage paint correction (cut &amp; polish)</li>
-              <li>Removes moderate swirls, light scratches, oxidation</li>
-              <li>Clay bar decontamination &amp; iron remover treatment</li>
-              <li>Wax &amp; water wax</li>
-              <li>Engine bay cleaning &amp; dressing (optional)</li>
-              <li>Trim restoration (faded black plastics)</li>
-            </ul>
-            <h4>Best for</h4>
-            <ul class="list">
-              <li>Enthusiasts or collectors wanting showroom shine</li>
-              <li>Prepping for sale or lease return</li>
-              <li>Dark-colored vehicles prone to visible swirls</li>
-            </ul>
-
-            <a class="wa-btn" target="_blank"
-               href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing!%20I%20want%20to%20book%20the%20Platinum%20package.">
-               Book on WhatsApp
-            </a>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== ADD-ONS ===== -->
-    <section id="addons" class="section">
-      <div class="container">
-        <h2>Add-ons (Optional)</h2>
-        <div class="grid2">
-          <ul class="list tight">
-            <li>Pet Hair Removal — $60–$100</li>
-            <li>Headlight Restoration — $40–$70</li>
-            <li>Engine Bay Detail (standalone) — $50</li>
-            <li>Ozone Odor Treatment — $60–$90</li>
-          </ul>
-          <ul class="list tight">
-            <li>Leather Conditioning — from $30–$60</li>
-            <li>2-Stage Cut, Polish &amp; Wax — $250</li>
-            <li>Wash &amp; Wax — $50</li>
-            <li>Oil Change — $40</li>
-            <li>Tire Swap (Winter/Summer) on Rim — $50</li>
-            <li>Window Refresh — $30</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== SUBSCRIPTIONS ===== -->
-    <section id="subscriptions" class="section">
-      <div class="container">
-        <h2>Subscription Plans</h2>
-
-        <p class="muted">
-          Each subscription includes: <strong>1× Gold</strong> + <strong>3× Silver</strong> every 4 months, priority booking, reminders &amp; flexible scheduling.
-        </p>
-
-        <div class="grid2">
-          <article class="card">
-            <h3>🧼 Small Vehicles — $460</h3>
-            <p>Includes: 1× Gold ($220) + 3× Silver ($360) • Total Value: ~$580 • You Save: ~$120</p>
-          </article>
-
-          <article class="card">
-            <h3>🚗 Sedans — $500</h3>
-            <p>1× Gold ($230) + 3× Silver ($375) • Total Value: ~$605 • You Save: ~$105</p>
-          </article>
-
-          <article class="card">
-            <h3>🚙 SUVs — $540</h3>
-            <p>1× Gold ($250) + 3× Silver ($390) • Total Value: ~$640 • You Save: ~$100</p>
-          </article>
-
-          <article class="card">
-            <h3>🛻 Trucks — $570</h3>
-            <p>1× Gold ($260) + 3× Silver ($405) • Total Value: ~$665 • You Save: ~$95</p>
-          </article>
-
-          <article class="card">
-            <h3>🚐 Vans — $600</h3>
-            <p>1× Gold ($270) + 3× Silver ($420) • Total Value: ~$690 • You Save: ~$90</p>
-          </article>
-        </div>
-
-        <h3 class="mt">8-Detail Plans</h3>
-        <p>Includes: 2× Gold + 6× Silver</p>
-        <ul class="list tight two-cols">
-          <li>🧼 Small Vehicles – $860 (Value ~$1,160 → Save $300)</li>
-          <li>🚗 Sedans – $940 (Value ~$1,220 → Save $280)</li>
-          <li>🚙 SUVs – $1,020 (Value ~$1,280 → Save $260)</li>
-          <li>🛻 Trucks – $1,100 (Value ~$1,340 → Save $240)</li>
-          <li>🚐 Vans – $1,180 (Value ~$1,400 → Save $220)</li>
-        </ul>
-
-        <h3 class="mt">10-Detail Plans</h3>
-        <p>Includes: 2× Gold + 8× Silver</p>
-        <ul class="list tight two-cols">
-          <li>🧼 Small Vehicles – $1,030 (Value ~$1,420 → Save $390)</li>
-          <li>🚗 Sedans – $1,120 (Value ~$1,500 → Save $380)</li>
-          <li>🚙 SUVs – $1,200 (Value ~$1,580 → Save $380)</li>
-          <li>🛻 Trucks – $1,290 (Value ~$1,660 → Save $370)</li>
-          <li>🚐 Vans – $1,380 (Value ~$1,740 → Save $360)</li>
-        </ul>
-
-        <p class="muted">
-          Bonus perks: early access to promotions, 10% off add-ons, complimentary scent restock each visit, share within a household (limit 2 vehicles).
-        </p>
-      </div>
-    </section>
-
-    <!-- ===== GALLERY LINK ===== -->
-    <section id="gallery" class="section">
-      <div class="container center">
-        <h2>Before &amp; After Gallery</h2>
-        <p class="muted">Managed in <a href="admin/">Admin</a>. Uploaded photos appear automatically.</p>
-        <a class="btn" href="gallery.html">Open Gallery</a>
-      </div>
-    </section>
-
-    <!-- ===== CONTACT ===== -->
-    <section id="contact" class="section">
-      <div class="container">
-        <h2>Contact</h2>
-        <form name="contact" method="POST" data-netlify="true" class="contact-form">
-          <input type="hidden" name="form-name" value="contact">
-          <div class="field">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" required>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required>
-          </div>
-          <div class="field">
-            <label for="vehicle">Vehicle Details (Make / Model / Year)</label>
-            <input id="vehicle" name="vehicle" type="text" placeholder="e.g., Honda Civic 2019">
-          </div>
-          <div class="field">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5"></textarea>
-          </div>
-          <button type="submit" class="btn gold wide">Send</button>
-
-          <p class="muted small">Prefer WhatsApp? <a href="https://wa.me/16472440621" target="_blank">Tap here.</a></p>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    © <span id="year"></span> Sorcery Detailing — Ajax, Ontario
-  </footer>
-
-  <!-- Floating WhatsApp -->
-  <a href="https://wa.me/16472440621" target="_blank" class="wa-fab" aria-label="Book on WhatsApp">
+  <!-- WhatsApp floating button -->
+  <a
+    class="whatsapp-fab"
+    href="https://wa.me/16472440621?text=Hi%20Sorcery%20Detailing%2C%20I%27d%20like%20to%20book%20a%20detail."
+    target="_blank" rel="noopener"
+    aria-label="Book on WhatsApp"
+  >
     📲 Book on WhatsApp
   </a>
 
-  <!-- Mobile drawer script -->
+  <!-- ===== About ===== -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>Our Mission</h2>
+      <p>
+        With over 10 years of detailing experience—including 7 years at one of Canada’s busiest dealerships—we bring
+        dealership-level quality straight to your driveway. At Sorcery Detailing, our mission is simple: deliver
+        top-tier, hassle-free car care with pride, precision, and a personal touch. Every detail matters, and every car
+        gets the VIP treatment.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Packages ===== -->
+  <section id="packages" class="section">
+    <div class="container">
+      <h2>Packages</h2>
+
+      <div class="cards">
+        <!-- Silver -->
+        <article class="card">
+          <h3>🥈 Silver — “Refresh &amp; Shine”</h3>
+          <p class="price">$120–$150 (compact to SUV)</p>
+          <h4>Includes:</h4>
+          <ul>
+            <li>Exterior hand wash (foam cannon &amp; two-bucket method)</li>
+            <li>Wheel &amp; tire clean + tire shine</li>
+            <li>Door jambs wiped</li>
+            <li>Interior vacuum (seats, floors, mats, trunk)</li>
+            <li>Wipe down of all interior surfaces</li>
+            <li>Interior window cleaning</li>
+            <li>Air freshener</li>
+          </ul>
+          <h4>Best for:</h4>
+          <ul>
+            <li>Busy commuters needing a quick refresh</li>
+            <li>Parents or rideshare drivers looking for light upkeep</li>
+            <li>Car owners prepping for a weekend or short trip</li>
+          </ul>
+          <a class="btn btn-primary" target="_blank" rel="noopener"
+             href="https://wa.me/16472440621?text=Hi%2C%20I%20want%20to%20book%20the%20Silver%20package.">
+            Book on WhatsApp
+          </a>
+        </article>
+
+        <!-- Gold -->
+        <article class="card">
+          <h3>🥇 Gold — “Deep Clean &amp; Rejuvenate”</h3>
+          <p class="price">$220–$270 (compact to SUV)</p>
+          <h4>Includes everything in Silver, plus:</h4>
+          <ul>
+            <li>Full interior shampoo (seats, carpets, floor mats)</li>
+            <li>Salt &amp; stain removal (as much as possible)</li>
+            <li>Steam cleaning for vents, crevices, &amp; cupholders</li>
+            <li>Leather conditioning (if applicable)</li>
+            <li>Bug &amp; tar removal from front end</li>
+            <li>Spray wax or sealant (3-month protection)</li>
+          </ul>
+          <h4>Best for:</h4>
+          <ul>
+            <li>Used car owners trying to restore that “like new” feel</li>
+            <li>Families with kids (food spills, salt, pet hair, etc.)</li>
+            <li>Seasonal cleanings (pre/post-winter deep cleans)</li>
+          </ul>
+          <a class="btn btn-primary" target="_blank" rel="noopener"
+             href="https://wa.me/16472440621?text=Hi%2C%20I%20want%20to%20book%20the%20Gold%20package.">
+            Book on WhatsApp
+          </a>
+        </article>
+
+        <!-- Platinum -->
+        <article class="card">
+          <h3>💎 Platinum — “Paint Revival &amp; Full Detail”</h3>
+          <p class="price">$450–$600 (compact to SUV)</p>
+          <h4>Includes everything in Gold, plus:</h4>
+          <ul>
+            <li>2-stage paint correction (cut &amp; polish)</li>
+            <li>Removes moderate swirls, light scratches, oxidation</li>
+            <li>Clay bar decontamination</li>
+            <li>Iron remover treatment</li>
+            <li>Wax &amp; water wax</li>
+            <li>Engine bay cleaning &amp; dressing (optional)</li>
+            <li>Trim restoration (faded black plastics)</li>
+          </ul>
+          <h4>Best for:</h4>
+          <ul>
+            <li>Enthusiasts or collectors wanting showroom shine</li>
+            <li>People prepping their car for sale or lease return</li>
+            <li>Owners of dark-colored vehicles prone to visible swirls</li>
+          </ul>
+          <a class="btn btn-primary" target="_blank" rel="noopener"
+             href="https://wa.me/16472440621?text=Hi%2C%20I%20want%20to%20book%20the%20Platinum%20package.">
+            Book on WhatsApp
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Add-ons ===== -->
+  <section id="addons" class="section">
+    <div class="container">
+      <h2>Add-ons</h2>
+      <div class="table">
+        <div class="row"><span>Pet Hair Removal</span><span>$60–$100</span></div>
+        <div class="row"><span>Headlight Restoration</span><span>$40–$70</span></div>
+        <div class="row"><span>Engine Bay Detail (standalone)</span><span>$50</span></div>
+        <div class="row"><span>Ozone Odor Treatment</span><span>$60–$90</span></div>
+        <div class="row"><span>Leather Conditioning</span><span>From $30–$60</span></div>
+        <div class="row"><span>2-Stage Cut, Polish &amp; Wax</span><span>$250</span></div>
+        <div class="row"><span>Wash &amp; Wax</span><span>$50</span></div>
+        <div class="row"><span>Oil Change</span><span>$40</span></div>
+        <div class="row"><span>Tire Swap (Winter/Summer) on Rim</span><span>$50</span></div>
+        <div class="row"><span>Window Refresh</span><span>$30</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Subscriptions ===== -->
+  <section id="subscriptions" class="section">
+    <div class="container">
+      <h2>Subscriptions</h2>
+      <p class="muted">
+        Each plan includes: <strong>1× Gold</strong> + <strong>3× Silver</strong> every 4 months (seasonal maintenance),
+        priority booking &amp; reminders.
+      </p>
+
+      <div class="cards">
+        <article class="card">
+          <h3>🧼 Small Vehicles — $460</h3>
+          <p>Value: ~$580 → Save ~$120</p>
+          <ul>
+            <li>1× Gold Detail</li>
+            <li>3× Silver Details</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>🚗 Sedans — $500</h3>
+          <p>Value: ~$605 → Save ~$105</p>
+          <ul>
+            <li>1× Gold Detail</li>
+            <li>3× Silver Details</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>🚙 SUVs — $540</h3>
+          <p>Value: ~$640 → Save ~$100</p>
+          <ul>
+            <li>1× Gold Detail</li>
+            <li>3× Silver Details</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>🛻 Trucks — $570</h3>
+          <p>Value: ~$665 → Save ~$95</p>
+          <ul>
+            <li>1× Gold Detail</li>
+            <li>3× Silver Details</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>🚐 Vans — $600</h3>
+          <p>Value: ~$690 → Save ~$90</p>
+          <ul>
+            <li>1× Gold Detail</li>
+            <li>3× Silver Details</li>
+          </ul>
+        </article>
+      </div>
+
+      <h3 class="mt">8-Detail Plans</h3>
+      <p class="muted">Includes 2× Gold + 6× Silver.</p>
+      <div class="grid-2">
+        <div class="pill">Small Vehicles – $860 (Value ~$1,160 → Save $300)</div>
+        <div class="pill">Sedans – $940 (Value ~$1,220 → Save $280)</div>
+        <div class="pill">SUVs – $1,020 (Value ~$1,280 → Save $260)</div>
+        <div class="pill">Trucks – $1,100 (Value ~$1,340 → Save $240)</div>
+        <div class="pill">Vans – $1,180 (Value ~$1,400 → Save $220)</div>
+      </div>
+
+      <h3 class="mt">10-Detail Plans</h3>
+      <p class="muted">Includes 2× Gold + 8× Silver.</p>
+      <div class="grid-2">
+        <div class="pill">Small Vehicles – $1,030 (Value ~$1,420 → Save $390)</div>
+        <div class="pill">Sedans – $1,120 (Value ~$1,500 → Save $380)</div>
+        <div class="pill">SUVs – $1,200 (Value ~$1,580 → Save $380)</div>
+        <div class="pill">Trucks – $1,290 (Value ~$1,660 → Save $370)</div>
+        <div class="pill">Vans – $1,380 (Value ~$1,740 → Save $360)</div>
+      </div>
+
+      <p class="muted mt">
+        Bonus Perks: early access to promos, 10% off add-ons, complimentary scent restock each visit, shareable within a
+        household (limit 2 vehicles).
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Gallery ===== -->
+  <section id="gallery" class="section">
+    <div class="container">
+      <h2>Before &amp; After Gallery</h2>
+      <p class="muted">Managed in <a href="/admin/">Admin</a>. Upload or delete photos there—this gallery updates automatically.</p>
+      <div id="gallery-grid" class="gallery-grid"><!-- populated by scripts/gallery.js if you use it --></div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Contact</h2>
+      <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html">
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="hidden"><label>Don’t fill this out <input name="bot-field" /></label></p>
+
+        <div class="grid">
+          <label>
+            Name
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" required />
+          </label>
+        </div>
+
+        <label>
+          Car Details (make/model/year)
+          <input type="text" name="car" placeholder="e.g., Honda Civic 2019" />
+        </label>
+
+        <label>
+          Message
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Send</button>
+        <p class="muted">Prefer WhatsApp? <a target="_blank" rel="noopener" href="https://wa.me/16472440621">Tap here</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      © <span id="year"></span> Sorcery Detailing — Ajax, Ontario
+    </div>
+  </footer>
+
   <script>
-    (function () {
-      // year
-      document.getElementById('year').textContent = new Date().getFullYear();
-
-      const btn = document.querySelector('.menu-toggle');
-      const drawer = document.querySelector('.nav-links');
-      const overlay = document.querySelector('.nav-overlay');
-
-      function openNav() {
-        drawer.classList.add('open');
-        overlay.hidden = false;
-        btn.setAttribute('aria-expanded', 'true');
-        document.body.style.overflow = 'hidden';
-      }
-      function closeNav() {
-        drawer.classList.remove('open');
-        overlay.hidden = true;
-        btn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      }
-
-      btn.addEventListener('click', () => {
-        drawer.classList.contains('open') ? closeNav() : openNav();
-      });
-      overlay.addEventListener('click', closeNav);
-      window.addEventListener('resize', () => {
-        if (window.innerWidth > 960) closeNav();
-      });
-    })();
+    // Year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+  <!-- Optional: gallery loader if you have scripts/gallery.js -->
+  <!-- <script src="scripts/gallery.js" defer></script> -->
 </body>
 </html>
