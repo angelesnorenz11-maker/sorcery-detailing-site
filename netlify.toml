@@ -2,7 +2,14 @@
   command = "npm run build:gallery"
   publish = "."
 
+# Always fetch the fresh JSON for the gallery
 [[headers]]
   for = "/static/gallery.json"
   [headers.values]
   cache-control = "no-store"
+
+# Convenience: /admin (no trailing slash) serves the admin page
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
