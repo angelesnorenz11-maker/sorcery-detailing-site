@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Admin</title>
   <style>
-    :root{ --bg:#0f1012; --text:#eaeaea; --muted:#a5a7ad; --btn:#d1a739; --btn2:#222327; }
-    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    :root { --bg:#0f1012; --text:#eaeaea; --muted:#9aa0a6; --btn:#d1a739; --btn2:#222327; }
+    body{margin:0;background:#101114;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     .wrap{max-width:980px;margin:2.5rem auto;padding:0 1rem}
+    h1{margin:.25rem 0 1rem}
     p.muted{color:var(--muted)}
     .bar{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 1.25rem}
     .btn{appearance:none;border:0;border-radius:12px;padding:.6rem .9rem;font-weight:700;cursor:pointer}
     .btn-primary{background:var(--btn);color:#111}
     .btn-ghost{background:var(--btn2);color:#fff;border:1px solid #2e2f33}
-    a.btn{text-decoration:none}
-    #nc-root{background:#111;border:1px solid #1f2024;border-radius:14px;overflow:hidden}
+    a.btn{display:inline-block;text-decoration:none}
+    #nc-root{background:#111; border:1px solid #1f2024; border-radius:14px; overflow:hidden}
   </style>
 </head>
 <body>
@@ -26,50 +27,30 @@
     </p>
 
     <div class="bar">
-      <a class="btn btn-primary" id="open-media" href="#/media">Open Media Library</a>
+      <a class="btn btn-primary" href="#/media">Open Media Library</a>
       <a class="btn btn-ghost" href="/gallery.html" target="_blank" rel="noopener">View Gallery</a>
-      <a class="btn btn-ghost" href="/index.html">Back to Site</a>
-      <button class="btn btn-ghost" id="login-btn" hidden>Log in</button>
+      <a class="btn btn-ghost" href="/" rel="noopener">Back to Site</a>
       <button class="btn btn-ghost" id="logout-btn" hidden>Log out</button>
     </div>
 
     <div id="nc-root"></div>
   </div>
 
-  <!-- Netlify Identity & Netlify CMS -->
+  <!-- Netlify Identity & CMS -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/netlify-cms@^2/dist/netlify-cms.js"></script>
 
   <script>
-    // Identity helpers: login/logout buttons + invite token flow
+    // Show "Log out" when authenticated
     (function () {
-      if (!window.netlifyIdentity) return;
-      const loginBtn  = document.getElementById('login-btn');
-      const logoutBtn = document.getElementById('logout-btn');
-
-      function updateButtons(user){
-        loginBtn.hidden  = !!user;
-        logoutBtn.hidden = !user;
-      }
-
-      netlifyIdentity.on('init', user => {
-        updateButtons(user);
-        // If visiting via invite link, open the create-account UI
-        const invited = location.hash.includes('invite_token') || location.search.includes('invite_token');
-        if (invited) netlifyIdentity.open('signup');
-      });
-
-      netlifyIdentity.on('login', () => { updateButtons(netlifyIdentity.currentUser()); location.reload(); });
-      netlifyIdentity.on('logout', () => { updateButtons(null); location.reload(); });
-
-      loginBtn.addEventListener('click', () => netlifyIdentity.open('login'));
-      logoutBtn.addEventListener('click', () => netlifyIdentity.logout());
+      const btn = document.getElementById('logout-btn');
+      if (!window.netlifyIdentity || !btn) return;
+      function toggle(user){ btn.hidden = !user; }
+      netlifyIdentity.on('init', toggle);
+      netlifyIdentity.on('login', user => { toggle(user); location.reload(); });
+      netlifyIdentity.on('logout', () => { toggle(null); location.reload(); });
+      btn.addEventListener('click', () => netlifyIdentity.logout());
     })();
-
-    // Scroll CMS into view after clicking "Open Media Library"
-    document.getElementById('open-media').addEventListener('click', () => {
-      setTimeout(() => document.getElementById('nc-root')?.scrollIntoView({behavior:'smooth'}), 0);
-    });
   </script>
 </body>
 </html>
