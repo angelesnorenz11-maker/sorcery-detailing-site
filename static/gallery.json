@@ -1,7 +1,9 @@
-[
-  {
-    "src": "gallery/img-20250816-wa0005.jpg",
-    "title": "Foam Bath",
-    "caption": "Pre-wash stage — deep cleaning with snow foam"
-  }
-]
+{
+  "images": [
+    {
+      "src": "gallery/img-20250816-wa0005.jpg",
+      "title": "Foam Bath",
+      "caption": "Pre-wash stage — deep cleaning with snow foam"
+    }
+  ]
+}
