@@ -202,3 +202,33 @@ textarea{resize:vertical}
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
+/* ===== Lightbox ===== */
+.lb-overlay{
+  position: fixed; inset: 0; background: rgba(0,0,0,.88);
+  display: grid; place-items: center; opacity: 0; pointer-events: none;
+  transition: opacity .18s ease; z-index: 2000;
+}
+.lb-overlay.show{ opacity:1; pointer-events:auto; }
+.lb-stage{
+  position: relative; width: min(96vw, 1200px); height: min(86vh, 900px);
+  display: grid; place-items: center; background: #0b0b0c; border:1px solid #222; border-radius: 12px;
+}
+.lb-img{ max-width: 100%; max-height: 100%; transition: transform .12s ease; }
+
+.lb-close, .lb-prev, .lb-next{
+  position: absolute; top: 12px; background: rgba(34,35,39,.85); color:#fff;
+  border:1px solid #3a3b3f; border-radius: 10px; width:40px; height:40px; cursor:pointer;
+  font-size: 22px; display:grid; place-items:center;
+}
+.lb-close{ right: 12px; }
+.lb-prev{ left: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
+.lb-next{ right: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
+
+.lb-zoom{
+  position: absolute; bottom: 10px; right: 10px; display:flex; gap:6px;
+}
+.lb-zoom button{
+  background: rgba(34,35,39,.85); color:#fff; border:1px solid #3a3b3f;
+  border-radius: 8px; padding:.45rem .6rem; cursor:pointer;
+}
+
