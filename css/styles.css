@@ -190,3 +190,15 @@ textarea{resize:vertical}
   transition: opacity .18s ease;
 }
 .nav-backdrop.show{ opacity:1; pointer-events:auto }
+
+.btn-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
+}
+.btn-secondary{
+  display:inline-block; width:100%; padding:.9rem 1rem; font-weight:700;
+  background:#222327; color:#eaeaea; border:1px solid #2e2f33; border-radius:999px;
+  text-align:center; cursor:pointer;
+}
+.btn-secondary:hover{ background:#2b2c30 }
+@media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
+
