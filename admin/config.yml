@@ -8,7 +8,6 @@ public_folder: "/static/uploads"
 publish_mode: editorial_workflow
 locale: en
 
-# Tiny placeholder so CMS initializes; you won't use it.
 collections:
   - name: "notes"
     label: "Notes (ignore)"
