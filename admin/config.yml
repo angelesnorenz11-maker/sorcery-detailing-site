@@ -2,8 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/uploads"   # where files are stored in the repo
-public_folder: "/static/uploads" # how they are served on the site
+media_folder: "static/uploads"
+public_folder: "/static/uploads"
 
 publish_mode: editorial_workflow
 locale: en
