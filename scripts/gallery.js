@@ -1,23 +1,23 @@
 // scripts/gallery.js
-async function renderGallery(){
-  try{
-    const res = await fetch('/static/gallery.json', { cache:'no-store' });
-    if(!res.ok) throw new Error('static/gallery.json not found');
+async function renderGallery() {
+  try {
+    const res = await fetch('/static/gallery.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('static/gallery.json not found');
     const raw = await res.json();
 
-    // Accept flat array OR { images: [...] }
     const items = Array.isArray(raw) ? raw : Array.isArray(raw.images) ? raw.images : [];
-    const grid = document.getElementById('gallery-grid');
-    if(!grid) return;
+    const grid  = document.getElementById('gallery-grid');
+    if (!grid) return;
 
-    if(items.length === 0){
+    if (items.length === 0) {
       grid.innerHTML = `<p class="muted">No photos yet. Upload in <a href="/admin/">Admin</a>.</p>`;
       return;
     }
 
     grid.innerHTML = items.map((it, i) => `
       <figure class="card">
-        <img data-index="${i}" src="${it.src || it.url}" alt="${(it.title || 'Detailing photo')}" loading="lazy" class="zoomable" />
+        <img data-index="${i}" src="${it.src || it.url}" alt="${it.title || 'Detailing photo'}"
+             loading="lazy" class="zoomable" />
         <figcaption>
           ${it.title ? `<strong>${it.title}</strong>` : ''}
           ${(it.caption || it.desc) ? `<div>${it.caption || it.desc}</div>` : ''}
@@ -25,23 +25,21 @@ async function renderGallery(){
       </figure>
     `).join('');
 
-    // Build lightbox with captions + controls
     setupLightbox(items.map(it => ({
       src: it.src || it.url,
       title: it.title || '',
       caption: it.caption || it.desc || ''
     })));
-  }catch(err){
+  } catch (err) {
     console.error(err);
     const grid = document.getElementById('gallery-grid');
-    if(grid) grid.innerHTML = `<p class="muted">Couldn’t load gallery.</p>`;
+    if (grid) grid.innerHTML = `<p class="muted">Couldn’t load gallery.</p>`;
   }
 }
 
-function setupLightbox(items){
+function setupLightbox(items) {
   const grid = document.getElementById('gallery-grid');
-  if(!grid) return;
-
+  if (!grid) return;
   if (document.querySelector('.lb-overlay')) return;
 
   const overlay = document.createElement('div');
@@ -59,8 +57,7 @@ function setupLightbox(items){
         <button class="z-in" aria-label="Zoom in">+</button>
         <button class="z-reset" aria-label="Reset zoom">Reset</button>
       </div>
-    </div>
-  `;
+    </div>`;
   document.body.appendChild(overlay);
 
   const imgEl = overlay.querySelector('.lb-img');
@@ -70,21 +67,15 @@ function setupLightbox(items){
 
   let index = 0, scale = 1, originX = 50, originY = 50;
 
-  function escapeHTML(s){
-    return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  function renderMeta(){
+  const escapeHTML = s => (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const renderMeta = () => {
     const it = items[index];
-    const title = it.title ? `<div class="lb-title">${escapeHTML(it.title)}</div>` : '';
-    const caption = it.caption ? `<div class="lb-caption">${escapeHTML(it.caption)}</div>` : '';
-    metaEl.innerHTML = title + caption;
+    metaEl.innerHTML = (it.title ? `<div class="lb-title">${escapeHTML(it.title)}</div>` : '')
+                     + (it.caption ? `<div class="lb-caption">${escapeHTML(it.caption)}</div>` : '');
     dlEl.href = it.src;
-  }
-  function preload(i){
-    const n = new Image();
-    n.src = items[(i + items.length) % items.length].src;
-  }
-  function show(i){
+  };
+  const preload = i => { const n = new Image(); n.src = items[(i + items.length) % items.length].src; };
+  const show = i => {
     index = (i + items.length) % items.length;
     imgEl.src = items[index].src;
     resetZoom();
@@ -93,81 +84,70 @@ function setupLightbox(items){
     document.body.style.overflow = 'hidden';
     preload(index + 1);
     preload(index - 1);
-  }
-  function hide(){
-    overlay.classList.remove('show');
-    document.body.style.overflow = '';
-  }
-  function resetZoom(){ scale = 1; originX = 50; originY = 50; applyZoom(); }
-  function applyZoom(){
+  };
+  const hide = () => { overlay.classList.remove('show'); document.body.style.overflow = ''; };
+  const applyZoom = () => {
     imgEl.style.transformOrigin = `${originX}% ${originY}%`;
     imgEl.style.transform = `scale(${scale})`;
-  }
-  const zoomIn  = ()=>{ scale = Math.min(scale + 0.25, 4); applyZoom(); };
-  const zoomOut = ()=>{ scale = Math.max(scale - 0.25, 1); applyZoom(); };
+  };
+  const resetZoom = () => { scale = 1; originX = 50; originY = 50; applyZoom(); };
+  const zoomIn  = () => { scale = Math.min(scale + 0.25, 4); applyZoom(); };
+  const zoomOut = () => { scale = Math.max(scale - 0.25, 1); applyZoom(); };
 
-  // Open from grid
-  grid.addEventListener('click', (e)=>{
+  grid.addEventListener('click', e => {
     const t = e.target.closest('img.zoomable');
-    if(!t) return;
+    if (!t) return;
     const i = Number(t.dataset.index || 0);
-    try { show(i); }
-    catch { window.open(items[i]?.src, '_blank', 'noopener'); }
+    try { show(i); } catch { window.open(items[i]?.src, '_blank', 'noopener'); }
   });
 
-  // Controls & interactions
   overlay.querySelector('.lb-close').addEventListener('click', hide);
-  overlay.querySelector('.lb-prev').addEventListener('click', ()=> show(index - 1));
-  overlay.querySelector('.lb-next').addEventListener('click', ()=> show(index + 1));
-  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hide(); }); // tap backdrop to close
-  stage.addEventListener('click', (e)=>{
-    const isControl = e.target.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
-    const clickedImg = e.target.closest('.lb-img');
-    if (!isControl && !clickedImg) hide();
+  overlay.querySelector('.lb-prev').addEventListener('click', () => show(index - 1));
+  overlay.querySelector('.lb-next').addEventListener('click', () => show(index + 1));
+  overlay.addEventListener('click', e => { if (e.target === overlay) hide(); });
+  stage.addEventListener('click', e => {
+    const isCtl = e.target.closest('.lb-zoom, .lb-prev, .lb-next, .lb-close, .lb-download');
+    if (!isCtl && !e.target.closest('.lb-img')) hide();
   });
 
-  // Keyboard
-  window.addEventListener('keydown', (e)=>{
-    if(!overlay.classList.contains('show')) return;
-    const k = e.key;
-    if(k === 'Escape') hide();
-    if(k === 'ArrowLeft') show(index - 1);
-    if(k === 'ArrowRight') show(index + 1);
-    if(k === '+' || k === '=') zoomIn();
-    if(k === '-') zoomOut();
-    if(k === '0') resetZoom();
+  window.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('show')) return;
+    if (e.key === 'Escape') hide();
+    if (e.key === 'ArrowLeft')  show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+    if (e.key === '+' || e.key === '=') zoomIn();
+    if (e.key === '-')           zoomOut();
+    if (e.key === '0')           resetZoom();
   });
 
-  // Zoom buttons
   overlay.querySelector('.z-in').addEventListener('click', zoomIn);
   overlay.querySelector('.z-out').addEventListener('click', zoomOut);
   overlay.querySelector('.z-reset').addEventListener('click', resetZoom);
 
-  // Wheel zoom + follow cursor
-  stage.addEventListener('wheel', (e)=>{
+  stage.addEventListener('wheel', e => {
     e.preventDefault();
     (e.deltaY < 0 ? zoomIn : zoomOut)();
-  }, {passive:false});
-  stage.addEventListener('mousemove', (e)=>{
-    if(scale === 1) return;
+  }, { passive: false });
+
+  stage.addEventListener('mousemove', e => {
+    if (scale === 1) return;
     const rect = imgEl.getBoundingClientRect();
     originX = ((e.clientX - rect.left) / rect.width) * 100;
     originY = ((e.clientY - rect.top) / rect.height) * 100;
     applyZoom();
   });
 
-  // Touch swipe
   let startX = 0, swiping = false;
-  stage.addEventListener('touchstart', (e)=>{
-    if(e.touches.length !== 1) return;
+  stage.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
     startX = e.touches[0].clientX; swiping = true;
-  }, {passive:true});
-  stage.addEventListener('touchend', (e)=>{
-    if(!swiping) return;
+  }, { passive: true });
+  stage.addEventListener('touchend', e => {
+    if (!swiping) return;
     const dx = e.changedTouches[0].clientX - startX;
-    if(Math.abs(dx) > 40){ dx < 0 ? show(index + 1) : show(index - 1); }
+    if (Math.abs(dx) > 40) { dx < 0 ? show(index + 1) : show(index - 1); }
     swiping = false;
-  }, {passive:true});
+  }, { passive: true });
 }
 
 renderGallery();
