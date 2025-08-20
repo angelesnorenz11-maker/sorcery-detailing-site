@@ -1,8 +1,18 @@
 [build]
-  command = "npm run build:gallery"
   publish = "."
 
-[[headers]]
-  for = "/static/gallery.json"
-  [headers.values]
-  cache-control = "no-store"
+# Redirect old URLs so no one hits a 404
+[[redirects]]
+  from = "/gallery"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/gallery.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/"
+  status = 301
