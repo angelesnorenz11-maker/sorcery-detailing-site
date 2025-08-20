@@ -1,6 +1,6 @@
 /* ============================
    Sorcery Detailing — styles.css
-   (responsive, hero badges + running words)
+   (mobile-friendly hero with a single ribbon)
    ============================ */
 
 :root{
@@ -62,7 +62,7 @@ body{
 
 /* Hero */
 .hero{
-  position:relative;
+  position:relative;             /* for badges/ribbon positioning */
   min-height:62vh;
   display:grid; place-items:center;
   background:
@@ -135,10 +135,49 @@ textarea{resize:vertical}
   padding:1.2rem 1rem; border-top:1px solid #232428; background:rgba(10,10,10,.75)
 }
 
-/* Centered body for thank-you page */
-.centered{display:grid; place-items:center; min-height:100dvh}
+/* ===== Desktop micro tickers ===== */
+.micro-ticker{
+  position:absolute;
+  top:48px;
+  z-index:10;
+  width:min(44vw, 280px);
+  height:28px;
+  overflow:hidden;
+  border-radius:999px;
+  border:1px solid #ffffff22;
+  background:rgba(15,16,18,.78);
+  backdrop-filter:saturate(140%) blur(6px);
+  pointer-events:none;
+}
+.ig-ticker{ left:12px; }
+.gr-ticker{ right:12px; }
+.micro-track{
+  display:inline-block; white-space:nowrap; will-change: transform;
+  animation: micro-scroll 16s linear infinite; padding-inline: 12px;
+}
+.micro-track span{ margin:0 .5rem; color:#eaeaea; font-size:.9rem; }
 
-/* Mobile (≤760px) */
+@keyframes micro-scroll{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===== Badges ===== */
+.ig-badge, .g-rev-badge{
+  position:absolute; top:12px; z-index:10;
+  display:inline-flex; align-items:center; gap:.45rem;
+  color:#fff; text-decoration:none; border:1px solid #ffffff22;
+  border-radius:999px; padding:.45rem .7rem; font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  transition:transform .12s ease, box-shadow .12s ease, opacity .2s ease;
+}
+.ig-badge{ left:12px;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+.g-rev-badge{ right:12px; background:#1f2937; }
+.ig-badge:hover, .g-rev-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
+
+/* ===== Mobile adjustments ===== */
 @media (max-width:760px){
   .topbar{
     flex-wrap: nowrap; gap:.35rem; padding:.4rem .6rem;
@@ -147,7 +186,6 @@ textarea{resize:vertical}
   .topbar::-webkit-scrollbar{ display:none; }
   .topbar span, .topbar .chip{ white-space:nowrap; }
   .topbar .chip{ padding:.2rem .5rem; font-size:.82rem; border-radius:12px; }
-  .topbar .chip[href^="tel:"]{ font-weight:800; }
   .topbar .chip[href^="mailto:"]{ display:none; }
 
   .menu-toggle{ display:inline-flex; align-items:center; gap:.35rem; padding:.5rem .75rem; font-size:.95rem; border-radius:12px; }
@@ -166,13 +204,47 @@ textarea{resize:vertical}
   .main-nav a{ display:block; text-align:center; padding:.75rem 1rem; font-weight:700 }
   .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
 
-  .site-header{ padding:.6rem .9rem }
-  .hero{ min-height:56vh }
-  .hero-logo{ width:96px; height:96px }
-  .hero h1{ font-size: clamp(1.9rem, 8vw, 2.6rem) }
-  .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
+  /* Cleaner hero on mobile */
+  .hero{ min-height:56vh; padding-top:64px; } /* space for ribbon */
+  .hero-logo{ width:104px; height:104px }
+  .hero h1{ font-size: clamp(2.1rem, 8vw, 2.7rem) }
+  .tagline{ font-size: clamp(1rem, 3.6vw, 1.15rem) }
 
-  .grid-form{ grid-template-columns:1fr }
+  /* hide desktop micro tickers on mobile */
+  .micro-ticker{ display:none; }
+
+  /* badges: keep icons only */
+  .ig-badge span, .g-rev-badge span{ display:none; }
+}
+
+/* ===== Mobile ribbon (single, centered) ===== */
+.hero-ribbon{
+  display:none;                 /* hidden on desktop */
+}
+@media (max-width:760px){
+  .hero-ribbon{
+    position:absolute;
+    top:56px; left:12px; right:12px;
+    height:30px;
+    overflow:hidden;
+    border-radius:999px;
+    border:1px solid #ffffff22;
+    background:rgba(15,16,18,.86);
+    backdrop-filter:saturate(140%) blur(6px);
+    z-index:10;
+  }
+  .hero-ribbon .r-track{
+    display:inline-block; white-space:nowrap;
+    will-change: transform;
+    animation: ribbon-scroll 15s linear infinite;
+    line-height:30px; padding:0 12px; font-size:.92rem;
+  }
+  .hero-ribbon a{ color:#eaeaea; text-decoration:none; font-weight:700; }
+  .hero-ribbon span{ color:#cfcfcf; margin:0 .6rem; }
+}
+@keyframes ribbon-scroll{
+  from{ transform: translateX(0); }
+  to  { transform: translateX(-50%); }
 }
 
 /* Backdrop for mobile drawer */
@@ -189,65 +261,7 @@ textarea{resize:vertical}
 .btn-row{
   display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
 }
-.btn-secondary{
-  display:inline-block; width:100%; padding:.9rem 1rem; font-weight:700;
-  background:#222327; color:#eaeaea; border:1px solid #2e2f33; border-radius:999px;
-  text-align:center; cursor:pointer;
-}
-.btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
-/* ===== Micro tickers (running words under badges) ===== */
-.micro-ticker{
-  position:absolute;
-  top:48px;                /* below badges */
-  z-index:10;
-  width:min(44vw, 280px);
-  height:28px;
-  overflow:hidden;
-  border-radius:999px;
-  border:1px solid #ffffff22;
-  background:rgba(15,16,18,.78);
-  backdrop-filter:saturate(140%) blur(6px);
-  pointer-events:none;     /* don’t block taps/clicks */
-}
-.ig-ticker{ left:12px; }
-.gr-ticker{ right:12px; }
-
-.micro-track{
-  display:inline-block;
-  white-space:nowrap;
-  will-change: transform;
-  animation: micro-scroll 16s linear infinite;
-  padding-inline: 12px;
-}
-.micro-track span{ margin:0 .5rem; color:#eaeaea; font-size:.9rem; }
-
-@keyframes micro-scroll{
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* duplicated content for seamless loop */
-}
-
-/* ===== Badges ===== */
-.ig-badge, .g-rev-badge{
-  position:absolute; top:12px; z-index:10;
-  display:inline-flex; align-items:center; gap:.45rem;
-  color:#fff; text-decoration:none; border:1px solid #ffffff22;
-  border-radius:999px; padding:.45rem .7rem; font-weight:700;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-  transition:transform .12s ease, box-shadow .12s ease, opacity .2s ease;
-}
-.ig-badge{ left:12px;
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-}
-.g-rev-badge{ right:12px; background:#1f2937; }
-.ig-badge:hover, .g-rev-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
-
-@media (max-width:560px){
-  .ig-badge span, .g-rev-badge span{ display:none; }
-  .micro-ticker{ width: min(52vw, 220px); top:46px; }
-  .micro-track span{ margin:0 .4rem; font-size:.85rem; }
-}
-
-/* Thumbs indicate they’re zoomable (kept if you add any images in the future) */
+/* hint for zoomable images (if any in future) */
 img.zoomable{ cursor: zoom-in; }
