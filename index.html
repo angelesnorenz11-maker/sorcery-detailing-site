@@ -33,6 +33,7 @@
       <a href="#packages">Packages</a>
       <a href="#addons">Add-ons</a>
       <a href="#subscriptions">Subscriptions</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -176,6 +177,37 @@
       </div>
 
       <p class="muted">Subscriber perks: priority scheduling, 10% off add-ons, complimentary scent restock each visit, shareable within a household/small business (limit 2 vehicles).</p>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <form id="contact-form" class="contact" autocomplete="on">
+        <div class="grid-form">
+          <label>Name
+            <input required type="text" id="name" name="name" placeholder="Your name" />
+          </label>
+          <label>Email
+            <input type="email" id="email" name="email" placeholder="you@email.com (optional)" />
+          </label>
+          <label>Vehicle details
+            <input type="text" id="vehicle" name="vehicle" placeholder="Year / Make / Model / Size" />
+          </label>
+          <label>Service interested in
+            <input type="text" id="service" name="service" placeholder="Silver / Gold / Platinum / Subscription / Add-ons" />
+          </label>
+          <label class="full">Message
+            <textarea id="message" name="message" rows="5" placeholder="Tell me what you need…"></textarea>
+          </label>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="submit" id="send-whatsapp">Send via WhatsApp</button>
+          <button type="button" class="submit" id="send-sms">Send via SMS</button>
+        </div>
+
+        <p class="muted">Prefer email? Use <a href="mailto:SorceryDetailing@gmail.com">SorceryDetailing@gmail.com</a>.</p>
+      </form>
     </section>
   </main>
 
