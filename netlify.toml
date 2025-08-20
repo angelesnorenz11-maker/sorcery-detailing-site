@@ -1,7 +1,7 @@
 [build]
   publish = "."
 
-# Redirect old URLs so no one hits a 404
+# Redirect old URLs (if someone has them)
 [[redirects]]
   from = "/gallery"
   to = "/"
