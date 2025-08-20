@@ -1,6 +1,7 @@
 /* ============================
    Sorcery Detailing — styles.css
    (mobile MENU, stacking fix, tighter topbar, correct bg paths)
+   + smoothness & accessibility polish
    ============================ */
 
 :root{
@@ -14,12 +15,25 @@
 }
 
 *{box-sizing:border-box}
+html{
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
 html,body{margin:0;padding:0}
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
   background: #0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
   line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
 }
 
 /* Topbar */
@@ -46,7 +60,7 @@ body{
 .brand{display:flex; gap:.6rem; align-items:center; color:var(--text); text-decoration:none}
 .brand img{width:28px; height:28px; border-radius:50%}
 
-.main-nav{display:flex; gap:.4rem; flex-wrap:wrap}
+.main-nav{display:flex; gap:.4rem; flex-wrap:wrap; will-change:transform,opacity}
 .main-nav a{
   color:var(--text); text-decoration:none; padding:.45rem .75rem; border-radius:999px; background:var(--pill);
 }
@@ -58,7 +72,9 @@ body{
   display:none;
   background:var(--brand); color:#111; border:none; border-radius:999px;
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
+  transition:transform .12s ease;
 }
+.menu-toggle:active{ transform:scale(.98) }
 
 /* Hero */
 .hero{
@@ -73,6 +89,20 @@ body{
 .hero h1{font-size:clamp(3rem,8vw,5rem); line-height:1.1; margin:.6rem 0}
 .tagline{margin-top:.25rem; color:var(--muted); font-size: clamp(2rem, 2.2vw, 1.35rem)}
 
+/* Optional: CTA pill styles (so you can move inline Google pill styles here) */
+.hero-cta{margin-top:.9rem; display:flex; justify-content:center}
+.social-pill{
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.6rem .9rem; border-radius:999px;
+  border:1px solid #232428; background:#fff; color:#111;
+  text-decoration:none; font-weight:700;
+  box-shadow:0 6px 18px rgba(0,0,0,.22);
+  transition:transform .12s ease, box-shadow .12s ease, border-color .18s ease, background .18s ease;
+}
+.social-pill:hover{ transform:translateY(-1px); box-shadow:0 10px 26px rgba(0,0,0,.26); border-color:#3b82f6 }
+.social-pill .g{ width:20px; height:20px }
+.social-pill .stars{ color:#f59e0b; letter-spacing:.06em; font-weight:800 }
+
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
 .section{padding:3rem 0}
@@ -82,6 +112,7 @@ h4{margin:1rem 0 .25rem}
 .card{
   background:rgba(15,16,18,.7); border:1px solid #232428; border-radius:14px;
   padding:1.25rem 1.2rem; margin:1rem 0;
+  backdrop-filter:saturate(120%) blur(2px);
 }
 .price{color:var(--muted); margin:.25rem 0 .5rem}
 
@@ -177,10 +208,14 @@ textarea{resize:vertical}
   .hero h1{ font-size: clamp(1.9rem, 8vw, 2.6rem) }
   .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
 
+  /* Perf: fixed backgrounds can jank on mobile. Switch to scroll */
+  body{ background-attachment: scroll; }
   .grid-form{ grid-template-columns:1fr }
 }
 
-/* Backdrop for mobile drawer */
+/* Backdrop for mobile drawer
+   NOTE: your JS uses [hidden] instead of a .show class.
+   These rules make the fade work with that. */
 .nav-backdrop{
   position: fixed; inset:0;
   background: rgba(0,0,0,.35);
@@ -189,8 +224,9 @@ textarea{resize:vertical}
   opacity:0; pointer-events:none;
   transition: opacity .18s ease;
 }
-.nav-backdrop.show{ opacity:1; pointer-events:auto }
+.nav-backdrop:not([hidden]){ opacity:1; pointer-events:auto }
 
+/* Buttons row */
 .btn-row{
   display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
 }
@@ -260,3 +296,9 @@ textarea{resize:vertical}
 /* Thumbs indicate they’re zoomable */
 img.zoomable{ cursor: zoom-in; }
 
+/* Better focus outlines for keyboard users */
+:focus-visible{
+  outline:2px solid #60a5fa;
+  outline-offset:3px;
+  border-radius:12px;
+}
