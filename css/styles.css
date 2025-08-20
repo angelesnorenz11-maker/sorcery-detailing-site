@@ -59,55 +59,19 @@ body{
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
 }
 
-/* ---------- Hero ---------- */
+/* Hero */
 .hero{
-  position:relative;                    /* for badges */
+  position:relative;           /* <-- added */
   min-height:62vh;
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
     url("../static/bg-hero.jpg") center / cover no-repeat;
 }
-
-/* Center inner + children perfectly */
-.hero-inner{
-  text-align:center;
-  padding:3rem 1rem;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-.hero-logo{
-  width:150px; height:150px; border-radius:50%; opacity:.95; margin-bottom:.5rem;
-  display:block; margin-inline:auto;
-}
+.hero-inner{text-align:center; padding:3rem 1rem}
+.hero-logo{width:150px; height:150px; border-radius:50%; opacity:.95; margin-bottom:.5rem}
 .hero h1{font-size:clamp(3rem,8vw,5rem); line-height:1.1; margin:.6rem 0}
-.tagline{margin-top:.25rem; color:var(--muted); font-size: clamp(2rem, 2.2vw, 1.35rem)}
-
-/* Social / review badges inside hero */
-.ig-badge, .g-rev-badge{
-  position:absolute; top:12px; z-index:10;
-  display:inline-flex; align-items:center; gap:.45rem;
-  color:#fff; text-decoration:none; border:1px solid #ffffff22;
-  border-radius:999px; padding:.45rem .7rem; font-weight:700;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-  transition: transform .12s ease, box-shadow .12s ease, opacity .2s ease;
-}
-.ig-badge{ left:12px;
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-}
-.g-rev-badge{ right:12px;
-  background: linear-gradient(135deg, #34a853 0%, #1a73e8 100%);
-}
-.ig-badge:hover, .g-rev-badge:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 14px 36px rgba(0,0,0,.3);
-}
-.ig-badge svg, .g-rev-badge svg{ display:block }
-@media (max-width:560px){
-  .ig-badge span, .g-rev-badge span{ display:none }
-}
+.tagline{margin-top:.25rem; color:var(--muted); font-size: clamp(1rem, 2.2vw, 1.35rem)}
 
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
@@ -164,12 +128,6 @@ textarea{resize:vertical}
   border-radius:999px; padding:.7rem 1rem; box-shadow:0 8px 28px rgba(0,0,0,.35);
 }
 
-/* Gallery */
-.grid-gallery{display:grid; gap:.9rem; grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
-.grid-gallery .card{padding:0; overflow:hidden}
-.grid-gallery img{display:block; width:100%; height:220px; object-fit:cover}
-.grid-gallery figcaption{padding:.65rem .8rem; font-size:.95rem; color:var(--muted)}
-
 /* Footer */
 .footer{
   display:flex; gap:1rem; justify-content:space-between; align-items:center;
@@ -179,7 +137,7 @@ textarea{resize:vertical}
 /* Centered body for thank-you page */
 .centered{display:grid; place-items:center; min-height:100dvh}
 
-/* --------- Mobile (≤760px) --------- */
+/* Mobile (≤760px) */
 @media (max-width:760px){
   .topbar{
     flex-wrap: nowrap; gap:.35rem; padding:.4rem .6rem;
@@ -238,58 +196,18 @@ textarea{resize:vertical}
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
-/* ===== Lightbox ===== */
-.lb-overlay{
-  position: fixed; inset: 0; background: rgba(0,0,0,.88);
-  display: grid; place-items: center; opacity: 0; pointer-events: none;
-  transition: opacity .18s ease; z-index: 9999;
+/* ===== IG & Google review badges ===== */
+.ig-badge, .g-rev-badge{
+  position:absolute; top:12px; z-index:10;
+  display:inline-flex; align-items:center; gap:.45rem;
+  color:#fff; text-decoration:none; border:1px solid #ffffff22;
+  border-radius:999px; padding:.45rem .7rem; font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  transition:transform .12s ease, box-shadow .12s ease, opacity .2s ease;
 }
-.lb-overlay.show{ opacity:1; pointer-events:auto; }
-
-.lb-stage{
-  position: relative; width: min(96vw, 1200px); height: min(86vh, 900px);
-  display: grid; place-items: center; background: #0b0b0c; border:1px solid #222; border-radius: 12px;
+.ig-badge{ left:12px;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
 }
-.lb-img{
-  position: relative; z-index: 1;
-  max-width: 100%; max-height: 100%; transition: transform .12s ease;
-}
-
-/* Ensure UI is clickable above the image */
-.lb-zoom, .lb-meta, .lb-download{ position: absolute; z-index: 3; }
-.lb-close, .lb-prev, .lb-next{ z-index: 4; }
-
-.lb-close, .lb-prev, .lb-next{
-  position: absolute; top: 12px; background: rgba(34,35,39,.85); color:#fff;
-  border:1px solid #3a3b3f; border-radius: 10px; width:40px; height:40px; cursor:pointer;
-  font-size: 22px; display:grid; place-items:center;
-}
-.lb-close{ right: 12px; }
-.lb-prev{ left: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
-.lb-next{ right: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
-
-/* Zoom controls */
-.lb-zoom{ bottom: 10px; right: 10px; display:flex; gap:6px; }
-.lb-zoom button{
-  background: rgba(34,35,39,.85); color:#fff; border:1px solid #3a3b3f;
-  border-radius: 8px; padding:.45rem .6rem; cursor:pointer;
-}
-
-/* Captions / meta */
-.lb-meta{
-  left:12px; bottom:10px; right:140px;
-  color:#eaeaea; font-size:.95rem; line-height:1.35;
-  text-shadow: 0 1px 2px rgba(0,0,0,.6);
-}
-.lb-title{ font-weight:700; margin-bottom:2px }
-.lb-caption{ color:#c9c9c9 }
-
-/* Download button */
-.lb-download{
-  bottom:10px; left:12px;
-  background: rgba(34,35,39,.85); color:#fff; border:1px solid #3a3b3f;
-  border-radius: 8px; padding:.45rem .6rem; text-decoration:none; cursor:pointer;
-}
-
-/* Thumbs indicate they’re zoomable */
-img.zoomable{ cursor: zoom-in; }
+.g-rev-badge{ right:12px; background:#1f2937; }
+.ig-badge:hover, .g-rev-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
+@media (max-width:560px){ .ig-badge span, .g-rev-badge span{ display:none } }
