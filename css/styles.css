@@ -1,5 +1,6 @@
 /* ============================
    Sorcery Detailing — styles.css
+   (responsive, hero badges + running words)
    ============================ */
 
 :root{
@@ -61,7 +62,7 @@ body{
 
 /* Hero */
 .hero{
-  position:relative;           /* <-- added */
+  position:relative;
   min-height:62vh;
   display:grid; place-items:center;
   background:
@@ -196,7 +197,38 @@ textarea{resize:vertical}
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
-/* ===== IG & Google review badges ===== */
+/* ===== Micro tickers (running words under badges) ===== */
+.micro-ticker{
+  position:absolute;
+  top:48px;                /* below badges */
+  z-index:10;
+  width:min(44vw, 280px);
+  height:28px;
+  overflow:hidden;
+  border-radius:999px;
+  border:1px solid #ffffff22;
+  background:rgba(15,16,18,.78);
+  backdrop-filter:saturate(140%) blur(6px);
+  pointer-events:none;     /* don’t block taps/clicks */
+}
+.ig-ticker{ left:12px; }
+.gr-ticker{ right:12px; }
+
+.micro-track{
+  display:inline-block;
+  white-space:nowrap;
+  will-change: transform;
+  animation: micro-scroll 16s linear infinite;
+  padding-inline: 12px;
+}
+.micro-track span{ margin:0 .5rem; color:#eaeaea; font-size:.9rem; }
+
+@keyframes micro-scroll{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* duplicated content for seamless loop */
+}
+
+/* ===== Badges ===== */
 .ig-badge, .g-rev-badge{
   position:absolute; top:12px; z-index:10;
   display:inline-flex; align-items:center; gap:.45rem;
@@ -210,4 +242,12 @@ textarea{resize:vertical}
 }
 .g-rev-badge{ right:12px; background:#1f2937; }
 .ig-badge:hover, .g-rev-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
-@media (max-width:560px){ .ig-badge span, .g-rev-badge span{ display:none } }
+
+@media (max-width:560px){
+  .ig-badge span, .g-rev-badge span{ display:none; }
+  .micro-ticker{ width: min(52vw, 220px); top:46px; }
+  .micro-track span{ margin:0 .4rem; font-size:.85rem; }
+}
+
+/* Thumbs indicate they’re zoomable (kept if you add any images in the future) */
+img.zoomable{ cursor: zoom-in; }
