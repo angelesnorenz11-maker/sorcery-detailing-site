@@ -1,7 +1,5 @@
 /* ============================
    Sorcery Detailing — styles.css
-   (mobile MENU, stacking fix, tighter topbar, correct bg paths)
-   + smoothness & accessibility polish
    ============================ */
 
 :root{
@@ -15,25 +13,12 @@
 }
 
 *{box-sizing:border-box}
-html{
-  scroll-behavior:smooth;
-  -webkit-text-size-adjust:100%;
-  text-size-adjust:100%;
-}
 html,body{margin:0;padding:0}
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
   background: #0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
   line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-img{max-width:100%;height:auto;display:block}
-a{color:inherit}
-
-@media (prefers-reduced-motion: reduce){
-  *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
 }
 
 /* Topbar */
@@ -55,12 +40,12 @@ a{color:inherit}
   backdrop-filter:saturate(140%) blur(6px);
   background:rgba(10,10,10,.75);
   border-bottom:1px solid #1e1f22;
-  z-index:1000; /* above overlay */
+  z-index:1000;
 }
 .brand{display:flex; gap:.6rem; align-items:center; color:var(--text); text-decoration:none}
 .brand img{width:28px; height:28px; border-radius:50%}
 
-.main-nav{display:flex; gap:.4rem; flex-wrap:wrap; will-change:transform,opacity}
+.main-nav{display:flex; gap:.4rem; flex-wrap:wrap}
 .main-nav a{
   color:var(--text); text-decoration:none; padding:.45rem .75rem; border-radius:999px; background:var(--pill);
 }
@@ -72,36 +57,57 @@ a{color:inherit}
   display:none;
   background:var(--brand); color:#111; border:none; border-radius:999px;
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
-  transition:transform .12s ease;
 }
-.menu-toggle:active{ transform:scale(.98) }
 
-/* Hero */
+/* ---------- Hero ---------- */
 .hero{
+  position:relative;                    /* for badges */
   min-height:62vh;
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
     url("../static/bg-hero.jpg") center / cover no-repeat;
 }
-.hero-inner{text-align:center; padding:3rem 1rem}
-.hero-logo{width:150px; height:150px; border-radius:50%; opacity:.95; margin-bottom:.5rem}
+
+/* Center inner + children perfectly */
+.hero-inner{
+  text-align:center;
+  padding:3rem 1rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.hero-logo{
+  width:150px; height:150px; border-radius:50%; opacity:.95; margin-bottom:.5rem;
+  display:block; margin-inline:auto;
+}
 .hero h1{font-size:clamp(3rem,8vw,5rem); line-height:1.1; margin:.6rem 0}
 .tagline{margin-top:.25rem; color:var(--muted); font-size: clamp(2rem, 2.2vw, 1.35rem)}
 
-/* Optional: CTA pill styles (so you can move inline Google pill styles here) */
-.hero-cta{margin-top:.9rem; display:flex; justify-content:center}
-.social-pill{
-  display:inline-flex; align-items:center; gap:.6rem;
-  padding:.6rem .9rem; border-radius:999px;
-  border:1px solid #232428; background:#fff; color:#111;
-  text-decoration:none; font-weight:700;
-  box-shadow:0 6px 18px rgba(0,0,0,.22);
-  transition:transform .12s ease, box-shadow .12s ease, border-color .18s ease, background .18s ease;
+/* Social / review badges inside hero */
+.ig-badge, .g-rev-badge{
+  position:absolute; top:12px; z-index:10;
+  display:inline-flex; align-items:center; gap:.45rem;
+  color:#fff; text-decoration:none; border:1px solid #ffffff22;
+  border-radius:999px; padding:.45rem .7rem; font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  transition: transform .12s ease, box-shadow .12s ease, opacity .2s ease;
 }
-.social-pill:hover{ transform:translateY(-1px); box-shadow:0 10px 26px rgba(0,0,0,.26); border-color:#3b82f6 }
-.social-pill .g{ width:20px; height:20px }
-.social-pill .stars{ color:#f59e0b; letter-spacing:.06em; font-weight:800 }
+.ig-badge{ left:12px;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+.g-rev-badge{ right:12px;
+  background: linear-gradient(135deg, #34a853 0%, #1a73e8 100%);
+}
+.ig-badge:hover, .g-rev-badge:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px rgba(0,0,0,.3);
+}
+.ig-badge svg, .g-rev-badge svg{ display:block }
+@media (max-width:560px){
+  .ig-badge span, .g-rev-badge span{ display:none }
+}
 
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
@@ -112,7 +118,6 @@ h4{margin:1rem 0 .25rem}
 .card{
   background:rgba(15,16,18,.7); border:1px solid #232428; border-radius:14px;
   padding:1.25rem 1.2rem; margin:1rem 0;
-  backdrop-filter:saturate(120%) blur(2px);
 }
 .price{color:var(--muted); margin:.25rem 0 .5rem}
 
@@ -174,7 +179,7 @@ textarea{resize:vertical}
 /* Centered body for thank-you page */
 .centered{display:grid; place-items:center; min-height:100dvh}
 
-/* Mobile (≤760px) */
+/* --------- Mobile (≤760px) --------- */
 @media (max-width:760px){
   .topbar{
     flex-wrap: nowrap; gap:.35rem; padding:.4rem .6rem;
@@ -208,25 +213,20 @@ textarea{resize:vertical}
   .hero h1{ font-size: clamp(1.9rem, 8vw, 2.6rem) }
   .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
 
-  /* Perf: fixed backgrounds can jank on mobile. Switch to scroll */
-  body{ background-attachment: scroll; }
   .grid-form{ grid-template-columns:1fr }
 }
 
-/* Backdrop for mobile drawer
-   NOTE: your JS uses [hidden] instead of a .show class.
-   These rules make the fade work with that. */
+/* Backdrop for mobile drawer */
 .nav-backdrop{
   position: fixed; inset:0;
   background: rgba(0,0,0,.35);
   backdrop-filter: blur(2px);
-  z-index:900; /* below header & drawer */
+  z-index:900;
   opacity:0; pointer-events:none;
   transition: opacity .18s ease;
 }
-.nav-backdrop:not([hidden]){ opacity:1; pointer-events:auto }
+.nav-backdrop.show{ opacity:1; pointer-events:auto }
 
-/* Buttons row */
 .btn-row{
   display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
 }
@@ -269,9 +269,7 @@ textarea{resize:vertical}
 .lb-next{ right: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
 
 /* Zoom controls */
-.lb-zoom{
-  bottom: 10px; right: 10px; display:flex; gap:6px;
-}
+.lb-zoom{ bottom: 10px; right: 10px; display:flex; gap:6px; }
 .lb-zoom button{
   background: rgba(34,35,39,.85); color:#fff; border:1px solid #3a3b3f;
   border-radius: 8px; padding:.45rem .6rem; cursor:pointer;
@@ -295,10 +293,3 @@ textarea{resize:vertical}
 
 /* Thumbs indicate they’re zoomable */
 img.zoomable{ cursor: zoom-in; }
-
-/* Better focus outlines for keyboard users */
-:focus-visible{
-  outline:2px solid #60a5fa;
-  outline-offset:3px;
-  border-radius:12px;
-}
