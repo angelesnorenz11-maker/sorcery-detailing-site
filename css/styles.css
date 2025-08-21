@@ -16,11 +16,10 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 img{max-width:100%;height:auto;display:block}
-
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
-  background:#0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
+  background: #0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
   line-height:1.6;
 }
 
@@ -60,17 +59,17 @@ body{
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
 }
 
-/* ---------- HERO ---------- */
+/* ---------- Hero sizing (room for pills) ---------- */
 .hero{
   position: relative;
-  min-height:66vh; /* a little taller so tagline never overlaps rails */
+  min-height: 66vh; /* desktop height */
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
-    url("../static/bg-hero.jpg") center / cover no-repeat;
+    url("../static/bg-hero.jpg") center/cover no-repeat;
 }
 .hero-inner{
-  text-align:center; padding:3rem 1rem;
+  text-align:center; padding:3.2rem 1rem 5.8rem; /* bottom padding avoids overlap */
   display:grid; place-items:center; gap:.3rem;
   max-width: 900px; margin-inline:auto;
 }
@@ -85,71 +84,43 @@ body{
 }
 .tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
 
-/* ---------- HERO RAILS (Instagram + Google) ---------- */
-.hero-rails{
-  position:absolute; left:16px; right:16px; bottom:18px;
-  display:flex; flex-direction:column; gap:10px;
-  pointer-events:none; /* so clicks pass unless on children */
+/* ---------- Bottom-center pills ---------- */
+.hero-social{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:14px;
+  display:grid;
+  gap:.55rem;
+  width:max-content;
+  max-width:94vw;  /* in case labels get long */
 }
-.hero-rail{
-  display:flex; gap:12px; align-items:center;
-  max-width:min(920px,100%);
-  pointer-events:auto;
+.hero-social .row{
+  display:flex; align-items:center; justify-content:center;
+  gap:.55rem; flex-wrap:wrap;
 }
 
-/* Instagram pill */
-.ig-pill{
+.badge{
   display:inline-flex; align-items:center; gap:.5rem;
-  color:#fff; text-decoration:none; font-weight:800;
+  border-radius:999px; padding:.45rem .8rem;
+  font-weight:700; text-decoration:none; line-height:1;
+  font-size: clamp(.82rem, 1.2vw, .95rem);
+}
+
+/* Instagram pill (gradient) */
+.badge.ig{
+  color:#fff;
   border:1px solid #ffffff22;
-  padding:.45rem .7rem; border-radius:16px;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-  white-space:nowrap;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
+.badge.ig svg{ display:block }
 
-/* Google rating pill */
-.rating-pill{
-  display:inline-flex; align-items:center; gap:.55rem;
-  color:#fff; text-decoration:none; font-weight:800;
-  background:rgba(34,35,39,.9); border:1px solid #2e2f33;
-  padding:.45rem .7rem; border-radius:16px;
-  white-space:nowrap;
+/* Google pill (same shape, dark) */
+.badge.google{
+  color:#fff; background:#1f2024; border:1px solid #2b2c30;
 }
-.g-stars{letter-spacing:.15em; color:#ffcc33;}
-
-/* Ticker / Marquee */
-.ticker{
-  flex:1; overflow:hidden;
-  background:rgba(34,35,39,.55); border:1px solid #2e2f33;
-  border-radius:16px;
-  height:32px; display:flex; align-items:center;
-  position:relative; mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-}
-.ticker__track{
-  --speed:28s;
-  display:inline-block; white-space:nowrap;
-  animation: ticker var(--speed) linear infinite;
-  padding-inline:24px;
-}
-.ticker__track span{padding:0 14px; color:#e9e9e9}
-.ticker__dot{opacity:.6; padding:0 6px}
-
-@keyframes ticker{
-  0%{ transform: translateX(0) }
-  100%{ transform: translateX(-50%) }
-}
-
-/* ---------- Desktop-friendly compact sizing ---------- */
-@media (min-width:1024px){
-  .hero-rail{ width:min(840px,92vw); }
-  .ig-pill,.rating-pill{ font-size:13px; padding:.3rem .55rem; border-radius:12px; }
-  .ticker{ height:28px; font-size:13px; border-radius:12px; }
-  .ticker__track{ --speed:24s; }
-}
-@media (min-width:1440px){
-  .hero-rail{ width:min(780px,92vw); }
-}
+.badge.google .stars{ color:#ffd266; letter-spacing:1px; }
 
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
@@ -242,12 +213,10 @@ textarea{resize:vertical}
   .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
 
   .site-header{ padding:.6rem .9rem }
-  .hero{ min-height:60vh } /* slightly shorter on small phones but still roomy */
-  .hero-logo{ width: clamp(88px, 20vw, 110px); height: clamp(88px, 20vw, 110px) }
-  .hero h1{ font-size: clamp(1.9rem, 7vw, 2.4rem) }
-  .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
-
-  .grid-form{ grid-template-columns:1fr }
+  .hero{ min-height: 70vh; }
+  .hero-inner{ padding-bottom: 7.2rem; } /* more room under text */
+  .hero-social{ bottom:12px; }
+  .badge{ font-size: .95rem; }
 }
 
 /* Backdrop for mobile drawer */
@@ -260,3 +229,14 @@ textarea{resize:vertical}
   transition: opacity .18s ease;
 }
 .nav-backdrop.show{ opacity:1; pointer-events:auto }
+
+.btn-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
+}
+.btn-secondary{
+  display:inline-block; width:100%; padding:.9rem 1rem; font-weight:700;
+  background:#222327; color:#eaeaea; border:1px solid #2e2f33; border-radius:999px;
+  text-align:center; cursor:pointer;
+}
+.btn-secondary:hover{ background:#2b2c30 }
+@media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
