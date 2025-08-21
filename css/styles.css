@@ -1,6 +1,5 @@
 /* ============================
    Sorcery Detailing — styles.css
-   (mobile-friendly hero with a single ribbon)
    ============================ */
 
 :root{
@@ -51,28 +50,77 @@ body{
   color:var(--text); text-decoration:none; padding:.45rem .75rem; border-radius:999px; background:var(--pill);
 }
 .main-nav a:hover, .main-nav a.active{background:#2b2c30}
-.pill{background:var(--brand) !important; color:#111 !important}
 
-/* MENU button (hidden on desktop) */
 .menu-toggle{
   display:none;
   background:var(--brand); color:#111; border:none; border-radius:999px;
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
 }
 
+/* ===== Mobile ribbon (sticky, outside the hero) ===== */
+.ribbon-mobile{ display:none; }
+
+@media (max-width:760px){
+  .ribbon-mobile{
+    position: sticky;
+    top: 0;
+    z-index: 1200;
+    height: 34px;
+    overflow: hidden;
+    background: rgba(15,16,18,.92);
+    border-bottom: 1px solid #232428;
+    backdrop-filter: saturate(140%) blur(6px);
+  }
+  .ribbon-mobile .r-track{
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    line-height: 34px;
+    padding: 0 12px;
+    font-size: .95rem;
+    animation: ribbon-scroll 14s linear infinite;
+  }
+  .ribbon-mobile a{ color:#eaeaea; text-decoration:none; font-weight:700; }
+  .ribbon-mobile span{ color:#cfcfcf; margin: 0 .6rem; }
+}
+@keyframes ribbon-scroll{
+  from{ transform: translateX(0); }
+  to  { transform: translateX(-50%); }
+}
+
 /* Hero */
 .hero{
-  position:relative;             /* for badges/ribbon positioning */
+  position: relative;
   min-height:62vh;
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
     url("../static/bg-hero.jpg") center / cover no-repeat;
 }
-.hero-inner{text-align:center; padding:3rem 1rem}
-.hero-logo{width:150px; height:150px; border-radius:50%; opacity:.95; margin-bottom:.5rem}
+.hero-inner{
+  text-align:center; padding:3rem 1rem;
+  display:grid; place-items:center; gap:.2rem;
+}
+.hero-logo{
+  width:150px; height:150px; border-radius:50%; opacity:.95; margin-bottom:.4rem;
+  display:block;
+}
 .hero h1{font-size:clamp(3rem,8vw,5rem); line-height:1.1; margin:.6rem 0}
-.tagline{margin-top:.25rem; color:var(--muted); font-size: clamp(1rem, 2.2vw, 1.35rem)}
+.tagline{margin-top:.25rem; color:var(--muted); font-size: clamp(1.1rem, 3.2vw, 1.35rem)}
+
+/* Instagram badge (top-left of hero) */
+.ig-badge{
+  position:absolute; top:12px; left:12px; z-index:10;
+  display:inline-flex; align-items:center; gap:.45rem;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  color:#fff; text-decoration:none; border:1px solid #ffffff22;
+  border-radius:999px; padding:.45rem .7rem; font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.ig-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
+.ig-badge svg{display:block}
+@media (max-width:560px){ .ig-badge span{ display:none } }
 
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
@@ -129,55 +177,22 @@ textarea{resize:vertical}
   border-radius:999px; padding:.7rem 1rem; box-shadow:0 8px 28px rgba(0,0,0,.35);
 }
 
+/* Gallery cards (kept for consistency if used later) */
+.grid-gallery{display:grid; gap:.9rem; grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.grid-gallery .card{padding:0; overflow:hidden}
+.grid-gallery img{display:block; width:100%; height:220px; object-fit:cover}
+.grid-gallery figcaption{padding:.65rem .8rem; font-size:.95rem; color:var(--muted)}
+
 /* Footer */
 .footer{
   display:flex; gap:1rem; justify-content:space-between; align-items:center;
   padding:1.2rem 1rem; border-top:1px solid #232428; background:rgba(10,10,10,.75)
 }
 
-/* ===== Desktop micro tickers ===== */
-.micro-ticker{
-  position:absolute;
-  top:48px;
-  z-index:10;
-  width:min(44vw, 280px);
-  height:28px;
-  overflow:hidden;
-  border-radius:999px;
-  border:1px solid #ffffff22;
-  background:rgba(15,16,18,.78);
-  backdrop-filter:saturate(140%) blur(6px);
-  pointer-events:none;
-}
-.ig-ticker{ left:12px; }
-.gr-ticker{ right:12px; }
-.micro-track{
-  display:inline-block; white-space:nowrap; will-change: transform;
-  animation: micro-scroll 16s linear infinite; padding-inline: 12px;
-}
-.micro-track span{ margin:0 .5rem; color:#eaeaea; font-size:.9rem; }
+/* Centered body for thank-you page */
+.centered{display:grid; place-items:center; min-height:100dvh}
 
-@keyframes micro-scroll{
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* ===== Badges ===== */
-.ig-badge, .g-rev-badge{
-  position:absolute; top:12px; z-index:10;
-  display:inline-flex; align-items:center; gap:.45rem;
-  color:#fff; text-decoration:none; border:1px solid #ffffff22;
-  border-radius:999px; padding:.45rem .7rem; font-weight:700;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-  transition:transform .12s ease, box-shadow .12s ease, opacity .2s ease;
-}
-.ig-badge{ left:12px;
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-}
-.g-rev-badge{ right:12px; background:#1f2937; }
-.ig-badge:hover, .g-rev-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
-
-/* ===== Mobile adjustments ===== */
+/* Mobile (≤760px) */
 @media (max-width:760px){
   .topbar{
     flex-wrap: nowrap; gap:.35rem; padding:.4rem .6rem;
@@ -186,6 +201,7 @@ textarea{resize:vertical}
   .topbar::-webkit-scrollbar{ display:none; }
   .topbar span, .topbar .chip{ white-space:nowrap; }
   .topbar .chip{ padding:.2rem .5rem; font-size:.82rem; border-radius:12px; }
+  .topbar .chip[href^="tel:"]{ font-weight:800; }
   .topbar .chip[href^="mailto:"]{ display:none; }
 
   .menu-toggle{ display:inline-flex; align-items:center; gap:.35rem; padding:.5rem .75rem; font-size:.95rem; border-radius:12px; }
@@ -204,47 +220,13 @@ textarea{resize:vertical}
   .main-nav a{ display:block; text-align:center; padding:.75rem 1rem; font-weight:700 }
   .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
 
-  /* Cleaner hero on mobile */
-  .hero{ min-height:56vh; padding-top:64px; } /* space for ribbon */
-  .hero-logo{ width:104px; height:104px }
-  .hero h1{ font-size: clamp(2.1rem, 8vw, 2.7rem) }
-  .tagline{ font-size: clamp(1rem, 3.6vw, 1.15rem) }
+  .site-header{ padding:.6rem .9rem }
+  .hero{ min-height:56vh }
+  .hero-logo{ width:110px; height:110px }
+  .hero h1{ font-size: clamp(2.2rem, 8vw, 2.8rem) }
+  .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
 
-  /* hide desktop micro tickers on mobile */
-  .micro-ticker{ display:none; }
-
-  /* badges: keep icons only */
-  .ig-badge span, .g-rev-badge span{ display:none; }
-}
-
-/* ===== Mobile ribbon (single, centered) ===== */
-.hero-ribbon{
-  display:none;                 /* hidden on desktop */
-}
-@media (max-width:760px){
-  .hero-ribbon{
-    position:absolute;
-    top:56px; left:12px; right:12px;
-    height:30px;
-    overflow:hidden;
-    border-radius:999px;
-    border:1px solid #ffffff22;
-    background:rgba(15,16,18,.86);
-    backdrop-filter:saturate(140%) blur(6px);
-    z-index:10;
-  }
-  .hero-ribbon .r-track{
-    display:inline-block; white-space:nowrap;
-    will-change: transform;
-    animation: ribbon-scroll 15s linear infinite;
-    line-height:30px; padding:0 12px; font-size:.92rem;
-  }
-  .hero-ribbon a{ color:#eaeaea; text-decoration:none; font-weight:700; }
-  .hero-ribbon span{ color:#cfcfcf; margin:0 .6rem; }
-}
-@keyframes ribbon-scroll{
-  from{ transform: translateX(0); }
-  to  { transform: translateX(-50%); }
+  .grid-form{ grid-template-columns:1fr }
 }
 
 /* Backdrop for mobile drawer */
@@ -258,10 +240,38 @@ textarea{resize:vertical}
 }
 .nav-backdrop.show{ opacity:1; pointer-events:auto }
 
+/* Secondary button */
 .btn-row{
   display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
 }
-@media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
+.btn-secondary{
+  display:inline-block; width:100%; padding:.9rem 1rem; font-weight:700;
+  background:#222327; color:#eaeaea; border:1px solid #2e2f33; border-radius:999px;
+  text-align:center; cursor:pointer;
+}
+.btn-secondary:hover{ background:#2b2c30 }
 
-/* hint for zoomable images (if any in future) */
+/* ===== Lightbox (if needed later) ===== */
+.lb-overlay{ position: fixed; inset: 0; background: rgba(0,0,0,.88);
+  display: grid; place-items: center; opacity: 0; pointer-events: none;
+  transition: opacity .18s ease; z-index: 9999; }
+.lb-overlay.show{ opacity:1; pointer-events:auto; }
+.lb-stage{ position: relative; width: min(96vw, 1200px); height: min(86vh, 900px);
+  display: grid; place-items: center; background: #0b0b0c; border:1px solid #222; border-radius: 12px; }
+.lb-img{ position: relative; z-index: 1; max-width: 100%; max-height: 100%; transition: transform .12s ease; }
+.lb-zoom, .lb-meta, .lb-download{ position: absolute; z-index: 3; }
+.lb-close, .lb-prev, .lb-next{ z-index: 4; }
+.lb-close, .lb-prev, .lb-next{
+  position: absolute; top: 12px; background: rgba(34,35,39,.85); color:#fff;
+  border:1px solid #3a3b3f; border-radius: 10px; width:40px; height:40px; cursor:pointer;
+  font-size: 22px; display:grid; place-items:center; }
+.lb-close{ right: 12px; }
+.lb-prev{ left: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
+.lb-next{ right: 12px; top: 50%; transform: translateY(-50%); font-size: 28px; }
+.lb-zoom{ bottom: 10px; right: 10px; display:flex; gap:6px; }
+.lb-zoom button{ background: rgba(34,35,39,.85); color:#fff; border:1px solid #3a3bf; border-radius: 8px; padding:.45rem .6rem; cursor:pointer; }
+.lb-meta{ left:12px; bottom:10px; right:140px; color:#eaeaea; font-size:.95rem; line-height:1.35; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+.lb-title{ font-weight:700; margin-bottom:2px }
+.lb-caption{ color:#c9c9c9 }
+.lb-download{ bottom:10px; left:12px; background: rgba(34,35,39,.85); color:#fff; border:1px solid #3a3b3f; border-radius: 8px; padding:.45rem .6rem; text-decoration:none; cursor:pointer; }
 img.zoomable{ cursor: zoom-in; }
