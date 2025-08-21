@@ -5,24 +5,28 @@
   const nav = document.getElementById('main-nav');
   const backdrop = document.querySelector('.nav-backdrop');
 
-  if (toggle && nav) {
+  if (toggle && nav && backdrop) {
     const open = () => {
       nav.classList.add('open');
       toggle.setAttribute('aria-expanded', 'true');
-      if (backdrop) { backdrop.classList.add('show'); backdrop.removeAttribute('hidden'); }
+      backdrop.removeAttribute('hidden');
+      backdrop.classList.add('show');
       document.body.style.overflow = 'hidden';
     };
     const close = () => {
       nav.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
-      if (backdrop) { backdrop.classList.remove('show'); backdrop.setAttribute('hidden',''); }
+      backdrop.setAttribute('hidden', '');
+      backdrop.classList.remove('show');
       document.body.style.overflow = '';
     };
     toggle.addEventListener('click', () =>
       nav.classList.contains('open') ? close() : open()
     );
-    if (backdrop) backdrop.addEventListener('click', close);
-    window.addEventListener('resize', () => { if (window.innerWidth > 760) close(); });
+    backdrop.addEventListener('click', close);
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 760) close();
+    });
   }
 
   // Footer year
@@ -48,7 +52,6 @@
         msg && `Message: ${msg}`,
       ].filter(Boolean).join('\n');
     };
-
     const wa = document.getElementById('send-whatsapp');
     const sms = document.getElementById('send-sms');
 
@@ -56,7 +59,6 @@
       const text = encodeURIComponent(compose());
       window.location.href = `https://wa.me/16472440621?text=${text}`;
     });
-
     if (sms) sms.addEventListener('click', () => {
       const text = encodeURIComponent(compose());
       window.location.href = `sms:+16472440621?&body=${text}`;
