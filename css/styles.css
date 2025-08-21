@@ -67,6 +67,8 @@ body{
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
     url("../static/bg-hero.jpg") center / cover no-repeat;
+  /* reserve room for the CTA row */
+  padding-bottom: clamp(90px, 12vh, 140px);
 }
 .hero-inner{
   text-align:center; padding:3rem 1rem;
@@ -84,55 +86,45 @@ body{
 }
 .tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
 
-/* ===== Hero bottom-left badges + ticker ===== */
-.hero-badges{
-  position:absolute; left:12px; bottom:12px; z-index:12;
-  display:grid; gap:10px; align-items:start;
+/* ===== Compact CTA row (bottom-left) ===== */
+.hero-cta{
+  position:absolute; left:16px; right:16px; bottom:16px;
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
 }
-
-/* Instagram chip */
-.ig-chip{
-  display:inline-flex; align-items:center; gap:.45rem;
-  padding:.45rem .7rem; border-radius:999px;
-  color:#fff; text-decoration:none; font-weight:700; border:1px solid #ffffff22;
+.badge{
+  display:inline-flex; align-items:center; gap:.55rem;
+  padding:.55rem .9rem; border-radius:999px; font-weight:700;
+  border:1px solid #ffffff22; box-shadow:0 10px 28px rgba(0,0,0,.25);
+  text-decoration:none;
+}
+.badge-ig{
+  color:#fff;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-  transition: transform .12s ease, box-shadow .12s ease;
 }
-.ig-chip:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
+.badge-review{
+  color:#fff; background:rgba(0,0,0,.68);
+}
+.badge-review .stars{
+  color:#f5c85b; letter-spacing:.18rem; font-size:1rem; line-height:1;
+}
 
-/* Google review chip */
-.review-chip{
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:.45rem .7rem; border-radius:999px;
-  color:#fff; text-decoration:none; font-weight:700;
-  background:rgba(27,27,29,.88); border:1px solid #2f3035;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
+/* Smooth ticker */
+.ticker{
+  flex:1; min-width:220px; overflow:hidden;
+  border:1px solid #ffffff22; border-radius:999px;
+  background:rgba(0,0,0,.6);
 }
-.review-chip .stars{letter-spacing:.08em}
-.review-chip .gdot{
-  display:inline-block; width:10px; height:10px; border-radius:50%;
+.ticker .track{
+  display:inline-block; white-space:nowrap;
+  padding:.55rem 1rem;
+  animation:hero-scroll 18s linear infinite;
 }
-.review-chip .g1{background:#4285F4}
-.review-chip .g2{background:#EA4335}
-.review-chip .g3{background:#FBBC05}
-.review-chip .g4{background:#34A853}
+.ticker a{ color:#fff; text-decoration:none }
+.ticker span{ opacity:.7; margin:0 .6rem }
 
-/* Subtle running text */
-.hero-ticker{
-  display:block; overflow:hidden; max-width:min(70vw, 740px);
-  border-radius:999px; border:1px solid #2f3035;
-  background:rgba(17,18,20,.72); box-shadow:0 10px 30px rgba(0,0,0,.2);
-}
-.hero-ticker .scroll{
-  white-space:nowrap; display:inline-block; padding:.45rem .9rem;
-  animation: ticker 18s linear infinite;
-  color:#d9d9d9; font-weight:600; font-size:.95rem;
-}
-.hero-ticker .sep{opacity:.45; margin:0 .7rem}
-@keyframes ticker{
-  from{ transform: translateX(0) }
-  to{   transform: translateX(-50%) }
+@keyframes hero-scroll{
+  from{ transform:translateX(0) }
+  to{ transform:translateX(-50%) }
 }
 
 /* Layout & Cards */
@@ -171,16 +163,14 @@ input,textarea{
   border-radius:10px; padding:.8rem .9rem;
 }
 textarea{resize:vertical}
-
-/* Primary buttons (WhatsApp & SMS now match) */
-.submit,
-.btn-secondary{
+.submit{
   display:block; width:100%; margin-top:.8rem; padding:.9rem 1rem; font-weight:700;
   background:var(--brand); color:#111; border:none; border-radius:999px; cursor:pointer;
 }
+.submit.alt{ background:#222327; color:#eaeaea; border:1px solid #2e2f33 }
 .muted{color:var(--muted)}
 
-/* WhatsApp floating button */
+/* Buttons */
 .wa-btn{
   display:inline-flex; margin-top:.5rem; text-decoration:none; color:#111; background:var(--brand);
   padding:.55rem .9rem; border-radius:999px; font-weight:700;
