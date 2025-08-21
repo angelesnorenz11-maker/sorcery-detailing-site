@@ -85,9 +85,16 @@ body{
 }
 .tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
 
-/* Instagram badge */
+/* ---- Bottom-left rail (badges + ticker) ---- */
+.hero-rail{
+  position:absolute; left:12px; right:12px; bottom:12px;
+  display:flex; align-items:center; gap:.5rem;
+  max-width:1100px; margin-inline:auto;
+  pointer-events:auto;
+}
+
+/* Badges */
 .ig-badge{
-  position:absolute; top:12px; left:12px; z-index:10;
   display:inline-flex; align-items:center; gap:.45rem;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
   color:#fff; text-decoration:none; border:1px solid #ffffff22;
@@ -97,17 +104,19 @@ body{
 }
 .ig-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
 .ig-badge svg{display:block}
-@media (max-width:560px){ .ig-badge span{ display:none } }
 
-/* ---- Running promo bar ---- */
-.ticker{
-  position:absolute; left:12px; right:12px; top:64px;
-  max-width:1100px; margin-inline:auto; z-index:9;
-  overflow:hidden; pointer-events:auto;
-}
-.ticker-track{
-  display:inline-flex; gap:1rem; align-items:center;
+.gr-badge{
+  display:inline-flex; align-items:center; gap:.45rem;
+  background:rgba(15,16,18,.9);
+  border:1px solid #2d2e32; color:var(--star);
+  border-radius:999px; padding:.45rem .7rem; font-weight:800; text-decoration:none;
   white-space:nowrap;
+}
+
+/* Running promo bar */
+.ticker{ flex:1; min-width:160px; overflow:hidden }
+.ticker-track{
+  display:inline-flex; gap:1rem; align-items:center; white-space:nowrap;
   animation: ticker-move 18s linear infinite;
 }
 .ticker:hover .ticker-track{ animation-play-state: paused; }
@@ -217,6 +226,11 @@ textarea{resize:vertical}
 
   .site-header{ padding:.6rem .9rem }
   .hero{ min-height:56vh }
+
+  .hero-rail{ gap:.4rem }
+  .ig-badge span{ display:none }       /* keep icon only on small screens */
+  .gr-badge span{ display:none }       /* collapse text to save space */
+
   .hero-logo{ width: clamp(88px, 20vw, 110px); height: clamp(88px, 20vw, 110px) }
   .hero h1{ font-size: clamp(1.9rem, 7vw, 2.4rem) }
   .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
