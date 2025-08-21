@@ -46,35 +46,42 @@
       <p>Professional auto detailing in Ajax and surrounding areas.</p>
     </div>
 
-    <!-- Bottom-left badges + tickers -->
-    <div class="hero-badges" aria-label="Social and reviews">
-      <!-- Instagram row -->
-      <div class="badge-row ig-row">
-        <a class="chip ig-chip" href="https://www.instagram.com/sorcery_detailing/" target="_blank" rel="noopener" title="Visit Instagram">
-          <!-- IG icon -->
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm0 2h10c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3zm5 2.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zm0 2a3.5 3.5 0 110 7 3.5 3.5 0 010-7zM17.8 6a1 1 0 100 2 1 1 0 000-2z"/></svg>
+    <!-- Bottom-left rails -->
+    <div class="rails">
+      <!-- Row 1: Instagram + ticker -->
+      <div class="rail-row">
+        <a class="ig-pill"
+           href="https://www.instagram.com/sorcery_detailing/"
+           target="_blank" rel="noopener"
+           aria-label="Follow Sorcery Detailing on Instagram">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="currentColor" d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm0 2h10c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3zm5 2.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zm0 2a3.5 3.5 0 110 7 3.5 3.5 0 010-7zM17.8 6a1 1 0 100 2 1 1 0 000-2z"/>
+          </svg>
           <span>@sorcery_detailing</span>
         </a>
-        <div class="ticker" data-speed="26">
+
+        <div class="marquee" aria-label="Instagram actions">
           <div class="track">
-            <span>Follow</span><span>•</span>
-            <span>Share</span><span>•</span>
-            <span>Like</span><span>•</span>
-            <span>See before &amp; after</span><span>•</span>
+            <span>Follow • Share • Like • See before &amp; after</span>
+            <span>Follow • Share • Like • See before &amp; after</span>
           </div>
         </div>
       </div>
 
-      <!-- Google reviews row -->
-      <div class="badge-row gr-row">
-        <a class="chip google-chip" href="https://share.google/2N2XteEXFki9KYa8l" target="_blank" rel="noopener" title="Rate & review on Google">
-          <span class="stars" aria-hidden="true">★★★★★</span>
-          <span>Rate &amp; review</span>
+      <!-- Row 2: Google review + ticker -->
+      <div class="rail-row">
+        <a class="g-pill"
+           href="https://share.google/2N2XteEXFki9KYa8l"
+           target="_blank" rel="noopener"
+           aria-label="Rate and review Sorcery Detailing on Google">
+          <span aria-hidden="true">★★★★★</span>
+          <strong>Rate &amp; review</strong>
         </a>
-        <div class="ticker" data-speed="28">
+
+        <div class="marquee" aria-label="Review messages">
           <div class="track">
-            <span>Click to rate &amp; review</span><span>•</span>
-            <span>Thanks for supporting a local business!</span><span>•</span>
+            <span>Thanks for supporting a local business! • Click to rate &amp; review</span>
+            <span>Thanks for supporting a local business! • Click to rate &amp; review</span>
           </div>
         </div>
       </div>
@@ -242,7 +249,7 @@
 
         <div class="btn-row">
           <button type="button" class="submit" id="send-whatsapp">Send via WhatsApp</button>
-          <button type="button" class="submit outline" id="send-sms">Send via SMS</button>
+          <button type="button" class="submit" id="send-sms">Send via SMS</button>
         </div>
 
         <p class="muted">Prefer email? Use <a href="mailto:SorceryDetailing@gmail.com">SorceryDetailing@gmail.com</a>.</p>
