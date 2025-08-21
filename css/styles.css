@@ -11,6 +11,7 @@
   --brand:#d1a739;
   --pill:#222327;
   --accent:#25D366;
+  --star:#ffd166;
 }
 
 *{box-sizing:border-box}
@@ -19,7 +20,7 @@ img{max-width:100%;height:auto;display:block}
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
-  background: #0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
+  background:#0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
   line-height:1.6;
 }
 
@@ -79,13 +80,12 @@ body{
   border-radius:50%; opacity:.98; margin-bottom:.35rem;
 }
 .hero h1{
-  /* moderate and consistent across devices */
   font-size: clamp(2.2rem, 6vw, 3.8rem);
   line-height:1.1; margin:.5rem 0 .2rem;
 }
 .tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
 
-/* Instagram badge (top-left of hero) */
+/* Instagram badge */
 .ig-badge{
   position:absolute; top:12px; left:12px; z-index:10;
   display:inline-flex; align-items:center; gap:.45rem;
@@ -98,6 +98,32 @@ body{
 .ig-badge:hover{ transform:translateY(-1px); box-shadow:0 14px 36px rgba(0,0,0,.3) }
 .ig-badge svg{display:block}
 @media (max-width:560px){ .ig-badge span{ display:none } }
+
+/* ---- Running promo bar ---- */
+.ticker{
+  position:absolute; left:12px; right:12px; top:64px;
+  max-width:1100px; margin-inline:auto; z-index:9;
+  overflow:hidden; pointer-events:auto;
+}
+.ticker-track{
+  display:inline-flex; gap:1rem; align-items:center;
+  white-space:nowrap;
+  animation: ticker-move 18s linear infinite;
+}
+.ticker:hover .ticker-track{ animation-play-state: paused; }
+@keyframes ticker-move{
+  0%{ transform: translateX(0) }
+  100%{ transform: translateX(-50%) }
+}
+.t-pill{
+  background:rgba(15,16,18,.85);
+  border:1px solid #2d2e32;
+  color:#eaeaea;
+  padding:.4rem .7rem; border-radius:999px; font-weight:700;
+  text-decoration:none;
+}
+.t-dot{ opacity:.6 }
+.t-stars{ color:var(--star); border-color:#3b2f10; }
 
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
