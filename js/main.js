@@ -64,14 +64,4 @@
       window.location.href = `sms:+16472440621?&body=${text}`;
     });
   }
-
-  // ===== Smooth tickers (duplicate content for seamless loop) =====
-  document.querySelectorAll('.ticker').forEach(t => {
-    const track = t.querySelector('.track');
-    if (!track) return;
-    // Duplicate 2x so the scroll can loop smoothly
-    track.innerHTML = track.innerHTML + track.innerHTML;
-    const s = Number(t.dataset.speed || 28);
-    t.style.setProperty('--speed', `${s}s`);
-  });
 })();
