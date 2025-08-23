@@ -59,17 +59,17 @@ body{
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
 }
 
-/* ---------- Hero sizing (room for pills) ---------- */
+/* Hero */
 .hero{
   position: relative;
-  min-height: 66vh; /* desktop height */
+  min-height:64vh;               /* a touch taller so subtitle never overlaps */
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
-    url("../static/bg-hero.jpg") center/cover no-repeat;
+    url("../static/bg-hero.jpg") center / cover no-repeat;
 }
 .hero-inner{
-  text-align:center; padding:3.2rem 1rem 5.8rem; /* bottom padding avoids overlap */
+  text-align:center; padding:3rem 1rem;
   display:grid; place-items:center; gap:.3rem;
   max-width: 900px; margin-inline:auto;
 }
@@ -84,43 +84,37 @@ body{
 }
 .tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
 
-/* ---------- Bottom-center pills ---------- */
-.hero-social{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:14px;
-  display:grid;
-  gap:.55rem;
-  width:max-content;
-  max-width:94vw;  /* in case labels get long */
+/* Hero badges */
+.hero-badges{
+  display:flex; flex-direction:column; gap:.65rem;
+  align-items:center; margin-top:1rem;
 }
-.hero-social .row{
-  display:flex; align-items:center; justify-content:center;
-  gap:.55rem; flex-wrap:wrap;
+.badge{ text-align:center; }
+.badge-note{
+  margin-top:.35rem;
+  font-size:.92rem; color:var(--muted);
 }
 
-.badge{
-  display:inline-flex; align-items:center; gap:.5rem;
-  border-radius:999px; padding:.45rem .8rem;
-  font-weight:700; text-decoration:none; line-height:1;
-  font-size: clamp(.82rem, 1.2vw, .95rem);
+/* Pills (shared) */
+.pill{
+  display:inline-flex; align-items:center; gap:.55rem;
+  padding:.55rem .9rem; border-radius:999px; font-weight:700;
+  text-decoration:none; box-shadow:0 10px 26px rgba(0,0,0,.28);
+  border:1px solid #ffffff1a;
 }
 
-/* Instagram pill (gradient) */
-.badge.ig{
+/* Instagram pill */
+.ig-pill{
   color:#fff;
-  border:1px solid #ffffff22;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
-.badge.ig svg{ display:block }
 
-/* Google pill (same shape, dark) */
-.badge.google{
-  color:#fff; background:#1f2024; border:1px solid #2b2c30;
+/* Google pill */
+.gr-pill{
+  color:#eaeaea; background:rgba(20,21,24,.92);
+  border:1px solid #2c2d31;
 }
-.badge.google .stars{ color:#ffd266; letter-spacing:1px; }
+.gr-pill .stars{ letter-spacing:2px; }
 
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
@@ -213,10 +207,13 @@ textarea{resize:vertical}
   .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
 
   .site-header{ padding:.6rem .9rem }
-  .hero{ min-height: 70vh; }
-  .hero-inner{ padding-bottom: 7.2rem; } /* more room under text */
-  .hero-social{ bottom:12px; }
-  .badge{ font-size: .95rem; }
+  .hero{ min-height:62vh }            /* slightly taller on phones, too */
+  .hero-logo{ width: clamp(88px, 20vw, 110px); height: clamp(88px, 20vw, 110px) }
+  .hero h1{ font-size: clamp(1.9rem, 7vw, 2.4rem) }
+  .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
+
+  .badge-note{ font-size:.88rem; }
+  .grid-form{ grid-template-columns:1fr }
 }
 
 /* Backdrop for mobile drawer */
@@ -229,14 +226,3 @@ textarea{resize:vertical}
   transition: opacity .18s ease;
 }
 .nav-backdrop.show{ opacity:1; pointer-events:auto }
-
-.btn-row{
-  display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
-}
-.btn-secondary{
-  display:inline-block; width:100%; padding:.9rem 1rem; font-weight:700;
-  background:#222327; color:#eaeaea; border:1px solid #2e2f33; border-radius:999px;
-  text-align:center; cursor:pointer;
-}
-.btn-secondary:hover{ background:#2b2c30 }
-@media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
