@@ -62,7 +62,7 @@ body{
 /* Hero */
 .hero{
   position: relative;
-  min-height:64vh;               /* a touch taller so subtitle never overlaps */
+  min-height:64vh;
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
@@ -84,37 +84,35 @@ body{
 }
 .tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
 
-/* Hero badges */
-.hero-badges{
-  display:flex; flex-direction:column; gap:.65rem;
-  align-items:center; margin-top:1rem;
-}
-.badge{ text-align:center; }
-.badge-note{
-  margin-top:.35rem;
-  font-size:.92rem; color:var(--muted);
-}
-
-/* Pills (shared) */
-.pill{
-  display:inline-flex; align-items:center; gap:.55rem;
-  padding:.55rem .9rem; border-radius:999px; font-weight:700;
-  text-decoration:none; box-shadow:0 10px 26px rgba(0,0,0,.28);
-  border:1px solid #ffffff1a;
+/* Bottom centered CTAs */
+.hero-cta{
+  position:absolute; left:50%; bottom:22px; transform:translateX(-50%);
+  display:grid; gap:.35rem; place-items:center;
+  width:min(680px, 92vw);
 }
 
 /* Instagram pill */
 .ig-pill{
-  color:#fff;
+  display:inline-flex; align-items:center; gap:.45rem;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  color:#fff; text-decoration:none; border:1px solid #ffffff22;
+  border-radius:999px; padding:.5rem .8rem; font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.ig-pill svg{display:block}
+.subtext{
+  font-size:.86rem; color:#c9c9c9; text-align:center;
+  text-shadow:0 1px 2px rgba(0,0,0,.5);
 }
 
-/* Google pill */
+/* Google review pill */
 .gr-pill{
-  color:#eaeaea; background:rgba(20,21,24,.92);
-  border:1px solid #2c2d31;
+  display:inline-flex; align-items:center; gap:.5rem;
+  background: rgba(34,35,39,.9); color:#fff; text-decoration:none;
+  border:1px solid #3a3b3f; border-radius:999px; padding:.5rem .8rem;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
-.gr-pill .stars{ letter-spacing:2px; }
+.gr-pill .stars{letter-spacing:1px; color:#ffd773}
 
 /* Layout & Cards */
 .container{width:min(1100px,90%); margin-inline:auto}
@@ -152,10 +150,22 @@ input,textarea{
   border-radius:10px; padding:.8rem .9rem;
 }
 textarea{resize:vertical}
+
+/* Contact buttons layout + style (same look for both) */
+.btn-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.6rem;
+  margin-top:.6rem;
+}
+@media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
+
 .submit{
   display:block; width:100%; margin-top:.8rem; padding:.9rem 1rem; font-weight:700;
   background:var(--brand); color:#111; border:none; border-radius:999px; cursor:pointer;
 }
+.submit:hover{ filter:brightness(0.95) }
+
 .muted{color:var(--muted)}
 
 /* Buttons */
@@ -207,12 +217,11 @@ textarea{resize:vertical}
   .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
 
   .site-header{ padding:.6rem .9rem }
-  .hero{ min-height:62vh }            /* slightly taller on phones, too */
+  .hero{ min-height:64vh }
   .hero-logo{ width: clamp(88px, 20vw, 110px); height: clamp(88px, 20vw, 110px) }
   .hero h1{ font-size: clamp(1.9rem, 7vw, 2.4rem) }
   .tagline{ font-size: clamp(1rem, 3.4vw, 1.15rem) }
 
-  .badge-note{ font-size:.88rem; }
   .grid-form{ grid-template-columns:1fr }
 }
 
