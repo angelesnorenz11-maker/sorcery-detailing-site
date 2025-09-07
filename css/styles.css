@@ -13,6 +13,18 @@
   --accent:#25D366;
 }
 
+/* Smooth in-page scrolling (respects accessibility) */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* Keep anchors visible under the sticky header */
+section[id] { scroll-margin-top: 86px; }     /* desktop/tablet */
+@media (max-width: 760px) {
+  section[id] { scroll-margin-top: 74px; }   /* mobile header a bit shorter */
+}
+
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 img{max-width:100%;height:auto;display:block}
@@ -295,3 +307,4 @@ textarea{resize:vertical}
   .pay-chip{ height: 24px; padding: 5px 8px; }
   .pay-chip-row{ justify-content: center; }
 }
+
