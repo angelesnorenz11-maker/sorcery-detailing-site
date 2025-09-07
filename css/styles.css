@@ -254,6 +254,20 @@ textarea{resize:vertical}
 #payments { padding-top: 2rem; }
 #payments .muted { margin-top:-.35rem; }
 
+/* "We accept payments through Square" lockup */
+.square-lockup{
+  display:inline-flex;
+  gap:.45rem;
+  align-items:center;
+  vertical-align:middle;
+}
+.square-lockup img{
+  height:22px;            /* small, tidy icon next to text */
+  width:auto;
+  border-radius:6px;
+}
+
+/* Logo chips row */
 .pay-row{
   margin-top: .9rem;
   display: flex;
@@ -267,15 +281,14 @@ textarea{resize:vertical}
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 40px;                  /* overall chip height */
+  height: 40px;
   padding: 0 .75rem;
-  background: #fff;              /* white pill */
-  border: 1px solid #e6e6ea;     /* subtle border */
+  background: #fff;
+  border: 1px solid #e6e6ea;
   border-radius: 10px;
   box-shadow: 0 1px 2px rgba(0,0,0,.04);
   transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
 }
-
 .pay-chip:hover{
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(0,0,0,.08);
@@ -284,15 +297,14 @@ textarea{resize:vertical}
 
 .pay-logo{
   display:block;
-  height: 22px;   /* logo height inside the chip (tight and consistent) */
+  height: 22px;   /* consistent visual height */
   width: auto;
 }
 
-/* tighten/stack on small screens */
+/* tighten on small screens */
 @media (max-width:760px){
   .pay-chip{ height: 38px; padding: 0 .65rem; }
   .pay-logo{ height: 20px; }
 }
-
 
 
