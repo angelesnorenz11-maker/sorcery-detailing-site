@@ -20,10 +20,23 @@
       backdrop.classList.remove('show');
       document.body.style.overflow = '';
     };
+
     toggle.addEventListener('click', () =>
       nav.classList.contains('open') ? close() : open()
     );
     backdrop.addEventListener('click', close);
+
+    // NEW: close when any link inside the nav is clicked
+    nav.addEventListener('click', (e) => {
+      if (e.target.closest('a')) close();
+    });
+
+    // NEW: close with Esc key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) close();
+    });
+
+    // Auto-close if resized to desktop widths
     window.addEventListener('resize', () => {
       if (window.innerWidth > 760) close();
     });
