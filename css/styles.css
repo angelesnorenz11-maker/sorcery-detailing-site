@@ -3,16 +3,6 @@
    Clean, responsive, stable
    ============================ */
 
-/* Smooth in-page scrolling (with reduced-motion fallback) */
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
-/* Keep anchored sections from hiding under the sticky header */
-:target { scroll-margin-top: 86px; } /* ≈ header height */
-section[id] { scroll-margin-top: 86px; }
-
-/* Theme */
 :root{
   --bg:#0f1012;
   --card:#16171a;
@@ -29,7 +19,7 @@ img{max-width:100%;height:auto;display:block}
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
-  background:#0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
+  background: #0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
   line-height:1.6;
 }
 
@@ -194,42 +184,6 @@ textarea{resize:vertical}
   padding:1.2rem 1rem; border-top:1px solid #232428; background:rgba(10,10,10,.75)
 }
 
-/* --- New Car Touch-Up helpers --- */
-.list-tight li{ margin:.25rem 0; }
-.hr{ border:0; border-top:1px solid #232428; margin:1rem 0; }
-.badge-add{
-  display:inline-block; margin:.15rem .25rem 0 0;
-  background:#222327; color:#eaeaea; border:1px solid #2e2f33;
-  border-radius:999px; padding:.25rem .6rem; font-size:.9rem;
-}
-
-/* ===== Payments row ===== */
-#payments .muted { margin-top:-.35rem; }
-
-.pay-row{
-  margin-top: .9rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: .9rem;
-  align-items: center;
-}
-
-.pay-logo{
-  display:block;
-  width: 140px;        /* nice default */
-  max-width: 100%;
-  height: auto;
-  margin-inline: auto;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
-  transition: transform .12s ease, filter .12s ease, opacity .2s ease;
-  opacity: .95;
-}
-.pay-logo:hover{
-  transform: translateY(-2px);
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
-  opacity: 1;
-}
-
 /* Mobile */
 @media (max-width:760px){
   .topbar{
@@ -263,9 +217,15 @@ textarea{resize:vertical}
   .hero-inner{ padding-bottom: 7.2rem; } /* more room under text */
   .hero-social{ bottom:12px; }
   .badge{ font-size: .95rem; }
+}
 
-  /* tighten payment logos on small screens */
-  .pay-logo{ width:110px; }
+/* --- New Car Touch-Up helpers --- */
+.list-tight li{ margin:.25rem 0; }
+.hr{ border:0; border-top:1px solid #232428; margin:1rem 0; }
+.badge-add{
+  display:inline-block; margin:.15rem .25rem 0 0;
+  background:#222327; color:#eaeaea; border:1px solid #2e2f33;
+  border-radius:999px; padding:.25rem .6rem; font-size:.9rem;
 }
 
 /* Backdrop for mobile drawer */
@@ -289,3 +249,49 @@ textarea{resize:vertical}
 }
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
+
+/* ===== Payments row (compact chips) ===== */
+#payments { padding-top: 2rem; }
+#payments .muted { margin-top:-.35rem; }
+
+/* ===== Payments bar (clean chips) ===== */
+#payments { padding-top: 1.25rem; }
+#payments .pay-head { margin-bottom: .35rem; }
+
+.pay-inline-square{
+  height: 20px; vertical-align: middle; margin-left: .35rem;
+  background: #fff; border: 1px solid #e6e6e6;
+  border-radius: 8px; padding: 3px 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+
+/* row of small chips; right-aligned on desktop, wraps on mobile */
+.pay-chip-row{
+  display: flex; gap: .55rem; flex-wrap: wrap;
+  justify-content: flex-end; align-items: center;
+  margin-top: .35rem;
+}
+
+/* the chip: white pill with the logo inside */
+.pay-chip{
+  display: inline-block;
+  height: 28px; width: auto;
+  background: #fff; border: 1px solid #ececec;
+  border-radius: 12px; padding: 6px 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  object-fit: contain; /* keeps logos nice */
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  opacity: .98;
+}
+.pay-chip:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.24);
+  opacity: 1;
+}
+
+/* tighter on small screens; center the row */
+@media (max-width: 760px){
+  .pay-inline-square{ height: 18px; padding: 2px 5px; }
+  .pay-chip{ height: 24px; padding: 5px 8px; }
+  .pay-chip-row{ justify-content: center; }
+}
