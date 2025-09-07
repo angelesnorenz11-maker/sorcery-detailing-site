@@ -270,11 +270,24 @@ textarea{resize:vertical}
 #payments { padding-top: 1.25rem; }
 #payments .pay-head { margin-bottom: .35rem; }
 
+/* Square chip next to "We accept payments through" — make it a bit bigger */
 .pay-inline-square{
-  height: 20px; vertical-align: middle; margin-left: .35rem;
-  background: #fff; border: 1px solid #e6e6e6;
-  border-radius: 8px; padding: 3px 6px;
+  height: 28px;              /* was 20px */
+  vertical-align: middle;
+  margin-left: .5rem;        /* a touch more breathing room */
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;       /* slightly rounder to match size */
+  padding: 4px 10px;         /* was 3px 6px */
   box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+
+/* Mobile sizing */
+@media (max-width: 760px){
+  .pay-inline-square{
+    height: 24px;            /* was 18px */
+    padding: 3px 8px;
+  }
 }
 
 /* row of small chips; right-aligned on desktop, wraps on mobile */
@@ -307,4 +320,5 @@ textarea{resize:vertical}
   .pay-chip{ height: 24px; padding: 5px 8px; }
   .pay-chip-row{ justify-content: center; }
 }
+
 
