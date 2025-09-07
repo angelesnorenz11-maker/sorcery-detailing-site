@@ -250,36 +250,48 @@ textarea{resize:vertical}
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
-/* ===== Payments row ===== */
+/* ===== Payments row (compact chips) ===== */
+#payments { padding-top: 2rem; }
 #payments .muted { margin-top:-.35rem; }
 
 .pay-row{
   margin-top: .9rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: .9rem;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+  gap: .7rem .8rem;
+}
+
+.pay-chip{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;                  /* overall chip height */
+  padding: 0 .75rem;
+  background: #fff;              /* white pill */
+  border: 1px solid #e6e6ea;     /* subtle border */
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+.pay-chip:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  border-color: #dcdce2;
 }
 
 .pay-logo{
   display:block;
-  width: 140px;        /* nice default */
-  max-width: 100%;
-  height: auto;
-  margin-inline: auto;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
-  transition: transform .12s ease, filter .12s ease, opacity .2s ease;
-  opacity: .95;
-}
-.pay-logo:hover{
-  transform: translateY(-2px);
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
-  opacity: 1;
+  height: 22px;   /* logo height inside the chip (tight and consistent) */
+  width: auto;
 }
 
-/* tighten on small screens */
+/* tighten/stack on small screens */
 @media (max-width:760px){
-  .pay-logo{ width: 110px; }
+  .pay-chip{ height: 38px; padding: 0 .65rem; }
+  .pay-logo{ height: 20px; }
 }
 
 
