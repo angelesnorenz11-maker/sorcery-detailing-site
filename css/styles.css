@@ -250,3 +250,37 @@ textarea{resize:vertical}
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
+/* ===== Payments row ===== */
+#payments .muted { margin-top:-.35rem; }
+
+.pay-row{
+  margin-top: .9rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: .9rem;
+  align-items: center;
+}
+
+.pay-logo{
+  display:block;
+  width: 140px;        /* nice default */
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
+  transition: transform .12s ease, filter .12s ease, opacity .2s ease;
+  opacity: .95;
+}
+.pay-logo:hover{
+  transform: translateY(-2px);
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
+  opacity: 1;
+}
+
+/* tighten on small screens */
+@media (max-width:760px){
+  .pay-logo{ width: 110px; }
+}
+
+
+
