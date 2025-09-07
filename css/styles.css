@@ -219,6 +219,15 @@ textarea{resize:vertical}
   .badge{ font-size: .95rem; }
 }
 
+/* --- New Car Touch-Up helpers --- */
+.list-tight li{ margin:.25rem 0; }
+.hr{ border:0; border-top:1px solid #232428; margin:1rem 0; }
+.badge-add{
+  display:inline-block; margin:.15rem .25rem 0 0;
+  background:#222327; color:#eaeaea; border:1px solid #2e2f33;
+  border-radius:999px; padding:.25rem .6rem; font-size:.9rem;
+}
+
 /* Backdrop for mobile drawer */
 .nav-backdrop{
   position: fixed; inset:0;
@@ -240,3 +249,4 @@ textarea{resize:vertical}
 }
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
+
