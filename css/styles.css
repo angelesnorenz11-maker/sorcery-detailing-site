@@ -190,6 +190,28 @@ textarea{resize:vertical}
   z-index:1200;
 }
 
+/* Make CTA buttons fit cards on mobile */
+@media (max-width: 760px){
+  .card .wa-btn{
+    display: flex;              /* instead of inline-flex */
+    width: 100%;
+    justify-content: center;    /* center the label */
+    text-align: center;
+    box-sizing: border-box;     /* respect padding within width */
+    margin-inline: 0;           /* no side overflow */
+  }
+  /* optional: ensure the card clips any glow/shadow cleanly */
+  .card{ overflow: clip; }      /* or overflow: hidden; if older browser support needed */
+}
+
+/* Keep desktop behavior unchanged */
+@media (min-width: 761px){
+  .card .wa-btn{
+    display: inline-flex;
+    width: auto;
+  }
+}
+
 /* Footer */
 .footer{
   display:flex; gap:1rem; justify-content:space-between; align-items:center;
@@ -324,5 +346,6 @@ textarea{resize:vertical}
     padding: 6px 10px;
   }
 }
+
 
 
