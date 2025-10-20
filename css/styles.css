@@ -357,6 +357,18 @@ textarea{resize:vertical}
   font-style: normal;
 }
 
+/* ===== Helpers for Interior Deep Clean price table & ceramic callout ===== */
+.price-table{
+  margin:.75rem 0; border:1px solid #232428; border-radius:12px; overflow:hidden
+}
+.price-table .row{
+  display:grid; grid-template-columns:2fr 1fr;
+  gap:.5rem; padding:.7rem 1rem;
+  background:rgba(22,23,26,.75); border-top:1px solid #232428;
+}
+.price-table .row.head{ background:#18191c; font-weight:600 }
+.price-table .row:first-child{ border-top:none }
+.note{ background:rgba(20,21,24,.7) }
 
-
-
+/* ensure long bullet lists are compact in these sections */
+#ceramic ul li, #interior-deep-clean ul li { margin:.3rem 0; }
