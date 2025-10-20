@@ -1,8 +1,9 @@
-/* ============================
-   Sorcery Detailing — styles.css
-   Clean, responsive, stable
-   ============================ */
+/* =========================================
+   Sorcery Detailing — styles.css (rewrite)
+   Clean, responsive, smooth on mobile
+   ========================================= */
 
+/* ---------- Theme ---------- */
 :root{
   --bg:#0f1012;
   --card:#16171a;
@@ -13,40 +14,50 @@
   --accent:#25D366;
 }
 
-/* Smooth in-page scrolling (respects accessibility) */
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
+/* ---------- Global Resets ---------- */
+*{ box-sizing:border-box }
+html,body{ margin:0; padding:0 }
+img{ max-width:100%; height:auto; display:block }
 
-/* Keep anchors visible under the sticky header */
-section[id] { scroll-margin-top: 86px; }     /* desktop/tablet */
-@media (max-width: 760px) {
-  section[id] { scroll-margin-top: 74px; }   /* mobile header a bit shorter */
-}
+html{ scroll-behavior:smooth }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto }}
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-img{max-width:100%;height:auto;display:block}
+/* Keep anchor targets visible below sticky header */
+section[id]{ scroll-margin-top:86px }
+@media (max-width:760px){ section[id]{ scroll-margin-top:74px }}
+
+/* Body + background (mobile-friendly) */
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color:var(--text);
-  background: #0f1012 url("../static/bg-page.jpg") center/cover fixed no-repeat;
+  background:#0f1012 url("../static/bg-page.jpg") center/cover no-repeat;
+  background-attachment: fixed;           /* desktop default */
   line-height:1.6;
 }
+/* Disable “magnet” scroll on mobile/tablet */
+@media (max-width:1024px){
+  body{
+    background-attachment: scroll;        /* key fix */
+    background-position: center top;
+  }
+}
+/* Extra safety for iOS Safari */
+@supports (-webkit-touch-callout: none){
+  body{ background-attachment: scroll }
+}
 
-/* Topbar */
+/* ---------- Topbar ---------- */
 .topbar{
   display:flex; gap:.75rem; align-items:center;
   padding:.5rem 1rem; font-size:.9rem; color:var(--muted);
 }
 .topbar .chip{
   background:var(--pill); padding:.25rem .6rem;
-  border-radius:999px; color:var(--text); text-decoration:none
+  border-radius:999px; color:var(--text); text-decoration:none;
 }
-.topbar .dot{opacity:.5}
+.topbar .dot{ opacity:.5 }
 
-/* Header / Nav */
+/* ---------- Header / Nav ---------- */
 .site-header{
   position:sticky; top:0;
   display:flex; justify-content:space-between; align-items:center;
@@ -56,14 +67,15 @@ body{
   border-bottom:1px solid #1e1f22;
   z-index:1000;
 }
-.brand{display:flex; gap:.6rem; align-items:center; color:var(--text); text-decoration:none}
-.brand img{width:28px; height:28px; border-radius:50%}
+.brand{ display:flex; gap:.6rem; align-items:center; color:var(--text); text-decoration:none }
+.brand img{ width:28px; height:28px; border-radius:50% }
 
-.main-nav{display:flex; gap:.4rem; flex-wrap:wrap}
+.main-nav{ display:flex; gap:.4rem; flex-wrap:wrap }
 .main-nav a{
-  color:var(--text); text-decoration:none; padding:.45rem .75rem; border-radius:999px; background:var(--pill);
+  color:var(--text); text-decoration:none;
+  padding:.45rem .75rem; border-radius:999px; background:var(--pill);
 }
-.main-nav a:hover, .main-nav a.active{background:#2b2c30}
+.main-nav a:hover, .main-nav a.active{ background:#2b2c30 }
 
 .menu-toggle{
   display:none;
@@ -71,208 +83,136 @@ body{
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
 }
 
-/* ---------- Hero sizing (room for pills) ---------- */
+/* Mobile drawer nav */
+@media (max-width:760px){
+  .menu-toggle{ display:inline-flex; align-items:center; gap:.35rem; padding:.5rem .75rem; font-size:.95rem; border-radius:12px }
+  .main-nav{
+    position:fixed; top:58px; right:12px; left:12px;
+    background:rgba(15,16,18,.98);
+    border:1px solid #232428; border-radius:14px; padding:.6rem;
+    display:grid; gap:.5rem;
+    transform:translateY(-12px) scale(.98);
+    opacity:0; pointer-events:none;
+    transition:transform .18s ease, opacity .18s ease;
+    box-shadow:0 16px 40px rgba(0,0,0,.45);
+    z-index:1001;
+  }
+  .main-nav a{ display:block; text-align:center; padding:.75rem 1rem; font-weight:700 }
+  .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
+
+  .site-header{ padding:.6rem .9rem }
+}
+
+/* Backdrop for mobile drawer */
+.nav-backdrop{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(2px);
+  z-index:900;
+  opacity:0; pointer-events:none;
+  transition:opacity .18s ease;
+}
+.nav-backdrop.show{ opacity:1; pointer-events:auto }
+
+/* ---------- Hero ---------- */
 .hero{
-  position: relative;
-  min-height: 66vh; /* desktop height */
+  position:relative;
+  min-height:66vh;
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
     url("../static/bg-hero.jpg") center/cover no-repeat;
 }
 .hero-inner{
-  text-align:center; padding:3.2rem 1rem 5.8rem; /* bottom padding avoids overlap */
+  text-align:center; padding:3.2rem 1rem 5.8rem;
   display:grid; place-items:center; gap:.3rem;
-  max-width: 900px; margin-inline:auto;
+  max-width:900px; margin-inline:auto;
 }
 .hero-logo{
-  width: clamp(100px, 14vw, 140px);
-  height: clamp(100px, 14vw, 140px);
+  width:clamp(100px, 14vw, 140px);
+  height:clamp(100px, 14vw, 140px);
   border-radius:50%; opacity:.98; margin-bottom:.35rem;
 }
-.hero h1{
-  font-size: clamp(2.2rem, 6vw, 3.8rem);
-  line-height:1.1; margin:.5rem 0 .2rem;
-}
-.tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
+.hero h1{ font-size:clamp(2.2rem, 6vw, 3.8rem); line-height:1.1; margin:.5rem 0 .2rem }
+.tagline{ margin-top:.2rem; color:var(--muted); font-size:clamp(1rem, 2.4vw, 1.25rem) }
 
-/* ---------- Bottom-center pills ---------- */
+/* Bottom-center social/rating pills */
 .hero-social{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:14px;
-  display:grid;
-  gap:.55rem;
-  width:max-content;
-  max-width:94vw;  /* in case labels get long */
+  position:absolute; left:50%; transform:translateX(-50%);
+  bottom:14px; display:grid; gap:.55rem;
+  width:max-content; max-width:94vw;
 }
-.hero-social .row{
-  display:flex; align-items:center; justify-content:center;
-  gap:.55rem; flex-wrap:wrap;
-}
+.hero-social .row{ display:flex; align-items:center; justify-content:center; gap:.55rem; flex-wrap:wrap }
 
 .badge{
   display:inline-flex; align-items:center; gap:.5rem;
   border-radius:999px; padding:.45rem .8rem;
   font-weight:700; text-decoration:none; line-height:1;
-  font-size: clamp(.82rem, 1.2vw, .95rem);
+  font-size:clamp(.82rem, 1.2vw, .95rem);
 }
-
-/* Instagram pill (gradient) */
 .badge.ig{
-  color:#fff;
-  border:1px solid #ffffff22;
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  color:#fff; border:1px solid #ffffff22;
+  background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
 .badge.ig svg{ display:block }
+.badge.google{ color:#fff; background:#1f2024; border:1px solid #2b2c30 }
+.badge.google .stars{ color:#ffd266; letter-spacing:1px }
 
-/* Google pill (same shape, dark) */
-.badge.google{
-  color:#fff; background:#1f2024; border:1px solid #2b2c30;
+@media (max-width:760px){
+  .hero{ min-height:70vh }
+  .hero-inner{ padding-bottom:7.2rem }
+  .hero-social{ bottom:12px }
+  .badge{ font-size:.95rem }
 }
-.badge.google .stars{ color:#ffd266; letter-spacing:1px; }
 
-/* Layout & Cards */
-.container{width:min(1100px,90%); margin-inline:auto}
-.section{padding:3rem 0}
-h2{font-size:clamp(1.5rem,3.2vw,2.1rem); margin:.5rem 0 1rem}
-h3{margin:0 0 .5rem}
-h4{margin:1rem 0 .25rem}
+/* ---------- Layout & Cards ---------- */
+.container{ width:min(1100px, 90%); margin-inline:auto }
+.section{ padding:3rem 0 }
+h2{ font-size:clamp(1.5rem, 3.2vw, 2.1rem); margin:.5rem 0 1rem }
+h3{ margin:0 0 .5rem }
+h4{ margin:1rem 0 .25rem }
+
 .card{
-  background:rgba(15,16,18,.7); border:1px solid #232428; border-radius:14px;
+  background:rgba(15,16,18,.7);
+  border:1px solid #232428; border-radius:14px;
   padding:1.25rem 1.2rem; margin:1rem 0;
 }
-.price{color:var(--muted); margin:.25rem 0 .5rem}
+.price{ color:var(--muted); margin:.25rem 0 .5rem }
 
-.grid-2{display:grid; gap:.75rem; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.addon{background:var(--card); border:1px solid #232428; border-radius:12px; padding:.8rem 1rem; display:flex; justify-content:space-between}
-.addon span{color:var(--muted)}
+/* Grids & chips */
+.grid-2{ display:grid; gap:.75rem; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)) }
+.addon{
+  background:var(--card); border:1px solid #232428; border-radius:12px;
+  padding:.8rem 1rem; display:flex; justify-content:space-between
+}
+.addon span{ color:var(--muted) }
 
-/* Subscription tables */
-.sub-table{margin:1rem 0; border:1px solid #232428; border-radius:12px; overflow:hidden}
+/* Sub tables (subscriptions) */
+.sub-table{ margin:1rem 0; border:1px solid #232428; border-radius:12px; overflow:hidden }
 .sub-table .row{
   display:grid; grid-template-columns:2fr 1fr 1fr 1fr auto;
   gap:.5rem; padding:.7rem 1rem; background:rgba(22,23,26,.75); border-top:1px solid #232428
 }
-.sub-table .row.head{background:#18191c; font-weight:600}
-.sub-table .row:first-child{border-top:none}
-@media (max-width:800px){ .sub-table .row{grid-template-columns:1.5fr 1fr 1fr 1fr auto} }
+.sub-table .row.head{ background:#18191c; font-weight:600 }
+.sub-table .row:first-child{ border-top:none }
+@media (max-width:800px){ .sub-table .row{ grid-template-columns:1.5fr 1fr 1fr 1fr auto } }
 
-/* Contact form */
-.contact{margin-top:.5rem}
-.grid-form{display:grid; gap:1rem; grid-template-columns:repeat(2,1fr)}
-.grid-form .full{grid-column:1/-1}
-label{display:grid; gap:.35rem; font-weight:600}
-input,textarea{
-  width:100%; color:var(--text); background:#111214; border:1px solid #232428;
-  border-radius:10px; padding:.8rem .9rem;
+/* ---------- Forms & Buttons ---------- */
+.contact{ margin-top:.5rem }
+.grid-form{ display:grid; gap:1rem; grid-template-columns:repeat(2, 1fr) }
+.grid-form .full{ grid-column:1/-1 }
+label{ display:grid; gap:.35rem; font-weight:600 }
+input, textarea{
+  width:100%; color:var(--text); background:#111214;
+  border:1px solid #232428; border-radius:10px; padding:.8rem .9rem;
 }
-textarea{resize:vertical}
+textarea{ resize:vertical }
+
 .submit{
   display:block; width:100%; margin-top:.8rem; padding:.9rem 1rem; font-weight:700;
   background:var(--brand); color:#111; border:none; border-radius:999px; cursor:pointer;
 }
-.muted{color:var(--muted)}
-
-/* Buttons */
-.wa-btn{
-  display:inline-flex; margin-top:.5rem; text-decoration:none; color:#111; background:var(--brand);
-  padding:.55rem .9rem; border-radius:999px; font-weight:700;
-}
-.wa-mini{display:inline-block; background:var(--brand); color:#111; text-decoration:none; padding:.35rem .6rem; border-radius:999px}
-.wa-float{
-  position:fixed; right:18px; bottom:18px;
-  display:inline-flex; align-items:center; gap:.5rem;
-  background:var(--accent); color:#042; font-weight:800; text-decoration:none;
-  border-radius:999px; padding:.7rem 1rem; box-shadow:0 8px 28px rgba(0,0,0,.35);
-  z-index:1200;
-}
-
-/* Make CTA buttons fit cards on mobile */
-@media (max-width: 760px){
-  .card .wa-btn{
-    display: flex;              /* instead of inline-flex */
-    width: 100%;
-    justify-content: center;    /* center the label */
-    text-align: center;
-    box-sizing: border-box;     /* respect padding within width */
-    margin-inline: 0;           /* no side overflow */
-  }
-  /* optional: ensure the card clips any glow/shadow cleanly */
-  .card{ overflow: clip; }      /* or overflow: hidden; if older browser support needed */
-}
-
-/* Keep desktop behavior unchanged */
-@media (min-width: 761px){
-  .card .wa-btn{
-    display: inline-flex;
-    width: auto;
-  }
-}
-
-/* Footer */
-.footer{
-  display:flex; gap:1rem; justify-content:space-between; align-items:center;
-  padding:1.2rem 1rem; border-top:1px solid #232428; background:rgba(10,10,10,.75)
-}
-
-/* Mobile */
-@media (max-width:760px){
-  .topbar{
-    flex-wrap: nowrap; gap:.35rem; padding:.4rem .6rem;
-    overflow-x:auto; -webkit-overflow-scrolling:touch;
-  }
-  .topbar::-webkit-scrollbar{ display:none; }
-  .topbar span, .topbar .chip{ white-space:nowrap; }
-  .topbar .chip{ padding:.2rem .5rem; font-size:.82rem; border-radius:12px; }
-  .topbar .chip[href^="tel:"]{ font-weight:800; }
-  .topbar .chip[href^="mailto:"]{ display:none; }
-
-  .menu-toggle{ display:inline-flex; align-items:center; gap:.35rem; padding:.5rem .75rem; font-size:.95rem; border-radius:12px; }
-
-  .main-nav{
-    position: fixed; top: 58px; right: 12px; left: 12px;
-    background: rgba(15,16,18,.98);
-    border: 1px solid #232428; border-radius: 14px; padding:.6rem;
-    display: grid; gap:.5rem;
-    transform: translateY(-12px) scale(.98);
-    opacity: 0; pointer-events: none;
-    transition: transform .18s ease, opacity .18s ease;
-    box-shadow: 0 16px 40px rgba(0,0,0,.45);
-    z-index: 1001;
-  }
-  .main-nav a{ display:block; text-align:center; padding:.75rem 1rem; font-weight:700 }
-  .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
-
-  .site-header{ padding:.6rem .9rem }
-  .hero{ min-height: 70vh; }
-  .hero-inner{ padding-bottom: 7.2rem; } /* more room under text */
-  .hero-social{ bottom:12px; }
-  .badge{ font-size: .95rem; }
-}
-
-/* --- New Car Touch-Up helpers --- */
-.list-tight li{ margin:.25rem 0; }
-.hr{ border:0; border-top:1px solid #232428; margin:1rem 0; }
-.badge-add{
-  display:inline-block; margin:.15rem .25rem 0 0;
-  background:#222327; color:#eaeaea; border:1px solid #2e2f33;
-  border-radius:999px; padding:.25rem .6rem; font-size:.9rem;
-}
-
-/* Backdrop for mobile drawer */
-.nav-backdrop{
-  position: fixed; inset:0;
-  background: rgba(0,0,0,.35);
-  backdrop-filter: blur(2px);
-  z-index:900;
-  opacity:0; pointer-events:none;
-  transition: opacity .18s ease;
-}
-.nav-backdrop.show{ opacity:1; pointer-events:auto }
-
 .btn-row{
   display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
 }
@@ -284,91 +224,86 @@ textarea{resize:vertical}
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
-/* ===== Payments bar (centered + larger) ===== */
-#payments { padding-top: 1.25rem; text-align: center; }
-
-/* Make the “We accept payments through …” line centered */
-#payments h2{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .6rem;
-  flex-wrap: wrap;
-  margin: 0 0 .5rem;
+/* CTA buttons */
+.wa-btn{
+  display:inline-flex; margin-top:.5rem; text-decoration:none; color:#111; background:var(--brand);
+  padding:.55rem .9rem; border-radius:999px; font-weight:700;
+}
+.wa-mini{ display:inline-block; background:var(--brand); color:#111; text-decoration:none; padding:.35rem .6rem; border-radius:999px }
+.wa-float{
+  position:fixed; right:18px; bottom:18px; z-index:1200;
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:var(--accent); color:#042; font-weight:800; text-decoration:none;
+  border-radius:999px; padding:.7rem 1rem; box-shadow:0 8px 28px rgba(0,0,0,.35);
 }
 
-/* Square chip next to the heading */
-.pay-inline-square{
-  height: 28px;                 /* a bit bigger */
-  vertical-align: middle;
-  background: #fff;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-  padding: 4px 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.18);
-}
-
-/* Row of brand chips — centered on desktop */
-.pay-chip-row{
-  display: flex;
-  gap: .75rem;                  /* a little more spacing */
-  flex-wrap: wrap;
-  justify-content: center;      /* <— center the icons */
-  align-items: center;
-  margin-top: .5rem;
-}
-
-/* Brand chip size (slightly larger) */
-.pay-chip{
-  display: inline-block;
-  height: 34px;                 /* was ~28; bigger for readability */
-  background: #fff;
-  border: 1px solid #ececec;
-  border-radius: 14px;
-  padding: 7px 12px;            /* balanced padding with 34px height */
-  box-shadow: 0 4px 14px rgba(0,0,0,.18);
-  object-fit: contain;
-  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
-  opacity: .98;
-}
-.pay-chip:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,.24);
-  opacity: 1;
-}
-
-/* Mobile tweaks */
-@media (max-width: 760px){
-  #payments h2{ gap: .45rem; }
-  .pay-inline-square{ height: 24px; padding: 3px 8px; }
-  .pay-chip{
-    height: 28px;               /* still larger than before but compact */
-    padding: 6px 10px;
+/* Make card CTAs full-width on mobile */
+@media (max-width:760px){
+  .card .wa-btn{
+    display:flex; width:100%; justify-content:center; text-align:center;
+    box-sizing:border-box; margin-inline:0;
   }
 }
-
-/* Light styling for note rows in the furniture table */
-.sub-table.furniture .row.note{
-  background: rgba(24,25,28,.6);
-  font-style: italic;
-}
-.sub-table.furniture .row.note div:last-child{
-  font-weight: 600;
-  font-style: normal;
+@media (min-width:761px){
+  .card .wa-btn{ display:inline-flex; width:auto }
 }
 
-/* ===== Helpers for Interior Deep Clean price table & ceramic callout ===== */
+/* ---------- New Car Touch-Up helpers ---------- */
+.list-tight li{ margin:.25rem 0 }
+.hr{ border:0; border-top:1px solid #232428; margin:1rem 0 }
+.badge-add{
+  display:inline-block; margin:.15rem .25rem 0 0;
+  background:#222327; color:#eaeaea; border:1px solid #2e2f33;
+  border-radius:999px; padding:.25rem .6rem; font-size:.9rem;
+}
+
+/* ---------- Payments strip ---------- */
+#payments{ padding-top:1.25rem; text-align:center }
+#payments h2{
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  flex-wrap:wrap; margin:0 0 .5rem;
+}
+.pay-inline-square{
+  height:28px; background:#fff; border:1px solid #e6e6e6;
+  border-radius:10px; padding:4px 10px; box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.pay-chip-row{
+  display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center; align-items:center; margin-top:.5rem;
+}
+.pay-chip{
+  display:inline-block; height:34px; background:#fff; border:1px solid #ececec; border-radius:14px;
+  padding:7px 12px; object-fit:contain; box-shadow:0 4px 14px rgba(0,0,0,.18);
+  transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease; opacity:.98;
+}
+.pay-chip:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.24); opacity:1 }
+@media (max-width:760px){
+  #payments h2{ gap:.45rem }
+  .pay-inline-square{ height:24px; padding:3px 8px }
+  .pay-chip{ height:28px; padding:6px 10px }
+}
+
+/* Furniture table note style (if used) */
+.sub-table.furniture .row.note{ background:rgba(24,25,28,.6); font-style:italic }
+.sub-table.furniture .row.note div:last-child{ font-weight:600; font-style:normal }
+
+/* ---------- Interior/Ceramic helpers ---------- */
 .price-table{
-  margin:.75rem 0; border:1px solid #232428; border-radius:12px; overflow:hidden
+  margin:.75rem 0; border:1px solid #232428; border-radius:12px; overflow:hidden;
 }
 .price-table .row{
   display:grid; grid-template-columns:2fr 1fr;
-  gap:.5rem; padding:.7rem 1rem;
-  background:rgba(22,23,26,.75); border-top:1px solid #232428;
+  gap:.5rem; padding:.7rem 1rem; background:rgba(22,23,26,.75);
+  border-top:1px solid #232428;
 }
 .price-table .row.head{ background:#18191c; font-weight:600 }
 .price-table .row:first-child{ border-top:none }
 .note{ background:rgba(20,21,24,.7) }
 
-/* ensure long bullet lists are compact in these sections */
-#ceramic ul li, #interior-deep-clean ul li { margin:.3rem 0; }
+/* Compact bullets in these sections */
+#ceramic ul li, #interior-deep-clean ul li{ margin:.3rem 0 }
+
+/* ---------- Footer ---------- */
+.footer{
+  display:flex; gap:1rem; justify-content:space-between; align-items:center;
+  padding:1.2rem 1rem; border-top:1px solid #232428; background:rgba(10,10,10,.75);
+}
