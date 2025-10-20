@@ -20,9 +20,9 @@ html { scroll-behavior: smooth; }
 }
 
 /* Keep anchors visible under the sticky header */
-section[id] { scroll-margin-top: 86px; }     /* desktop/tablet */
+section[id] { scroll-margin-top: 86px; }
 @media (max-width: 760px) {
-  section[id] { scroll-margin-top: 74px; }   /* mobile header a bit shorter */
+  section[id] { scroll-margin-top: 74px; }
 }
 
 *{box-sizing:border-box}
@@ -71,17 +71,17 @@ body{
   padding:.55rem .9rem; font-weight:800; cursor:pointer;
 }
 
-/* ---------- Hero sizing (room for pills) ---------- */
+/* ---------- Hero ---------- */
 .hero{
   position: relative;
-  min-height: 66vh; /* desktop height */
+  min-height: 66vh;
   display:grid; place-items:center;
   background:
     linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.78)),
     url("../static/bg-hero.jpg") center/cover no-repeat;
 }
 .hero-inner{
-  text-align:center; padding:3.2rem 1rem 5.8rem; /* bottom padding avoids overlap */
+  text-align:center; padding:3.2rem 1rem 5.8rem;
   display:grid; place-items:center; gap:.3rem;
   max-width: 900px; margin-inline:auto;
 }
@@ -96,7 +96,7 @@ body{
 }
 .tagline{margin-top:.2rem; color:var(--muted); font-size: clamp(1rem, 2.4vw, 1.25rem)}
 
-/* ---------- Bottom-center pills ---------- */
+/* ---------- Hero Social Pills ---------- */
 .hero-social{
   position:absolute;
   left:50%;
@@ -105,7 +105,7 @@ body{
   display:grid;
   gap:.55rem;
   width:max-content;
-  max-width:94vw;  /* in case labels get long */
+  max-width:94vw;
 }
 .hero-social .row{
   display:flex; align-items:center; justify-content:center;
@@ -118,23 +118,18 @@ body{
   font-weight:700; text-decoration:none; line-height:1;
   font-size: clamp(.82rem, 1.2vw, .95rem);
 }
-
-/* Instagram pill (gradient) */
 .badge.ig{
   color:#fff;
   border:1px solid #ffffff22;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
-.badge.ig svg{ display:block }
-
-/* Google pill (same shape, dark) */
 .badge.google{
   color:#fff; background:#1f2024; border:1px solid #2b2c30;
 }
 .badge.google .stars{ color:#ffd266; letter-spacing:1px; }
 
-/* Layout & Cards */
+/* Layout */
 .container{width:min(1100px,90%); margin-inline:auto}
 .section{padding:3rem 0}
 h2{font-size:clamp(1.5rem,3.2vw,2.1rem); margin:.5rem 0 1rem}
@@ -146,6 +141,7 @@ h4{margin:1rem 0 .25rem}
 }
 .price{color:var(--muted); margin:.25rem 0 .5rem}
 
+/* Grid utilities */
 .grid-2{display:grid; gap:.75rem; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .addon{background:var(--card); border:1px solid #232428; border-radius:12px; padding:.8rem 1rem; display:flex; justify-content:space-between}
 .addon span{color:var(--muted)}
@@ -160,7 +156,7 @@ h4{margin:1rem 0 .25rem}
 .sub-table .row:first-child{border-top:none}
 @media (max-width:800px){ .sub-table .row{grid-template-columns:1.5fr 1fr 1fr 1fr auto} }
 
-/* Contact form */
+/* Contact Form */
 .contact{margin-top:.5rem}
 .grid-form{display:grid; gap:1rem; grid-template-columns:repeat(2,1fr)}
 .grid-form .full{grid-column:1/-1}
@@ -190,26 +186,20 @@ textarea{resize:vertical}
   z-index:1200;
 }
 
-/* Make CTA buttons fit cards on mobile */
+/* Responsive buttons in cards */
 @media (max-width: 760px){
   .card .wa-btn{
-    display: flex;              /* instead of inline-flex */
-    width: 100%;
-    justify-content: center;    /* center the label */
-    text-align: center;
-    box-sizing: border-box;     /* respect padding within width */
-    margin-inline: 0;           /* no side overflow */
+    display:flex;
+    width:100%;
+    justify-content:center;
+    text-align:center;
+    box-sizing:border-box;
+    margin-inline:0;
   }
-  /* optional: ensure the card clips any glow/shadow cleanly */
-  .card{ overflow: clip; }      /* or overflow: hidden; if older browser support needed */
+  .card{ overflow:clip; }
 }
-
-/* Keep desktop behavior unchanged */
-@media (min-width: 761px){
-  .card .wa-btn{
-    display: inline-flex;
-    width: auto;
-  }
+@media (min-width:761px){
+  .card .wa-btn{ display:inline-flex; width:auto; }
 }
 
 /* Footer */
@@ -218,10 +208,10 @@ textarea{resize:vertical}
   padding:1.2rem 1rem; border-top:1px solid #232428; background:rgba(10,10,10,.75)
 }
 
-/* Mobile */
+/* Mobile tweaks */
 @media (max-width:760px){
   .topbar{
-    flex-wrap: nowrap; gap:.35rem; padding:.4rem .6rem;
+    flex-wrap:nowrap; gap:.35rem; padding:.4rem .6rem;
     overflow-x:auto; -webkit-overflow-scrolling:touch;
   }
   .topbar::-webkit-scrollbar{ display:none; }
@@ -247,22 +237,13 @@ textarea{resize:vertical}
   .main-nav.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto }
 
   .site-header{ padding:.6rem .9rem }
-  .hero{ min-height: 70vh; }
-  .hero-inner{ padding-bottom: 7.2rem; } /* more room under text */
+  .hero{ min-height:70vh; }
+  .hero-inner{ padding-bottom:7.2rem; }
   .hero-social{ bottom:12px; }
-  .badge{ font-size: .95rem; }
+  .badge{ font-size:.95rem; }
 }
 
-/* --- New Car Touch-Up helpers --- */
-.list-tight li{ margin:.25rem 0; }
-.hr{ border:0; border-top:1px solid #232428; margin:1rem 0; }
-.badge-add{
-  display:inline-block; margin:.15rem .25rem 0 0;
-  background:#222327; color:#eaeaea; border:1px solid #2e2f33;
-  border-radius:999px; padding:.25rem .6rem; font-size:.9rem;
-}
-
-/* Backdrop for mobile drawer */
+/* Backdrop for mobile menu */
 .nav-backdrop{
   position: fixed; inset:0;
   background: rgba(0,0,0,.35);
@@ -273,6 +254,7 @@ textarea{resize:vertical}
 }
 .nav-backdrop.show{ opacity:1; pointer-events:auto }
 
+/* Buttons rows */
 .btn-row{
   display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem;
 }
@@ -284,105 +266,68 @@ textarea{resize:vertical}
 .btn-secondary:hover{ background:#2b2c30 }
 @media (max-width:560px){ .btn-row{ grid-template-columns:1fr } }
 
-/* ===== Payments bar (centered + larger) ===== */
-#payments { padding-top: 1.25rem; text-align: center; }
-
-/* Make the “We accept payments through …” line centered */
+/* Payments section */
+#payments{ padding-top:1.25rem; text-align:center; }
 #payments h2{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .6rem;
-  flex-wrap: wrap;
-  margin: 0 0 .5rem;
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem; flex-wrap:wrap;
+  margin:0 0 .5rem;
 }
-
-/* Square chip next to the heading */
 .pay-inline-square{
-  height: 28px;                 /* a bit bigger */
-  vertical-align: middle;
-  background: #fff;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-  padding: 4px 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+  height:28px; vertical-align:middle;
+  background:#fff; border:1px solid #e6e6e6; border-radius:10px; padding:4px 10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
 }
-
-/* Row of brand chips — centered on desktop */
 .pay-chip-row{
-  display: flex;
-  gap: .75rem;                  /* a little more spacing */
-  flex-wrap: wrap;
-  justify-content: center;      /* <— center the icons */
-  align-items: center;
-  margin-top: .5rem;
+  display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center; align-items:center; margin-top:.5rem;
 }
-
-/* Brand chip size (slightly larger) */
 .pay-chip{
-  display: inline-block;
-  height: 34px;                 /* was ~28; bigger for readability */
-  background: #fff;
-  border: 1px solid #ececec;
-  border-radius: 14px;
-  padding: 7px 12px;            /* balanced padding with 34px height */
-  box-shadow: 0 4px 14px rgba(0,0,0,.18);
-  object-fit: contain;
-  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
-  opacity: .98;
+  display:inline-block; height:34px; background:#fff; border:1px solid #ececec; border-radius:14px;
+  padding:7px 12px; box-shadow:0 4px 14px rgba(0,0,0,.18); object-fit:contain;
+  transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  opacity:.98;
 }
-.pay-chip:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,.24);
-  opacity: 1;
+.pay-chip:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.24); opacity:1; }
+@media (max-width:760px){
+  #payments h2{ gap:.45rem; }
+  .pay-inline-square{ height:24px; padding:3px 8px; }
+  .pay-chip{ height:28px; padding:6px 10px; }
 }
 
-/* Mobile tweaks */
-@media (max-width: 760px){
-  #payments h2{ gap: .45rem; }
-  .pay-inline-square{ height: 24px; padding: 3px 8px; }
-  .pay-chip{
-    height: 28px;               /* still larger than before but compact */
-    padding: 6px 10px;
-  }
+/* Helpers */
+.list-tight li{ margin:.25rem 0; }
+.hr{ border:0; border-top:1px solid #232428; margin:1rem 0; }
+.badge-add{
+  display:inline-block; margin:.15rem .25rem 0 0;
+  background:#222327; color:#eaeaea; border:1px solid #2e2f33;
+  border-radius:999px; padding:.25rem .6rem; font-size:.9rem;
 }
-
-/* Light styling for note rows in the furniture table */
-.sub-table.furniture .row.note{
-  background: rgba(24,25,28,.6);
-  font-style: italic;
-}
-.sub-table.furniture .row.note div:last-child{
-  font-weight: 600;
-  font-style: normal;
-}
-
-/* ===== Helpers for Interior Deep Clean price table & ceramic callout ===== */
+.sub-table.furniture .row.note{ background:rgba(24,25,28,.6); font-style:italic; }
+.sub-table.furniture .row.note div:last-child{ font-weight:600; font-style:normal; }
 .price-table{
-  margin:.75rem 0; border:1px solid #232428; border-radius:12px; overflow:hidden
+  margin:.75rem 0; border:1px solid #232428; border-radius:12px; overflow:hidden;
 }
 .price-table .row{
   display:grid; grid-template-columns:2fr 1fr;
-  gap:.5rem; padding:.7rem 1rem;
-  background:rgba(22,23,26,.75); border-top:1px solid #232428;
+  gap:.5rem; padding:.7rem 1rem; background:rgba(22,23,26,.75); border-top:1px solid #232428;
 }
-.price-table .row.head{ background:#18191c; font-weight:600 }
-.price-table .row:first-child{ border-top:none }
-.note{ background:rgba(20,21,24,.7) }
+.price-table .row.head{ background:#18191c; font-weight:600; }
+.price-table .row:first-child{ border-top:none; }
+.note{ background:rgba(20,21,24,.7); }
+#ceramic ul li, #interior-deep-clean ul li{ margin:.3rem 0; }
 
-/* ensure long bullet lists are compact in these sections */
-#ceramic ul li, #interior-deep-clean ul li { margin:.3rem 0; }
-
-/* === Fix: mobile background "magnet" when scrolling === */
-/* Turn off background-attachment:fixed on touch devices */
-@media (max-width: 1024px) {
+/* === Mobile background fix (smooth + visually fixed) === */
+@media (max-width:1024px){
   body{
-    background-attachment: scroll;     /* key fix */
-    background-position: center top;   /* looks better when not fixed */
+    background:var(--bg);
   }
-}
-
-/* Extra safety for iOS Safari (even on large devices) */
-@supports (-webkit-touch-callout: none) {
-  body{ background-attachment: scroll; }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:url("../static/bg-page.jpg") center/cover no-repeat;
+    will-change:transform;
+    transform:translateZ(0);
+  }
 }
